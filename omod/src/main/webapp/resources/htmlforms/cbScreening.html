@@ -1,0 +1,114 @@
+<!--
+  ~ The contents of this file are subject to the OpenMRS Public License
+  ~ Version 1.0 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://license.openmrs.org
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations
+  ~ under the License.
+  ~
+  ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+-->
+<htmlform>
+    <script type="text/javascript">
+        jq(document ).ready(function() {
+            disableControls();
+        });
+
+
+        function disableControls(){
+            jq('#nhifNumber *').prop('disabled', true);
+        }
+
+    </script>
+    <style>
+        table.initial {
+            border-collapse: collapse;
+            background-color: #F3F9FF;
+        }
+        table.initial > tbody > tr > td, table.initial > tbody > tr > th {
+            border: 1px solid black;
+            vertical-align: baseline;
+            padding: 3.6px;
+            text-align: left;
+        }
+    </style>
+    <div class="ke-form-header">
+        <table style="width: 100%">
+            <tr>
+                <td align="left">Screening Date
+                    <encounterDate id="encounter-date" showTime="true" />
+                </td>
+                <td>Screening by: <encounterProvider default="currentUser" /></td>
+                <td align="right">Screening Venue
+                    <encounterLocation default="GlobalProperty:kenyaemr.defaultLocation" type="autocomplete" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="ke-form-content">
+        <table border="0" cellspacing="0" cellpadding="5" width="75%" class="initial" align="center">
+            <tbody>
+            <tr>
+                <td valign="top">
+                    <label>Where is your usual place of residence?:</label>
+                    <obs conceptId="5000010" />
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <label>Nationality:</label>
+                    <obs conceptId="5000023" answerConceptIds="5000024,5000025,5000026,5000027,5000028,5000029"  style="radio" />
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <label>Target population:</label>
+                    <obs conceptId="5000022" answerConceptIds="5000021,5000020"  style="radio" />
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <label>Have you traveled to another country in the last 3 months:</label>
+                    <obs conceptId="5000013" answerConceptIds="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" answerLabels="Yes,No"  style="radio" />
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <label>Have you traveled to another country in the last 6 months:</label>
+                    <obs conceptId="5000013" answerConceptIds="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" answerLabels="Yes,No"  style="radio" />
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <label>Have you traveled to another country in the last 12 months:</label>
+                    <obs conceptId="5000013" answerConceptIds="1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" answerLabels="Yes,No"  style="radio" />
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <label>How long (in days) did you stay the last time you traveled to another country?:</label>
+                    <obs conceptId="5000016" />
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <label>How frequently do you travel to another country?:</label>
+                    <obs conceptId="5000018" />
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <label>Service:</label>
+                    <obs conceptId="5000030" answerConceptIds="5000031,5000032" />
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="ke-form-footer">
+        <submit/>
+    </div>
+</htmlform>
