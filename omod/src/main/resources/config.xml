@@ -7,7 +7,7 @@
 	<name>${project.parent.name}</name>
 	<version>${project.parent.version}</version>
 	<package>org.openmrs.module.crossborder2</package>
-	<author>codehub</author>
+	<author>IntelliSOFT</author>
 	<description>
 			${project.parent.description}
 	</description>
@@ -26,6 +26,7 @@
 		<require_module version="${appuiVersion}">org.openmrs.module.appui</require_module>
 		<require_module version="${kenyaemrVersion}">org.openmrs.module.kenyaemr</require_module>
 		<require_module version="${metadatadeployVersion}">org.openmrs.module.metadatadeploy</require_module>
+		<require_module version="${fhir2Version}">org.openmrs.module.fhir2</require_module>
 	</require_modules>
 	
 	<!-- Extensions -->
@@ -100,14 +101,6 @@
 	<messages>
 		<lang>en</lang>
 		<file>messages.properties</file>
-	</messages>
-	<messages>
-		<lang>fr</lang>
-		<file>messages_fr.properties</file>
-	</messages>
-	<messages>
-		<lang>es</lang>
-		<file>messages_es.properties</file>
 	</messages>
 	<!-- /Internationalization -->
 	

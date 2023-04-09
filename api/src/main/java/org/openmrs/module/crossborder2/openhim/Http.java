@@ -9,13 +9,17 @@
  */
 package org.openmrs.module.crossborder2.openhim;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -23,47 +27,70 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 
 public class Http {
-	
+
 	private static final String URL = "http://hiedhs.intellisoftkenya.com:5001/";
-	
+
 	private static final String USERNAME = "kemr";
-	
+
 	private static final String PASSWORD = "password";
-	
+
 	public String get(String endpoint, String query) {
 		HttpClient httpClient = getHttpClient();
-		String url = URL + endpoint + "?" + query;
-		HttpGet request = new HttpGet(url);
+		HttpGet request = new HttpGet(URL + endpoint + "?" + query);
 		request.setHeader("Accept", "application/fhir+json");
 		HttpResponse response;
 		String responseBody;
 		try {
 			response = httpClient.execute(request);
 			responseBody = EntityUtils.toString(response.getEntity());
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return responseBody;
 	}
-	
-	public String post(String endpoint, String query) {
-		HttpClient httpClient = getHttpClient();
-		String url = URL + endpoint + "?" + query;
-		HttpPost request = new HttpPost(url);
-		request.setHeader("Accept", "application/fhir+json");
+
+	public String post(String endpoint, String payload) {
+		HttpClient client = getHttpClient();
+		HttpPost request = new HttpPost(URL + endpoint);
+		request.setEntity(EntityBuilder.create().setContentType(ContentType.APPLICATION_JSON).setText(payload).build());
 		HttpResponse response;
-		String responseBody;
+		String jsonResponse = null;
 		try {
-			response = httpClient.execute(request);
-			responseBody = EntityUtils.toString(response.getEntity());
-		}
-		catch (IOException e) {
+			response = client.execute(request);
+			if (response.getStatusLine().getStatusCode() >= 200) {
+				HttpEntity entity = response.getEntity();
+				jsonResponse = EntityUtils.toString(entity);
+			} else {
+				System.out.println("Request failed: " + response.getStatusLine().getStatusCode() + " "
+					+ response.getStatusLine().getReasonPhrase());
+			}
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		return responseBody;
+		return jsonResponse;
 	}
-	
+
+	public String put(String endpoint, String payload, String query) {
+		HttpClient client = getHttpClient();
+		HttpPut request = new HttpPut(URL + endpoint + "?" + query);
+		request.setEntity(EntityBuilder.create().setContentType(ContentType.APPLICATION_JSON).setText(payload).build());
+		HttpResponse response;
+		String jsonResponse = null;
+		try {
+			response = client.execute(request);
+			if (response.getStatusLine().getStatusCode() >= 200) {
+				HttpEntity entity = response.getEntity();
+				jsonResponse = EntityUtils.toString(entity);
+			} else {
+				System.out.println("Request failed: " + response.getStatusLine().getStatusCode() + " "
+					+ response.getStatusLine().getReasonPhrase());
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return jsonResponse;
+	}
+
 	private HttpClient getHttpClient() {
 		CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
 		credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(USERNAME, PASSWORD));
