@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * This class configured as controller using annotation and mapped with the URL of
- * 'module/crossborder2/ncdappLink.form'.
+ * 'module/crossborder2/cbappLink.form'.
  */
-@Controller("${rootrootArtifactId}.NCDApplicationController")
+@Controller("${rootrootArtifactId}.CBApplicationController")
 @RequestMapping(value = "module/crossborder2/crossborder2.form")
 public class CBApplicationController {
 	
