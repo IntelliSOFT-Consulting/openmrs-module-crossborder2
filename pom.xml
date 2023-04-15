@@ -37,6 +37,14 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.openmrs.api</groupId>
+				<artifactId>openmrs-api</artifactId>
+				<version>${openMRSVersion}</version>
+				<type>jar</type>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>appframework-api</artifactId>
 				<version>${appframeworkVersion}</version>
