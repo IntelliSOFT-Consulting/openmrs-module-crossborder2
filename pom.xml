@@ -42,7 +42,13 @@
 				<version>${appframeworkVersion}</version>
 				<scope>provided</scope>
 			</dependency>
-
+			<dependency>
+				<groupId>org.openmrs.api</groupId>
+				<artifactId>openmrs-api</artifactId>
+				<version>${openMRSVersion}</version>
+				<type>jar</type>
+				<scope>provided</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>calculation-api</artifactId>
@@ -109,6 +115,12 @@
 				<version>${reportingVersion}</version>
 				<scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>fhir2-api</artifactId>
+				<version>${fhir2Version}</version>
+				<scope>provided</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -122,14 +134,14 @@
 			<id>central</id>
 			<name>Maven Repository Switchboard</name>
 			<layout>default</layout>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>https://repo1.maven.org/maven2</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>openmrs-repo</id>
 			<name>OpenMRS Nexus Repository</name>
-			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
+			<url>https://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -155,5 +167,6 @@
 		<webservicesRestVersion>2.26.0</webservicesRestVersion>
 		<logicVersion>0.5.2</logicVersion>
 		<fhir2Version>1.9.0</fhir2Version>
+		<hapiFhirVersion>5.6.971</hapiFhirVersion>
 	</properties>
 </project>

@@ -27,13 +27,13 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 
 public class Http {
-
+	
 	private static final String URL = "http://hiedhs.intellisoftkenya.com:5001/";
-
+	
 	private static final String USERNAME = "kemr";
-
+	
 	private static final String PASSWORD = "password";
-
+	
 	public String get(String endpoint, String query) {
 		HttpClient httpClient = getHttpClient();
 		HttpGet request = new HttpGet(URL + endpoint + "?" + query);
@@ -43,12 +43,13 @@ public class Http {
 		try {
 			response = httpClient.execute(request);
 			responseBody = EntityUtils.toString(response.getEntity());
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return responseBody;
 	}
-
+	
 	public String post(String endpoint, String payload) {
 		HttpClient client = getHttpClient();
 		HttpPost request = new HttpPost(URL + endpoint);
@@ -62,14 +63,15 @@ public class Http {
 				jsonResponse = EntityUtils.toString(entity);
 			} else {
 				System.out.println("Request failed: " + response.getStatusLine().getStatusCode() + " "
-					+ response.getStatusLine().getReasonPhrase());
+				        + response.getStatusLine().getReasonPhrase());
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return jsonResponse;
 	}
-
+	
 	public String put(String endpoint, String payload, String query) {
 		HttpClient client = getHttpClient();
 		HttpPut request = new HttpPut(URL + endpoint + "?" + query);
@@ -83,14 +85,15 @@ public class Http {
 				jsonResponse = EntityUtils.toString(entity);
 			} else {
 				System.out.println("Request failed: " + response.getStatusLine().getStatusCode() + " "
-					+ response.getStatusLine().getReasonPhrase());
+				        + response.getStatusLine().getReasonPhrase());
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return jsonResponse;
 	}
-
+	
 	private HttpClient getHttpClient() {
 		CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
 		credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(USERNAME, PASSWORD));

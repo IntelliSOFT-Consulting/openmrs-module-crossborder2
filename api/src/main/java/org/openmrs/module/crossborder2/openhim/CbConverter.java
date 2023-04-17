@@ -9,30 +9,26 @@
  */
 package org.openmrs.module.crossborder2.openhim;
 
-import org.hl7.fhir.r4.model.Enumerations;
-import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Patient;
+import org.openmrs.module.crossborder2.api.exceptions.ResourceGenerationException;
+import org.openmrs.module.crossborder2.api.impl.FhirResourceBuilderImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import org.openmrs.module.fhir2.api.translators.impl.PatientTranslatorImpl;
-
+@Component
 public class CbConverter {
-
-	private final PatientTranslatorImpl translator = new PatientTranslatorImpl();
-
+	
+	@Autowired
+	FhirResourceBuilderImpl fhirResourceBuilder;
+	
 	public org.openmrs.Patient convertToOpenMrsPatient(Patient fhirPatient) {
-		org.openmrs.Patient openmrsPatient = translator.toOpenmrsType(fhirPatient);
-		return openmrsPatient;
+		// org.openmrs.Patient openmrsPatient = fhirResourceBuilder.convertToOpenMRS(fhirPatient);
+		//return openmrsPatient;
+		return null;
 	}
-
-	public Patient convertToFhirPatient(org.openmrs.Patient openMrsPatient) {
-		//		Patient fhirPatient = translator.toFhirResource(openMrsPatient);
-		Patient patient = new Patient();
-		patient.setGender(Enumerations.AdministrativeGender.MALE);
-		HumanName humanName = new HumanName();
-		humanName.addGiven("John");
-		humanName.setFamily("Doe");
-		humanName.addPrefix("Mr");
-		patient.addName(humanName);
-		return patient;//fhirPatient;
+	
+	public Patient convertToFhirPatient(org.openmrs.Patient openMrsPatient) throws ResourceGenerationException {
+		Patient fhirPatient = (Patient) new FhirResourceBuilderImpl().generateFhirResource(openMrsPatient);
+		return fhirPatient;
 	}
 }

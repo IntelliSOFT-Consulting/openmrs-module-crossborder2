@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 public class CbHomePageController {
-
+	
 	public void controller(PageModel model) {
 		CbPatientService cbPatientService = new CbPatientService();
 		List<Patient> patientList = cbPatientService.searchPatient("Gloria");
@@ -22,7 +22,7 @@ public class CbHomePageController {
 		Patient updatedPatient = cbPatientService.updatePatient(createDummyPatient(), "KE-2023-02-7B732");
 		model.addAttribute("message", "This is the CB Home Page");
 	}
-
+	
 	private Patient createDummyPatient() {
 		Patient patient = new Patient();
 		{
@@ -37,7 +37,7 @@ public class CbHomePageController {
 			patientIdentifier.setPatient(patient);
 			patientIdentifier.setIdentifier("12345-00001");
 			PatientIdentifierType idType = MetadataUtils.existing(PatientIdentifierType.class,
-				HivMetadata._PatientIdentifierType.UNIQUE_PATIENT_NUMBER);
+			    HivMetadata._PatientIdentifierType.UNIQUE_PATIENT_NUMBER);
 			patientIdentifier.setIdentifierType(idType);
 			patient.addIdentifier(patientIdentifier);
 		}
