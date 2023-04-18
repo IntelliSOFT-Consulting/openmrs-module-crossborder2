@@ -3,35 +3,52 @@ package org.openmrs.module.crossborder2.page.controller;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
+import org.openmrs.PersonAddress;
 import org.openmrs.PersonName;
 import org.openmrs.module.crossborder2.openhim.CbPatientService;
 import org.openmrs.module.kenyaemr.metadata.HivMetadata;
+import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.module.metadatadeploy.MetadataUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class CbHomePageController {
 	
-	public void controller(PageModel model) {
-		CbPatientService cbPatientService = new CbPatientService();
+	public void controller(PageModel model, @SpringBean CbPatientService cbPatientService) {
+		Patient patient = createDummyPatient();
 		List<Patient> patientList = cbPatientService.searchPatient("Gloria");
 		Patient foundPatient = cbPatientService.findPatient("KE-2023-02-7B732");
-		String crossBorderId = cbPatientService.createPatient(createDummyPatient());
-		Patient updatedPatient = cbPatientService.updatePatient(createDummyPatient(), "KE-2023-02-7B732");
+		Patient createdPatient = cbPatientService.createPatient(patient);
+		Patient updatedPatient = cbPatientService.updatePatient(patient, "KE-2023-02-7B732");
 		model.addAttribute("message", "This is the CB Home Page");
 	}
 	
 	private Patient createDummyPatient() {
 		Patient patient = new Patient();
-		{
-			PersonName personName = new PersonName();
-			personName.setGivenName("Gloria");
-			personName.setFamilyName("Mwende");
-			personName.setPreferred(true);
-			patient.addName(new PersonName());
-		}
+		patient.setUuid(UUID.randomUUID().toString());
+		patient.setGender("F");
+		patient.setBirthdate(new Date());
+		patient.setBirthdateEstimated(false);
+		patient.setDead(false);
+		patient.setVoided(false);
+		patient.setDeathDate(null);
+		PersonName personName = new PersonName();
+		personName.setGivenName("Jane");
+		personName.setMiddleName("K");
+		personName.setFamilyName("Wanjiku");
+		personName.setUuid(UUID.randomUUID().toString());
+		patient.addName(personName);
+		PersonAddress personAddress = new PersonAddress();
+		personAddress.setAddress1("1234 Main St");
+		personAddress.setCityVillage("Nairobi");
+		personAddress.setStateProvince("NBI");
+		personAddress.setCountry("Kenya");
+		personAddress.setPostalCode("12345");
+		personAddress.setUuid(UUID.randomUUID().toString());
+		patient.addAddress(personAddress);
 		{
 			PatientIdentifier patientIdentifier = new PatientIdentifier();
 			patientIdentifier.setPatient(patient);
@@ -41,13 +58,6 @@ public class CbHomePageController {
 			patientIdentifier.setIdentifierType(idType);
 			patient.addIdentifier(patientIdentifier);
 		}
-		patient.setGender("F");
-		patient.setBirthdate(new Date());
-		patient.setBirthdateEstimated(false);
-		patient.setVoided(false);
-		patient.setUuid("77b4b43a-d6c4-11ed-8cd3-4753b3dc5409");
-		patient.setPatientId(100000);
-		patient.setAddresses(null);
 		return patient;
 	}
 }

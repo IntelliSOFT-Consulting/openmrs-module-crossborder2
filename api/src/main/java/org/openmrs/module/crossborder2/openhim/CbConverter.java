@@ -11,7 +11,7 @@ package org.openmrs.module.crossborder2.openhim;
 
 import org.hl7.fhir.r4.model.Patient;
 import org.openmrs.module.crossborder2.api.exceptions.ResourceGenerationException;
-import org.openmrs.module.crossborder2.api.impl.FhirResourceBuilderImpl;
+import org.openmrs.module.fhir2.api.translators.PatientTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,16 +19,15 @@ import org.springframework.stereotype.Component;
 public class CbConverter {
 	
 	@Autowired
-	FhirResourceBuilderImpl fhirResourceBuilder;
+	PatientTranslator patientTranslator;
 	
 	public org.openmrs.Patient convertToOpenMrsPatient(Patient fhirPatient) {
-		// org.openmrs.Patient openmrsPatient = fhirResourceBuilder.convertToOpenMRS(fhirPatient);
-		//return openmrsPatient;
-		return null;
+		org.openmrs.Patient openmrsPatient = patientTranslator.toOpenmrsType(fhirPatient);
+		return openmrsPatient;
 	}
 	
 	public Patient convertToFhirPatient(org.openmrs.Patient openMrsPatient) throws ResourceGenerationException {
-		Patient fhirPatient = (Patient) new FhirResourceBuilderImpl().generateFhirResource(openMrsPatient);
+		Patient fhirPatient = patientTranslator.toFhirResource(openMrsPatient);
 		return fhirPatient;
 	}
 }

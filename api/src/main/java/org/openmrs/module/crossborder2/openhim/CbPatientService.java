@@ -9,20 +9,22 @@ package org.openmrs.module.crossborder2.openhim;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.IParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.Resource;
+import org.openmrs.Patient;
 import org.openmrs.module.crossborder2.api.exceptions.ResourceGenerationException;
 import org.openmrs.module.crossborder2.utils.FhirUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class CbPatientService {
+	
+	@Autowired
+	private CbConverter cbConverter;
 	
 	private FhirUtil fhirUtil = FhirUtil.getInstance();
 	
@@ -32,14 +34,9 @@ public class CbPatientService {
 	 * @param searchTerm the search term by which to search for patients.
 	 * @return the list of patients that match the search term.
 	 */
-	public List<org.openmrs.Patient> searchPatient(String searchTerm) {
+	public List<Patient> searchPatient(String searchTerm) {
 		String jsonResponse = new Http().get("search", "name=" + searchTerm);
-		List<Patient> fhirPatients = processPatientsResponse(jsonResponse);
-		List<org.openmrs.Patient> openMrsPatients = new ArrayList<org.openmrs.Patient>();
-		for (Patient fhirPatient : fhirPatients) {
-			org.openmrs.Patient openMrsPatient = new CbConverter().convertToOpenMrsPatient(fhirPatient);
-			openMrsPatients.add(openMrsPatient);
-		}
+		List<Patient> openMrsPatients = deserializePatients(jsonResponse);
 		return openMrsPatients;
 	}
 	
@@ -49,12 +46,11 @@ public class CbPatientService {
 	 * @param crossBorderId the patient's cross-border ID.
 	 * @return the patient with the given cross-border ID.
 	 */
-	public org.openmrs.Patient findPatient(String crossBorderId) {
-		org.openmrs.Patient openMrsPatient = null;
+	public Patient findPatient(String crossBorderId) {
+		Patient openMrsPatient = null;
 		try {
-			String jsonResponse = new Http().get("patients", "id=" + crossBorderId);
-			Patient fhirPatient = processPatientResponse(jsonResponse);
-			openMrsPatient = new CbConverter().convertToOpenMrsPatient(fhirPatient);
+			String jsonResponse = new Http().get("Patient", "id=" + crossBorderId);
+			openMrsPatient = deserializePatient(jsonResponse);
 		}
 		catch (Exception ex) {
 			
@@ -67,21 +63,21 @@ public class CbPatientService {
 	 * Creates a patient in the MPI.
 	 * 
 	 * @param openMrsPatient the patient to create.
-	 * @return the cross-border ID of the created patient.
+	 * @return the newly created patient patient.
 	 */
-	public String createPatient(org.openmrs.Patient openMrsPatient) {
-		Patient fhirPatient = null;
+	public Patient createPatient(Patient openMrsPatient) {
+		org.hl7.fhir.r4.model.Patient fhirPatient = null;
 		try {
-			fhirPatient = new CbConverter().convertToFhirPatient(openMrsPatient);
+			fhirPatient = cbConverter.convertToFhirPatient(openMrsPatient);
 		}
 		catch (ResourceGenerationException e) {
 			throw new RuntimeException(e);
 		}
 		String payload = serializePatient(fhirPatient);
-		payload = "{\"resourceType\":\"Patient\",\"identifier\":[{\"id\":\"POINT_OF_CARE_ID\",\"value\":\"BUSIA-RN-00\"},{\"id\":\"NATIONAL_ID\",\"system\":\"Kenya\",\"value\":\"098900\"}],\"name\":[{\"family\":\"Gloria\",\"given\":[\"West\"]}],\"telecom\":[{\"value\":\"0719999090\"}],\"gender\":\"female\",\"birthDate\":\"1997-05-05\",\"address\":[{\"city\":\"Langata\",\"state\":\"Nairobi\",\"country\":\"Kenya\"}],\"maritalStatus\":{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v3-MaritalStatus\",\"code\":\"MARRIED POLYGAMOUS\",\"display\":\"Married Polygamous\"}],\"text\":\"Married Polygamous\"},\"contact\":[{\"relationship\":[{\"text\":\"Spouse\"}],\"name\":{\"family\":\"Edith Her\"},\"telecom\":[{\"value\":\"0712345678\"}]}]}";
-		String jsonResponse = new Http().post("patients", payload);
-		String crossBorderId = processCrossBorderIdResponse(jsonResponse);
-		return crossBorderId;
+		//		payload = "{\"resourceType\":\"Patient\",\"identifier\":[{\"id\":\"POINT_OF_CARE_ID\",\"value\":\"BUSIA-RN-00\"},{\"id\":\"NATIONAL_ID\",\"system\":\"Kenya\",\"value\":\"098900\"}],\"name\":[{\"family\":\"Gloria\",\"given\":[\"West\"]}],\"telecom\":[{\"value\":\"0719999090\"}],\"gender\":\"female\",\"birthDate\":\"1997-05-05\",\"address\":[{\"city\":\"Langata\",\"state\":\"Nairobi\",\"country\":\"Kenya\"}],\"maritalStatus\":{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v3-MaritalStatus\",\"code\":\"MARRIED POLYGAMOUS\",\"display\":\"Married Polygamous\"}],\"text\":\"Married Polygamous\"},\"contact\":[{\"relationship\":[{\"text\":\"Spouse\"}],\"name\":{\"family\":\"Edith Her\"},\"telecom\":[{\"value\":\"0712345678\"}]}]}";
+		String jsonResponse = new Http().post("Patient", payload);
+		Patient patient = deserializePatient(jsonResponse);
+		return patient;
 	}
 	
 	/**
@@ -91,88 +87,42 @@ public class CbPatientService {
 	 * @param crossBorderId the cross-border ID of the patient to update.
 	 * @return the updated patient.
 	 */
-	public org.openmrs.Patient updatePatient(org.openmrs.Patient openMrsPatient, String crossBorderId) {
-		Patient fhirPatient = null;
+	public Patient updatePatient(Patient openMrsPatient, String crossBorderId) {
+		org.hl7.fhir.r4.model.Patient fhirPatient = null;
 		try {
-			fhirPatient = new CbConverter().convertToFhirPatient(openMrsPatient);
+			fhirPatient = cbConverter.convertToFhirPatient(openMrsPatient);
 		}
 		catch (ResourceGenerationException e) {
 			throw new RuntimeException(e);
 		}
 		String payload = serializePatient(fhirPatient);
-		payload = "{\"resourceType\":\"Patient\",\"id\":\"302\",\"meta\":{\"versionId\":\"1\",\"lastUpdated\":\"2023-02-02T08:43:09.977+00:00\",\"source\":\"#5ZDxH1E3TJbr1zsk\"},\"text\":{\"status\":\"generated\",\"div\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><div class=\\\"hapiHeaderText\\\">West <b>GLORIA </b></div><table class=\\\"hapiPropertyTable\\\"><tbody><tr><td>Identifier</td><td>BUSIA-RN-00</td></tr><tr><td>Address</td><td><span>Langata </span><span>Nairobi </span><span>Kenya </span></td></tr><tr><td>Date of birth</td><td><span>05 May 1997</span></td></tr></tbody></table></div>\"},\"identifier\":[{\"id\":\"POINT_OF_CARE_ID\",\"value\":\"BUSIA-RN-00\"},{\"id\":\"CROSS_BORDER_ID\",\"value\":\"KE-2023-02-7B732\"},{\"id\":\"NATIONAL_ID\",\"system\":\"Kenya\",\"value\":\"098900\"}],\"name\":[{\"family\":\"Gloria\",\"given\":[\"Anna\"]}],\"telecom\":[{\"value\":\"0719999090\"}],\"gender\":\"female\",\"birthDate\":\"1997-05-05\",\"address\":[{\"city\":\"Langata\",\"state\":\"Nairobi\",\"country\":\"Kenya\"}],\"maritalStatus\":{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v3-MaritalStatus\",\"code\":\"MARRIED POLYGAMOUS\",\"display\":\"Married Polygamous\"}],\"text\":\"Married Polygamous\"},\"contact\":[{\"relationship\":[{\"text\":\"Edith Her\"}],\"name\":{\"family\":\"Spouse\"}}]}\n";
-		String jsonResponse = new Http().put("patients", payload, "crossBorderId=" + crossBorderId);
-		fhirPatient = processPatientResponse(jsonResponse);
-		openMrsPatient = new CbConverter().convertToOpenMrsPatient(fhirPatient);
+		//		payload = "{\"resourceType\":\"Patient\",\"id\":\"302\",\"meta\":{\"versionId\":\"1\",\"lastUpdated\":\"2023-02-02T08:43:09.977+00:00\",\"source\":\"#5ZDxH1E3TJbr1zsk\"},\"text\":{\"status\":\"generated\",\"div\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><div class=\\\"hapiHeaderText\\\">West <b>GLORIA </b></div><table class=\\\"hapiPropertyTable\\\"><tbody><tr><td>Identifier</td><td>BUSIA-RN-00</td></tr><tr><td>Address</td><td><span>Langata </span><span>Nairobi </span><span>Kenya </span></td></tr><tr><td>Date of birth</td><td><span>05 May 1997</span></td></tr></tbody></table></div>\"},\"identifier\":[{\"id\":\"POINT_OF_CARE_ID\",\"value\":\"BUSIA-RN-00\"},{\"id\":\"CROSS_BORDER_ID\",\"value\":\"KE-2023-02-7B732\"},{\"id\":\"NATIONAL_ID\",\"system\":\"Kenya\",\"value\":\"098900\"}],\"name\":[{\"family\":\"Gloria\",\"given\":[\"Anna\"]}],\"telecom\":[{\"value\":\"0719999090\"}],\"gender\":\"female\",\"birthDate\":\"1997-05-05\",\"address\":[{\"city\":\"Langata\",\"state\":\"Nairobi\",\"country\":\"Kenya\"}],\"maritalStatus\":{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v3-MaritalStatus\",\"code\":\"MARRIED POLYGAMOUS\",\"display\":\"Married Polygamous\"}],\"text\":\"Married Polygamous\"},\"contact\":[{\"relationship\":[{\"text\":\"Edith Her\"}],\"name\":{\"family\":\"Spouse\"}}]}\n";
+		String jsonResponse = new Http().put("Patient", payload, "crossBorderId=" + crossBorderId);
+		openMrsPatient = deserializePatient(jsonResponse);
 		return openMrsPatient;
 	}
 	
-	private List<Patient> processPatientsResponse(String jsonResponse) {
+	private List<Patient> deserializePatients(String jsonResponse) {
 		List<Patient> patients = new ArrayList<Patient>();
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode resultsNode = extractNodeOfInterest(mapper, jsonResponse, "results");
-		if ((resultsNode != null) && resultsNode.isArray())
-			for (JsonNode resultNode : resultsNode) {
-				String resultJsonString;
-				try {
-					resultJsonString = mapper.writeValueAsString(resultNode);
-					patients.add(deserializePatient(resultJsonString));
-				}
-				catch (JsonProcessingException e) {
-					throw new RuntimeException(e);
-				}
-			}
+		FhirContext fhirContext = FhirContext.forR4();
+		Bundle bundle = fhirContext.newJsonParser().parseResource(Bundle.class, jsonResponse);
+		for (Bundle.BundleEntryComponent entry : bundle.getEntry()) {
+			Resource resource = entry.getResource();
+			Patient p = cbConverter.convertToOpenMrsPatient((org.hl7.fhir.r4.model.Patient) resource);
+			patients.add(p);
+		}
 		return patients;
 	}
 	
-	public Patient processPatientResponse(String jsonResponse) {
-		Patient patient = new Patient();
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode patientNode = extractNodeOfInterest(mapper, jsonResponse, "patient");
-		;
-		if (patientNode.isObject()) {
-			String patientJson;
-			try {
-				patientJson = mapper.writeValueAsString(patientNode);
-				patient = deserializePatient(patientJson);
-			}
-			catch (JsonProcessingException e) {
-				throw new RuntimeException(e);
-			}
-		}
-		return patient;
+	public Patient deserializePatient(String jsonResponse) {
+		IParser parser = FhirContext.forR4().newJsonParser();
+		org.hl7.fhir.r4.model.Patient patient = parser.parseResource(org.hl7.fhir.r4.model.Patient.class, jsonResponse);
+		return cbConverter.convertToOpenMrsPatient(patient);
 	}
 	
-	public String processCrossBorderIdResponse(String jsonResponse) {
-		ObjectMapper mapper = new ObjectMapper();
-		String crossBorderId = extractNodeOfInterest(mapper, jsonResponse, "crossBorderId").asText();
-		return crossBorderId;
-	}
-	
-	private JsonNode extractNodeOfInterest(ObjectMapper mapper, String jsonResponse, String nodeName) {
-		JsonNode root;
-		try {
-			root = mapper.readTree(jsonResponse);
-		}
-		catch (JsonProcessingException e) {
-			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return root.get(nodeName);
-	}
-	
-	private Patient deserializePatient(String patientJson) {
-		FhirContext fhirContext = FhirContext.forR4();
-		Patient patient = fhirContext.newJsonParser().parseResource(Patient.class, patientJson);
-		return patient;
-	}
-	
-	private String serializePatient(Patient patient) {
+	private String serializePatient(org.hl7.fhir.r4.model.Patient patient) {
 		FhirContext ctx = FhirContext.forR4();
 		IParser parser = ctx.newJsonParser();
-		String serialized = parser.encodeResourceToString(patient);
-		return serialized;
+		return parser.encodeResourceToString(patient);
 	}
 }
