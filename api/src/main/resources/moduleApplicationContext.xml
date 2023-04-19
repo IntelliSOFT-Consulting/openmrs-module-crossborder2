@@ -71,4 +71,13 @@
         <property name="htmlform" value="crossborder2:cbReferral.html" />
         <property name="order" value="10003" />
     </bean>
+
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list>
+                <value>org.openmrs.module.crossborder2.api.FhirResourceBuilder</value>
+                <ref bean="fhirResourceBuilder"/>
+            </list>
+        </property>
+    </bean>
 </beans>
