@@ -7,7 +7,7 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-package org.openmrs.module.crossborder2.openhim;
+package org.openmrs.module.crossborder2.openhim.converter;
 
 import org.hl7.fhir.r4.model.Patient;
 import org.openmrs.module.crossborder2.api.exceptions.ResourceGenerationException;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CbConverter {
+public class CbPatientConverter {
 	
 	@Autowired
 	PatientTranslator patientTranslator;
