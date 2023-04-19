@@ -13,6 +13,7 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
 import org.openmrs.Patient;
 import org.openmrs.module.crossborder2.api.exceptions.ResourceGenerationException;
+import org.openmrs.module.crossborder2.openhim.converter.CbPatientConverter;
 import org.openmrs.module.crossborder2.utils.FhirUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ import java.util.List;
 public class CbPatientService {
 	
 	@Autowired
-	private CbConverter cbConverter;
+	private CbPatientConverter cbPatientConverter;
 	
 	private FhirUtil fhirUtil = FhirUtil.getInstance();
 	
@@ -68,7 +69,7 @@ public class CbPatientService {
 	public Patient createPatient(Patient openMrsPatient) {
 		org.hl7.fhir.r4.model.Patient fhirPatient = null;
 		try {
-			fhirPatient = cbConverter.convertToFhirPatient(openMrsPatient);
+			fhirPatient = cbPatientConverter.convertToFhirPatient(openMrsPatient);
 		}
 		catch (ResourceGenerationException e) {
 			throw new RuntimeException(e);
@@ -90,7 +91,7 @@ public class CbPatientService {
 	public Patient updatePatient(Patient openMrsPatient, String crossBorderId) {
 		org.hl7.fhir.r4.model.Patient fhirPatient = null;
 		try {
-			fhirPatient = cbConverter.convertToFhirPatient(openMrsPatient);
+			fhirPatient = cbPatientConverter.convertToFhirPatient(openMrsPatient);
 		}
 		catch (ResourceGenerationException e) {
 			throw new RuntimeException(e);
@@ -108,7 +109,7 @@ public class CbPatientService {
 		Bundle bundle = fhirContext.newJsonParser().parseResource(Bundle.class, jsonResponse);
 		for (Bundle.BundleEntryComponent entry : bundle.getEntry()) {
 			Resource resource = entry.getResource();
-			Patient p = cbConverter.convertToOpenMrsPatient((org.hl7.fhir.r4.model.Patient) resource);
+			Patient p = cbPatientConverter.convertToOpenMrsPatient((org.hl7.fhir.r4.model.Patient) resource);
 			patients.add(p);
 		}
 		return patients;
@@ -117,7 +118,7 @@ public class CbPatientService {
 	public Patient deserializePatient(String jsonResponse) {
 		IParser parser = FhirContext.forR4().newJsonParser();
 		org.hl7.fhir.r4.model.Patient patient = parser.parseResource(org.hl7.fhir.r4.model.Patient.class, jsonResponse);
-		return cbConverter.convertToOpenMrsPatient(patient);
+		return cbPatientConverter.convertToOpenMrsPatient(patient);
 	}
 	
 	private String serializePatient(org.hl7.fhir.r4.model.Patient patient) {
