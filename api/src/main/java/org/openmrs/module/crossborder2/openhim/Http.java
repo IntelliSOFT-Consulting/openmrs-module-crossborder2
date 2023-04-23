@@ -51,8 +51,12 @@ public class Http {
 	}
 	
 	public String post(String endpoint, String payload) {
+		return post(endpoint, payload, null);
+	}
+	
+	public String post(String endpoint, String payload, String query) {
 		HttpClient client = getHttpClient();
-		HttpPost request = new HttpPost(URL + endpoint);
+		HttpPost request = new HttpPost(URL + endpoint + (query != null ? "?" + query : ""));
 		request.setEntity(EntityBuilder.create().setContentType(ContentType.APPLICATION_JSON).setText(payload).build());
 		HttpResponse response;
 		String jsonResponse = null;

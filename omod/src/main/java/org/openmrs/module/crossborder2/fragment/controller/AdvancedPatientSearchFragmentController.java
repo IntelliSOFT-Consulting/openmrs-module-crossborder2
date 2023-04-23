@@ -12,16 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdvancedPatientSearchFragmentController {
-
+	
 	public void controller(FragmentModel model) {
 	}
-
-	public List<SimpleObject> searchPatients(
-		@RequestParam(value = "searchTerm") String searchTerm,
-		@RequestParam(value = "properties", required = false) String[] properties,
-		@SpringBean CbPatientService cbPatientService,
-		UiUtils ui
-	) {
+	
+	public List<SimpleObject> searchPatients(@RequestParam(value = "searchTerm") String searchTerm,
+	        @RequestParam(value = "properties", required = false) String[] properties,
+	        @SpringBean CbPatientService cbPatientService, UiUtils ui) {
 		List<SimpleObject> results = new ArrayList<SimpleObject>();
 		if (searchTerm != null && !searchTerm.isEmpty()) {
 			List<Patient> patients = cbPatientService.searchPatient(searchTerm);
@@ -29,13 +26,10 @@ public class AdvancedPatientSearchFragmentController {
 		}
 		return results;
 	}
-
-	public SimpleObject findPatient(
-		@RequestParam(value = "crossBorderId") String crossBorderId,
-		@RequestParam(value = "properties", required = false) String[] properties,
-		@SpringBean CbPatientService cbPatientService,
-		UiUtils ui
-	) {
+	
+	public SimpleObject findPatient(@RequestParam(value = "crossBorderId") String crossBorderId,
+	        @RequestParam(value = "properties", required = false) String[] properties,
+	        @SpringBean CbPatientService cbPatientService, UiUtils ui) {
 		SimpleObject result = new SimpleObject();
 		if (crossBorderId != null && !crossBorderId.isEmpty()) {
 			Patient patient = cbPatientService.findPatient(crossBorderId);
