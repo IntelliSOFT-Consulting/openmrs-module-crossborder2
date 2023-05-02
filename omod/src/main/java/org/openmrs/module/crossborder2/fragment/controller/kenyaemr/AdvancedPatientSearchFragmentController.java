@@ -1,4 +1,4 @@
-package org.openmrs.module.crossborder2.fragment.controller;
+package org.openmrs.module.crossborder2.fragment.controller.kenyaemr;
 
 import org.openmrs.Patient;
 import org.openmrs.module.crossborder2.openhim.CbPatientService;
