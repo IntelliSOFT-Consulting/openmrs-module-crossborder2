@@ -46,6 +46,7 @@ public class AdvancedSearchFragmentController {
 	
 	/**
 	 * Gets a patient by their id
+	 * 
 	 * @param patient the patient
 	 * @param ui the UI utils
 	 * @return the simplified patient
@@ -61,14 +62,14 @@ public class AdvancedSearchFragmentController {
 	
 	/**
 	 * Searches for patients by name, identifier, age, visit status
+	 * 
 	 * @param query the name or identifier
 	 * @param which all|checked-in|non-accounts
 	 * @param ui the UI utils
 	 * @return the simple patients
 	 */
 	public List<SimpleObject> patients(@RequestParam(value = "q", required = false) String query,
-			@RequestParam(value = "which", required = false, defaultValue = "all") String which,
-			UiUtils ui) {
+	        @RequestParam(value = "which", required = false, defaultValue = "all") String which, UiUtils ui) {
 		
 		// Return empty list if we don't have enough input to search on
 		if (StringUtils.isBlank(query) && "all".equals(which)) {
@@ -88,19 +89,16 @@ public class AdvancedSearchFragmentController {
 		if (StringUtils.isBlank(query) && "checked-in".equals(which)) {
 			matched.addAll(patientActiveVisits.keySet());
 			Collections.sort(matched, new PersonByNameComparator()); // Sort by person name
-		}
-		else {
+		} else {
 			if ("all".equals(which)) {
 				matched = matchedByNameOrID;
-			}
-			else if ("checked-in".equals(which)) {
+			} else if ("checked-in".equals(which)) {
 				for (Patient patient : matchedByNameOrID) {
 					if (patientActiveVisits.containsKey(patient)) {
 						matched.add(patient);
 					}
 				}
-			}
-			else if ("non-accounts".equals(which)) {
+			} else if ("non-accounts".equals(which)) {
 				Set<Person> accounts = new HashSet<Person>();
 				accounts.addAll(getUsersByPersons(query).keySet());
 				accounts.addAll(getProvidersByPersons(query).keySet());
@@ -129,6 +127,7 @@ public class AdvancedSearchFragmentController {
 	
 	/**
 	 * Helper method to get users organised by person
+	 * 
 	 * @param query the name query
 	 * @return the map of persons to users
 	 */
@@ -144,6 +143,7 @@ public class AdvancedSearchFragmentController {
 	
 	/**
 	 * Helper method to get all providers organised by person
+	 * 
 	 * @param query the name query
 	 * @return the map of persons to providers
 	 */
@@ -160,10 +160,12 @@ public class AdvancedSearchFragmentController {
 	
 	/**
 	 * Helper method to get all active visits organised by patient
+	 * 
 	 * @return the map of patients to active visits
 	 */
 	protected Map<Patient, Visit> getActiveVisitsByPatients() {
-		List<Visit> activeVisits = Context.getVisitService().getVisits(null, null, null, null, null, null, null, null, null, false, false);
+		List<Visit> activeVisits = Context.getVisitService().getVisits(null, null, null, null, null, null, null, null, null,
+		    false, false);
 		Map<Patient, Visit> patientToVisits = new HashMap<Patient, Visit>();
 		for (Visit visit : activeVisits) {
 			patientToVisits.put(visit.getPatient(), visit);
