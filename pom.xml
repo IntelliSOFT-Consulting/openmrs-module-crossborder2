@@ -129,6 +129,12 @@
 				<version>${fhir2Version}</version>
 				<scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.openmrs</groupId>
+				<artifactId>event-api</artifactId>
+				<version>${eventVersion}</version>
+				<scope>provided</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -176,5 +182,6 @@
 		<logicVersion>0.5.2</logicVersion>
 		<fhir2Version>1.9.0</fhir2Version>
 		<hapiFhirVersion>5.6.971</hapiFhirVersion>
+		<eventVersion>2.5</eventVersion>
 	</properties>
 </project>

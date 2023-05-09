@@ -26,21 +26,21 @@ import java.util.List;
 import java.util.UUID;
 
 public class CbHomePageController {
-
+	
 	public void controller(PageModel model, @SpringBean CbPatientService cbPatientService,
-	                       @SpringBean CbEncounterService cbEncounterService) {
+	        @SpringBean CbEncounterService cbEncounterService) {
 		Patient patient = createDummyPatient();
 		//		List<Patient> patientList = cbPatientService.searchPatient("Gloria");
 		//		Patient foundPatient = cbPatientService.findPatient("KE-2023-02-7B732");
 		//		Patient createdPatient = cbPatientService.createPatient(patient);
 		//		Patient updatedPatient = cbPatientService.updatePatient(patient, "KE-2023-02-7B732");
-
+		
 		Encounter encounter = createDummyEncounter(patient);
 		Encounter createdEncounter = cbEncounterService.createEncounter(encounter, "KE-2023-02-7B732");
 		//		Encounter updatedEncounter = cbEncounterService.updateEncounter(encounter, "KE-2023-02-7B732");
 		model.addAttribute("message", "This is the CB Home Page");
 	}
-
+	
 	private Patient createDummyPatient() {
 		Patient patient = new Patient();
 		patient.setUuid(UUID.randomUUID().toString());
@@ -69,13 +69,13 @@ public class CbHomePageController {
 			patientIdentifier.setPatient(patient);
 			patientIdentifier.setIdentifier("12345-00001");
 			PatientIdentifierType idType = MetadataUtils.existing(PatientIdentifierType.class,
-				HivMetadata._PatientIdentifierType.UNIQUE_PATIENT_NUMBER);
+			    HivMetadata._PatientIdentifierType.UNIQUE_PATIENT_NUMBER);
 			patientIdentifier.setIdentifierType(idType);
 			patient.addIdentifier(patientIdentifier);
 		}
 		return patient;
 	}
-
+	
 	private Encounter createDummyEncounter(Patient patient) {
 		EncounterService encounterService = Context.getEncounterService();
 		LocationService locationService = Context.getLocationService();
@@ -83,7 +83,7 @@ public class CbHomePageController {
 		encounter.setUuid(UUID.randomUUID().toString());
 		encounter.setPatient(patient);
 		EncounterType encounterType = encounterService
-			.getEncounterTypeByUuid(CommonMetadata._EncounterType.DRUG_REGIMEN_EDITOR);
+		        .getEncounterTypeByUuid(CommonMetadata._EncounterType.DRUG_REGIMEN_EDITOR);
 		encounter.setEncounterType(encounterType);
 		Location location = locationService.getLocation(1);
 		encounter.setLocation(location);
