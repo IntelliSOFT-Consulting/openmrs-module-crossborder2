@@ -1,43 +1,25 @@
-package org.openmrs.module.crossborder2.fragment.controller.kenyaemr;
+package org.openmrs.module.crossborder2.fragment.controller.kenyaemr.patient;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Concept;
-import org.openmrs.ConceptClass;
-import org.openmrs.ConceptSearchResult;
-import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.Provider;
-import org.openmrs.Relationship;
 import org.openmrs.User;
 import org.openmrs.Visit;
-import org.openmrs.api.ConceptService;
-import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.crossborder2.openhim.CbPatientService;
-import org.openmrs.module.kenyacore.CoreConstants;
-import org.openmrs.module.kenyaemr.api.KenyaEmrService;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
-import org.openmrs.ui.framework.annotation.SpringBean;
-import org.openmrs.ui.framework.fragment.FragmentModel;
-import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.PersonByNameComparator;
-import org.openmrs.web.user.CurrentUsers;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class AdvancedSearchFragmentController {
