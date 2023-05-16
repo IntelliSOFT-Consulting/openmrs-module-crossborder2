@@ -3,7 +3,7 @@
 
     def heading = config.heading ?: "Matching Patients"
 %>
-<div class="ke-panel-frame" ng-controller="AdvancedPatientSearchResults" ng-init="init('${ currentApp.id }', '${ config.pageProvider }', '${ config.page }')">
+<div class="ke-panel-frame" ng-controller="AdvancedPatientSearchResults" ng-init="init('${ currentApp }', '${ config.pageProvider }', '${ config.page }')">
     <div class="ke-panel-heading">${ heading } <input type="checkbox" name="local-results" id="local-results"><label for="local-results">Local Results</label><input type="checkbox" name="remote-results" id="remote-results"><label for="remote-results">Remote Results</label></div>
     <div class="ke-panel-content">
         <div class="ke-stack-item ke-navigable" ng-repeat="patient in results" ng-click="onResultClick(patient)">

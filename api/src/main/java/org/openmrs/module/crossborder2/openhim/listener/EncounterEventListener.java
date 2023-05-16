@@ -16,17 +16,18 @@ import java.util.List;
 
 @Component("cb.EncounterEventListener")
 public class EncounterEventListener implements EventListener {
-
+	
 	//TODO: Isolate to global properties
 	private static final String USERNAME = "admin";
+	
 	private static final String PASSWORD = "Admin123";
-
+	
 	private static final List<String> ENCOUNTERS_OF_INTEREST = Arrays.asList("85019fbe-9339-49f7-8341-e9a04311bb99",
-		"4f02dfed-a2ec-40c2-b546-85dab5831871");
-
+	    "4f02dfed-a2ec-40c2-b546-85dab5831871");
+	
 	@Autowired
 	private CbEncounterService encounterService;
-
+	
 	@Override
 	public void onMessage(Message message) {
 		try {
@@ -47,10 +48,11 @@ public class EncounterEventListener implements EventListener {
 						}
 					}
 				}
-
+				
 			}
 			Context.closeSession();
-		} catch (JMSException e) {
+		}
+		catch (JMSException e) {
 			System.out.println("Error occurred" + e.getErrorCode());
 		}
 	}

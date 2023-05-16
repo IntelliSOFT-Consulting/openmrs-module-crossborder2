@@ -1,5 +1,8 @@
 package org.openmrs.module.crossborder2.page.controller;
 
+import java.util.Date;
+import java.util.UUID;
+
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
@@ -9,7 +12,6 @@ import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAddress;
 import org.openmrs.PersonName;
-import org.openmrs.Provider;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
@@ -17,15 +19,11 @@ import org.openmrs.module.crossborder2.openhim.CbEncounterService;
 import org.openmrs.module.crossborder2.openhim.CbPatientService;
 import org.openmrs.module.kenyaemr.metadata.CommonMetadata;
 import org.openmrs.module.kenyaemr.metadata.HivMetadata;
+import org.openmrs.module.metadatadeploy.MetadataUtils;
 import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.page.PageModel;
-import org.openmrs.module.metadatadeploy.MetadataUtils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
-public class CbHomePageController {
+public class CbTestPageController {
 	
 	public void controller(PageModel model, @SpringBean CbPatientService cbPatientService,
 	        @SpringBean CbEncounterService cbEncounterService) {
@@ -37,8 +35,8 @@ public class CbHomePageController {
 		
 		Encounter encounter = createDummyEncounter(patient);
 		//Encounter createdEncounter = cbEncounterService.createEncounter(encounter, "KE-2023-02-7B732");
-		//		Encounter updatedEncounter = cbEncounterService.updateEncounter(encounter, "KE-2023-02-7B732");
-		model.addAttribute("message", "This is the CB Home Page");
+		Encounter updatedEncounter = cbEncounterService.updateEncounter(encounter, "KE-2023-02-7B732");
+		model.addAttribute("message", "This is the CB Test Page");
 	}
 	
 	private Patient createDummyPatient() {
