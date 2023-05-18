@@ -52,6 +52,7 @@
         <property name="apps">
             <set>
                 <ref bean="kenyaemr.app.clinician" />
+                <ref bean="kenyaemr.app.cb" />
             </set>
         </property>
 
@@ -64,6 +65,7 @@
         <property name="apps">
             <set>
                 <ref bean="kenyaemr.app.clinician" />
+                <ref bean="kenyaemr.app.cb" />
             </set>
         </property>
 
