@@ -1,24 +1,29 @@
-package org.openmrs.module.crossborder2.fragment.controller.kenyaemr.patient;
+package org.openmrs.module.crossborder2.fragment.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
+import org.openmrs.PatientIdentifierType;
 import org.openmrs.Person;
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.Visit;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.crossborder2.openhim.CbPatientService;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
+import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.util.PersonByNameComparator;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -51,13 +56,49 @@ public class AdvancedSearchFragmentController {
 	 * @return the simple patients
 	 */
 	public List<SimpleObject> patients(@RequestParam(value = "q", required = false) String query,
-	        @RequestParam(value = "which", required = false, defaultValue = "all") String which, UiUtils ui) {
+	        @RequestParam(value = "which", required = false, defaultValue = "all") String which,
+	        @SpringBean CbPatientService cbPatientService, UiUtils ui) {
 		
 		// Return empty list if we don't have enough input to search on
 		if (StringUtils.isBlank(query) && "all".equals(which)) {
 			return Collections.emptyList();
 		}
 		
+		// If we have a query, try to parse it
+		if (StringUtils.isNotBlank(query)) {
+			return Collections.emptyList();
+		}
+		
+		// Parse query into list of KeyValuePairs
+		ObjectMapper mapper = new ObjectMapper();
+		List<HashMap<String, String>> queryObjects = null;
+		try {
+			queryObjects = mapper.readValue(query, new TypeReference<List<HashMap<String, String>>>() {
+				
+			});
+		}
+		catch (IOException e) {
+			log.error(e);
+			return Collections.emptyList();
+			//throw new RuntimeException(e);
+		}
+		
+		String cbId = queryObjects.get(0).get("cbId");
+		String clinicNo = queryObjects.get(0).get("clinicNo");
+		String firstName = queryObjects.get(0).get("firstName");
+		String lastName = queryObjects.get(0).get("lastName");
+		String middleName = queryObjects.get(0).get("middleName");
+		String mpi = queryObjects.get(0).get("mpi");
+		
+		if (mpi != null) {
+			// TODO: Query based on selected MPI type
+			// Run main patient search query based on id/name
+			List<Patient> matchedByNameOrID = Context.getPatientService().getPatients(query);
+			HashMap<String, String> searchParams = queryObjects.get(0);
+			// List<Patient> patientList = cbPatientService.searchPatient("Gloria");
+			List<Patient> patientList = cbPatientService.searchPatient(searchParams);
+			
+		}
 		// Run main patient search query based on id/name
 		List<Patient> matchedByNameOrID = Context.getPatientService().getPatients(query);
 		
@@ -80,13 +121,12 @@ public class AdvancedSearchFragmentController {
 						matched.add(patient);
 					}
 				}
-			} else if ("non-accounts".equals(which)) {
-				Set<Person> accounts = new HashSet<Person>();
-				accounts.addAll(getUsersByPersons(query).keySet());
-				accounts.addAll(getProvidersByPersons(query).keySet());
-				
+			} else if ("cross-border".equals(which)) {
 				for (Patient patient : matchedByNameOrID) {
-					if (!accounts.contains(patient)) {
+					PatientIdentifierType crossborderIdType = Context.getPatientService().getPatientIdentifierTypeByUuid(
+					    "e5e9a994-12e2-42c3-9c02-5abdc0fe40e8");
+					PatientIdentifier crossborderId = patient.getPatientIdentifier(crossborderIdType);
+					if (crossborderId != null) {
 						matched.add(patient);
 					}
 				}
@@ -105,6 +145,7 @@ public class AdvancedSearchFragmentController {
 		}
 		
 		return simplePatients;
+		
 	}
 	
 	/**
@@ -154,4 +195,5 @@ public class AdvancedSearchFragmentController {
 		}
 		return patientToVisits;
 	}
+	
 }

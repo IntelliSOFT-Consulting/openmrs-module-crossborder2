@@ -1,6 +1,7 @@
 package org.openmrs.module.crossborder2.page.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.openmrs.Encounter;
@@ -28,9 +29,9 @@ public class CbTestPageController {
 	public void controller(PageModel model, @SpringBean CbPatientService cbPatientService,
 	        @SpringBean CbEncounterService cbEncounterService) {
 		Patient patient = createDummyPatient();
-		//		List<Patient> patientList = cbPatientService.searchPatient("Gloria");
+		List<Patient> patientList = cbPatientService.searchPatient("Gloria");
 		//		Patient foundPatient = cbPatientService.findPatient("KE-2023-02-7B732");
-		//		Patient createdPatient = cbPatientService.createPatient(patient);
+		Patient createdPatient = cbPatientService.createPatient(patient);
 		//		Patient updatedPatient = cbPatientService.updatePatient(patient, "KE-2023-02-7B732");
 		
 		Encounter encounter = createDummyEncounter(patient);
