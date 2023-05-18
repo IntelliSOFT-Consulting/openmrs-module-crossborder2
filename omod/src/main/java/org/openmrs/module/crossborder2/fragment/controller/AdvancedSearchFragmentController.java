@@ -1,4 +1,4 @@
-package org.openmrs.module.crossborder2.fragment.controller.kenyaemr.patient;
+package org.openmrs.module.crossborder2.fragment.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;

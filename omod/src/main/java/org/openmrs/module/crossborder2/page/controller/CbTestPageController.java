@@ -30,7 +30,7 @@ public class CbTestPageController {
 		Patient patient = createDummyPatient();
 		//		List<Patient> patientList = cbPatientService.searchPatient("Gloria");
 		//		Patient foundPatient = cbPatientService.findPatient("KE-2023-02-7B732");
-		//		Patient createdPatient = cbPatientService.createPatient(patient);
+		Patient createdPatient = cbPatientService.createPatient(patient);
 		//		Patient updatedPatient = cbPatientService.updatePatient(patient, "KE-2023-02-7B732");
 		
 		Encounter encounter = createDummyEncounter(patient);

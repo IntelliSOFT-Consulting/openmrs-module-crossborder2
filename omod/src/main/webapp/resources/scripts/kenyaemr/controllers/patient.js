@@ -1,9 +1,53 @@
+kenyaemrApp.service('PatientService', function ($rootScope) {
+
+    /**
+     * Broadcasts new patient search parameters
+     */
+    this.updateSearch = function(which, cbIdQuery, clinicNoQuery, firstNameQuery, middleNameQuery, lastNameQuery, selectMpiQuery, mpiQuery) {
+
+        $rootScope.$broadcast('patient-search', { which: which , cbIdQuery: cbIdQuery, clinicNoQuery: clinicNoQuery, firstNameQuery: firstNameQuery, middleNameQuery: middleNameQuery, lastNameQuery: lastNameQuery, selectMpiQuery: selectMpiQuery, mpiQuery: mpiQuery});
+    };
+});
+
+/**
+ * Controller for patient search form
+ */
+kenyaemrApp.controller('AdvancedPatientSearchForm', ['$scope', 'PatientService','$timeout', function($scope, patientService, $timeout) {
+
+    $scope.query = '';
+    $scope.cbIdQuery = '';
+
+    $scope.init = function(which) {
+        $scope.which = which;
+        $scope.$evalAsync($scope.updateSearch); // initiate an initial search
+    };
+    $scope.delayOnChange = (function() {
+        var promise = null;
+        return function(callback, ms) {
+            $timeout.cancel(promise); //clearTimeout(timer);
+            promise = $timeout(callback, ms); //timer = setTimeout(callback, ms);
+        };
+    })();
+
+    $scope.onQueryChange = function() {
+        if($scope.query === '') {
+            $scope.updateSearch();
+        }
+    };
+
+    $scope.updateSearch = function() {
+        patientService.updateSearch($scope.which, $scope.cbIdQuery, $scope.clinicNoQuery, $scope.firstNameQuery, $scope.middleNameQuery, $scope.lastNameQuery, $scope.selectMpiQuery, $scope.mpiQuery);
+    };
+}]);
+
 /**
  * Controller for patient search results
  */
 kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', function($scope, $http) {
 
-    $scope.query = '';
+    $scope.query = [];
+    $scope.clinicNoQuery = '';
+    $scope.cbIdQuery = '';
     $scope.results = [];
     $scope.showLoader = false;
     $scope.checkedInSelected = false;
@@ -24,9 +68,17 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
      * Listens for the 'patient-search' event
      */
     $scope.$on('patient-search', function(event, data) {
-        $scope.query = data.query;
         $scope.which = data.which;
+        $scope.clinicNoQuery = data.clinicNoQuery;
+        $scope.firstNameQuery = data.firstNameQuery;
+        $scope.cbIdQuery = data.cbIdQuery;
+        $scope.lastNameQuery = data.lastNameQuery;
+        $scope.middleNameQuery = data.middleNameQuery;
+        $scope.mpiQuery = data.mpiQuery;
+        $scope.selectMpiQuery = data.selectMpiQuery;
+
         $scope.showLoader = true;
+
         $scope.refresh();
     });
 
@@ -77,7 +129,27 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
             $scope.crossborder = true;
             $scope.checkedInSelected = false;
             $scope.allSelected = false;
-            $http.get(ui.fragmentActionLink('crossborder2', 'search', 'patients', { appId: $scope.appId, q: $scope.query, which: $scope.which })).
+            $scope.searchObject = [];
+            if ($scope.cbIdQuery) {
+                $scope.query.push($scope.cbIdQuery);
+            }
+            if ($scope.clinicNoQuery) {
+                $scope.query.push($scope.clinicNoQuery);
+            }
+            if ($scope.firstNameQuery) {
+                $scope.query.push($scope.firstNameQuery);
+            }
+            if ($scope.lastNameQuery) {
+                $scope.query.push($scope.lastNameQuery);
+            }
+            if ($scope.middleNameQuery) {
+                $scope.query.push($scope.middleNameQuery);
+            }
+            if ($scope.mpiQuery) {
+                $scope.query.push($scope.mpiQuery);
+            }
+
+            $http.get(ui.fragmentActionLink('crossborder2', 'advancedSearch', 'patients', { appId: $scope.appId, q: $scope.query, which: $scope.which })).
             success(function(data) {
                 if($scope.allSelected) {
                     $scope.results =  data;
