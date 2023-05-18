@@ -182,3 +182,47 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
     };
 
 }]);
+
+/**
+ * Controller for similar patients (on registration form)
+ */
+kenyaemrApp.controller('SimilarPatients', ['$scope', '$http', function($scope, $http) {
+
+    $scope.givenName = '';
+    $scope.familyName = '';
+    $scope.results = [];
+    $scope.showLoader = false;
+
+    /**
+     * Initializes the controller
+     * @param appId the current app id
+     * @param which
+     */
+    $scope.init = function(appId, pageProvider, page) {
+        $scope.appId = appId;
+        $scope.pageProvider = pageProvider;
+        $scope.page = page;
+        $scope.refresh();
+    };
+
+    /**
+     * Refreshes the patient search
+     */
+    $scope.refresh = function() {
+        var query = $scope.givenName + ' ' + $scope.familyName;
+        $http.get(ui.fragmentActionLink('kenyaemr', 'search', 'patients', { appId: $scope.appId, q: query, which: 'all' })).
+        success(function(data) {
+            $scope.results = data;
+            $scope.showLoader = false;
+        });
+    };
+
+    /**
+     * Result click event handler
+     * @param patient the clicked patient
+     */
+    $scope.onResultClick = function(patient) {
+        ui.navigate($scope.pageProvider, $scope.page, { patientId: patient.id });
+    };
+
+}]);
