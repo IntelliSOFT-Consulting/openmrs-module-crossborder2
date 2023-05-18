@@ -15,7 +15,8 @@ public class CbMetadata extends AbstractMetadataBundle {
 	
 	@Override
 	public void install() throws Exception {
-		install(form("CB Screening", null, HivMetadata._EncounterType.HIV_CONSULTATION, "1", CB_SCREENING_FORM_UUID));
-		install(form("CB Referral", null, HivMetadata._EncounterType.HIV_CONSULTATION, "1", CB_REFERRAL_FORM_UUID));
+		install(form("Cross Border Screening", null, HivMetadata._EncounterType.HIV_CONSULTATION, "1",
+		    CB_SCREENING_FORM_UUID));
+		install(form("Cross Border Referral", null, HivMetadata._EncounterType.HIV_CONSULTATION, "1", CB_REFERRAL_FORM_UUID));
 	}
 }
