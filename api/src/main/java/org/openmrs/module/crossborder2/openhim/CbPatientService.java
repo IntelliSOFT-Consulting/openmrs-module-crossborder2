@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -125,5 +126,12 @@ public class CbPatientService {
 		FhirContext ctx = FhirContext.forR4();
 		IParser parser = ctx.newJsonParser();
 		return parser.encodeResourceToString(patient);
+	}
+	
+	public List<Patient> searchPatient(HashMap<String, String> searchParams) {
+		// TODO: Breakdown the search params
+		String jsonResponse = new Http().get("search", "name=" + "searchTerm");
+		List<Patient> openMrsPatients = deserializePatients(jsonResponse);
+		return openMrsPatients;
 	}
 }

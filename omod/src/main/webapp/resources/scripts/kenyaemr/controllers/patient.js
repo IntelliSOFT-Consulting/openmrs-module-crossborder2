@@ -1,3 +1,17 @@
+kenyaemrApp.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+
 kenyaemrApp.service('PatientService', function ($rootScope) {
 
     /**
@@ -14,8 +28,7 @@ kenyaemrApp.service('PatientService', function ($rootScope) {
  */
 kenyaemrApp.controller('AdvancedPatientSearchForm', ['$scope', 'PatientService','$timeout', function($scope, patientService, $timeout) {
 
-    $scope.query = '';
-    $scope.cbIdQuery = '';
+    $scope.query = [];
 
     $scope.init = function(which) {
         $scope.which = which;
@@ -46,8 +59,6 @@ kenyaemrApp.controller('AdvancedPatientSearchForm', ['$scope', 'PatientService',
 kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', function($scope, $http) {
 
     $scope.query = [];
-    $scope.clinicNoQuery = '';
-    $scope.cbIdQuery = '';
     $scope.results = [];
     $scope.showLoader = false;
     $scope.checkedInSelected = false;
@@ -130,28 +141,30 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
             $scope.checkedInSelected = false;
             $scope.allSelected = false;
             $scope.searchObject = [];
+            $scope.query = [];
+
             if ($scope.cbIdQuery) {
-                $scope.query.push($scope.cbIdQuery);
+                $scope.query.push({"cbId": $scope.cbIdQuery});
             }
             if ($scope.clinicNoQuery) {
-                $scope.query.push($scope.clinicNoQuery);
+                $scope.query.push({"clinicNo": $scope.clinicNoQuery});
             }
             if ($scope.firstNameQuery) {
-                $scope.query.push($scope.firstNameQuery);
+                $scope.query.push({"firstName": $scope.firstNameQuery});
             }
             if ($scope.lastNameQuery) {
-                $scope.query.push($scope.lastNameQuery);
+                $scope.query.push({"lastName": $scope.lastNameQuery});
             }
             if ($scope.middleNameQuery) {
-                $scope.query.push($scope.middleNameQuery);
+                $scope.query.push({"middleName": $scope.middleNameQuery});
             }
             if ($scope.mpiQuery) {
-                $scope.query.push($scope.mpiQuery);
+                $scope.query.push({"mpi": $scope.mpiQuery});
             }
 
-            $http.get(ui.fragmentActionLink('crossborder2', 'advancedSearch', 'patients', { appId: $scope.appId, q: $scope.query, which: $scope.which })).
+            $http.get(ui.fragmentActionLink('crossborder2', 'advancedSearch', 'patients', { appId: $scope.appId, q: JSON.stringify($scope.query), which: $scope.which })).
             success(function(data) {
-                if($scope.allSelected) {
+                if($scope.crossborder) {
                     $scope.results =  data;
                     $scope.showLoader = false;
                 }

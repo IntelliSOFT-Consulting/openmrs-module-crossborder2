@@ -16,4 +16,3 @@
 <div class="ke-page-content">
     ${ ui.includeFragment("crossborder2", "kenyaemr/patient/advancedPatientSearchResults", [ pageProvider: "kenyaemr", page: "registration/registrationViewPatient" ]) }
 </div>
-
