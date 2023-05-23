@@ -205,6 +205,11 @@
                     <td>${ui.includeFragment("kenyaui", "widget/field", [object: command, property: "nationalUniquePatientNumber"])}</td>
                     <td class="ke-field-instructions"> This will be populated from MOH Client Registry</td>
                 </tr>
+                <tr id="cross-border-id">
+                    <td class="ke-field-label">Cross Border Id</td>
+                    <td>${ui.includeFragment("kenyaui", "widget/field", [object: command, property: "crossborderIdNumber"])}</td>
+                    <td class="ke-field-instructions"> This will be populated from Regional Client Registry</td>
+                </tr>
                 <tr></tr>
                 <tr>
                     <td> <input type="checkbox" name="other-identifiers" value="Y"

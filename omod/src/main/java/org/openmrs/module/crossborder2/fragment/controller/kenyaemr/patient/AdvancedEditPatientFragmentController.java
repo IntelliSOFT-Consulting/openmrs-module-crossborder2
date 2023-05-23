@@ -336,6 +336,8 @@ public class AdvancedEditPatientFragmentController {
 		
 		private String nationalIdNumber;
 		
+		private String crossborderIdNumber;
+		
 		private String patientClinicNumber;
 		
 		private String clientNumber;
@@ -402,6 +404,14 @@ public class AdvancedEditPatientFragmentController {
 		
 		private String nationalUniquePatientNumber;
 		
+		public String getCrossborderIdNumber() {
+			return crossborderIdNumber;
+		}
+		
+		public void setCrossborderIdNumber(String crossborderIdNumber) {
+			this.crossborderIdNumber = crossborderIdNumber;
+		}
+		
 		/**
 		 * Creates an edit form for a new patient
 		 */
@@ -447,7 +457,7 @@ public class AdvancedEditPatientFragmentController {
 		public EditPatientForm(Patient patient) {
 			this((Person) patient);
 			
-			PatientWrapper wrapper = new PatientWrapper(patient);
+			CrossborderPatientWrapper wrapper = new CrossborderPatientWrapper(patient);
 			
 			clientNumber = wrapper.getClientNumber();
 			patientClinicNumber = wrapper.getPatientClinicNumber();
@@ -457,6 +467,7 @@ public class AdvancedEditPatientFragmentController {
 			drivingLicenseNumber = wrapper.getDrivingLicenseNumber();
 			birthCertificateNumber = wrapper.getBirthCertificateNumber();
 			nationalIdNumber = wrapper.getNationalIdNumber();
+			crossborderIdNumber = wrapper.getCrossborderNationalIdNumber();
 			nameOfNextOfKin = wrapper.getNextOfKinName();
 			nextOfKinRelationship = wrapper.getNextOfKinRelationship();
 			nextOfKinContact = wrapper.getNextOfKinContact();
@@ -666,7 +677,7 @@ public class AdvancedEditPatientFragmentController {
 				toSave.addAddress(personAddress);
 			}
 			
-			PatientWrapper wrapper = new PatientWrapper(toSave);
+			CrossborderPatientWrapper wrapper = new CrossborderPatientWrapper(toSave);
 			
 			wrapper.getPerson().setTelephoneContact(telephoneContact);
 			wrapper.setNationalIdNumber(nationalIdNumber, location);
@@ -1298,4 +1309,20 @@ public class AdvancedEditPatientFragmentController {
 		
 	}
 	
+	private class CrossborderPatientWrapper extends PatientWrapper {
+		
+		private String crossborderNationalIdNumber;
+		
+		public String getCrossborderNationalIdNumber() {
+			return crossborderNationalIdNumber;
+		}
+		
+		public void setCrossborderNationalIdNumber(String crossborderNationalIdNumber) {
+			this.crossborderNationalIdNumber = crossborderNationalIdNumber;
+		}
+		
+		public CrossborderPatientWrapper(Patient target) {
+			super(target);
+		}
+	}
 }
