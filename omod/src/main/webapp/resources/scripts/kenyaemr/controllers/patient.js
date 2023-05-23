@@ -17,9 +17,9 @@ kenyaemrApp.service('PatientService', function ($rootScope) {
     /**
      * Broadcasts new patient search parameters
      */
-    this.updateSearch = function(which, cbIdQuery, clinicNoQuery, firstNameQuery, middleNameQuery, lastNameQuery, selectMpiQuery, mpiQuery) {
+    this.updateSearch = function(which, cbIdQuery, clinicNoQuery, nameQuery, genderQuery, selectMpiQuery, mpiQuery) {
 
-        $rootScope.$broadcast('patient-search', { which: which , cbIdQuery: cbIdQuery, clinicNoQuery: clinicNoQuery, firstNameQuery: firstNameQuery, middleNameQuery: middleNameQuery, lastNameQuery: lastNameQuery, selectMpiQuery: selectMpiQuery, mpiQuery: mpiQuery});
+        $rootScope.$broadcast('patient-search', { which: which , cbIdQuery: cbIdQuery, clinicNoQuery: clinicNoQuery, nameQuery: nameQuery, genderQuery: genderQuery, selectMpiQuery: selectMpiQuery, mpiQuery: mpiQuery});
     };
 });
 
@@ -49,7 +49,7 @@ kenyaemrApp.controller('AdvancedPatientSearchForm', ['$scope', 'PatientService',
     };
 
     $scope.updateSearch = function() {
-        patientService.updateSearch($scope.which, $scope.cbIdQuery, $scope.clinicNoQuery, $scope.firstNameQuery, $scope.middleNameQuery, $scope.lastNameQuery, $scope.selectMpiQuery, $scope.mpiQuery);
+        patientService.updateSearch($scope.which, $scope.cbIdQuery, $scope.clinicNoQuery, $scope.nameQuery, $scope.genderQuery, $scope.selectMpiQuery, $scope.mpiQuery);
     };
 }]);
 
@@ -81,10 +81,9 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
     $scope.$on('patient-search', function(event, data) {
         $scope.which = data.which;
         $scope.clinicNoQuery = data.clinicNoQuery;
-        $scope.firstNameQuery = data.firstNameQuery;
         $scope.cbIdQuery = data.cbIdQuery;
-        $scope.lastNameQuery = data.lastNameQuery;
-        $scope.middleNameQuery = data.middleNameQuery;
+        $scope.nameQuery = data.nameQuery;
+        $scope.genderQuery = data.genderQuery;
         $scope.mpiQuery = data.mpiQuery;
         $scope.selectMpiQuery = data.selectMpiQuery;
 
@@ -149,14 +148,12 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
             if ($scope.clinicNoQuery) {
                 $scope.query.push({"clinicNo": $scope.clinicNoQuery});
             }
-            if ($scope.firstNameQuery) {
-                $scope.query.push({"firstName": $scope.firstNameQuery});
+
+            if ($scope.nameQuery) {
+                $scope.query.push({"name": $scope.nameQuery});
             }
-            if ($scope.lastNameQuery) {
-                $scope.query.push({"lastName": $scope.lastNameQuery});
-            }
-            if ($scope.middleNameQuery) {
-                $scope.query.push({"middleName": $scope.middleNameQuery});
+            if ($scope.genderQuery) {
+                $scope.query.push({"gender": $scope.genderQuery});
             }
             if ($scope.mpiQuery) {
                 $scope.query.push({"mpi": $scope.mpiQuery});

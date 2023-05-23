@@ -7,6 +7,10 @@
  */
 package org.openmrs.module.crossborder2.openhim;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.IParser;
 import org.hl7.fhir.r4.model.Bundle;
@@ -18,12 +22,14 @@ import org.openmrs.module.crossborder2.utils.FhirUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 @Component
 public class CbPatientService {
+	
+	public static final String CROSS_BORDER_ID_SYSTEM_URN = "urn:oid:2.16.840.1.113883.3.26.1.3";
+	
+	public static final String CLINIC_NUMBER_SYSTEM_URN = "urn:oid:2.16.840.1.113883.3.26.1.2";
+	
+	public static final String NATIONAL_ID_SYSTEM_URN = "urn:oid:2.16.840.1.113883.3.26.1.1";
 	
 	@Autowired
 	private CbPatientConverter cbPatientConverter;
@@ -130,7 +136,38 @@ public class CbPatientService {
 	
 	public List<Patient> searchPatient(HashMap<String, String> searchParams) {
 		// TODO: Breakdown the search params
-		String jsonResponse = new Http().get("search", "name=" + "searchTerm");
+		String query = "";
+		if (searchParams.containsKey("cbId")) {
+			query += "identifier=" + CROSS_BORDER_ID_SYSTEM_URN + "|" + searchParams.get("cbId");
+		}
+		query += query.equals("") ? "" : "&";
+		if (searchParams.containsKey("clinicNo")) {
+			query += "identifier=" + CLINIC_NUMBER_SYSTEM_URN + "|" + searchParams.get("clinicNo");
+		}
+		query += query.equals("") ? "" : "&";
+		if (searchParams.containsKey("nationalId")) {
+			query += "identifier=" + NATIONAL_ID_SYSTEM_URN + "|" + searchParams.get("clinicNo");
+		}
+		query += query.equals("") ? "" : "&";
+		if (searchParams.containsKey("name")) {
+			query += "phonetic" + searchParams.get("name");
+		}
+		query += query.equals("") ? "" : "&";
+		if (searchParams.containsKey("gender")) {
+			query += "gender" + searchParams.get("gender");
+		}
+		
+/*
+		IGenericClient client = FhirUtil.getInstance().getClient();
+		Bundle bundle = (Bundle) client.search().forResource(org.hl7.fhir.r4.model.Patient.class)
+				.where(new TokenClientParam("identifier").exactly().systemAndCode("oid:2.16.840.1.113883.3.26.1.3", "cbid"))
+				.where(new TokenClientParam("identifier").exactly().systemAndCode("urn:oid:2.16.840.1.113883.3.26.1.2", "clinincno"))
+				.where(new TokenClientParam("identifier").exactly().systemAndCode("urn:oid:2.16.840.1.113883.3.26.1.1", "natid"))
+				.where(new TokenClientParam("gender").exactly().code("male"))
+				.execute();
+*/
+		//TODO: Add logic for clinic number etc
+		String jsonResponse = new Http().get("search", query);
 		List<Patient> openMrsPatients = deserializePatients(jsonResponse);
 		return openMrsPatients;
 	}

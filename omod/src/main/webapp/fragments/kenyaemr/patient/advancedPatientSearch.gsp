@@ -26,13 +26,12 @@
     </span>
     <label class="ke-field-label">Names</label>
     <span class="ke-field-content">
-        <input type="text" name="first-name-query" ng-model="firstNameQuery" ng-enter="updateSearch()" ng-change="onQueryChange()" style="width: 260px" placeholder="First Name" />
+        <input type="text" name="name-query" ng-model="nameQuery" ng-enter="updateSearch()" ng-change="onQueryChange()" style="width: 260px" placeholder="Name" />
     </span>
+    <label class="ke-field-label">Sex</label>
     <span class="ke-field-content">
-        <input type="text" name="middle-name-query" ng-model="middleNameQuery" ng-enter="updateSearch()" ng-change="onQueryChange()" style="width: 260px" placeholder="Middle Name" />
-    </span>
-    <span class="ke-field-content">
-        <input type="text" name="last-name-query" ng-model="lastNameQuery" ng-enter="updateSearch()" ng-change="onQueryChange()" style="width: 260px" placeholder="Last Name" />
+        <input type="radio" name="gender-query" ng-model="genderQuery" ng-enter="updateSearch()" ng-change="onQueryChange()" value="female" />Female
+        <input type="radio" name="gender-query" ng-model="genderQuery" ng-enter="updateSearch()" ng-change="onQueryChange()" value="male" />Male
     </span>
     <span class="ke-field-content">
         <label class="ke-field-label">Search MPI <input type="checkbox" name="select-mpi" ng-model="selectMpiQuery" ng-change="onQueryChange()" style="margin-left: 35px" /></label>

@@ -31,6 +31,8 @@ public class AdvancedSearchFragmentController {
 	
 	protected static final Log log = LogFactory.getLog(AdvancedSearchFragmentController.class);
 	
+	public static final String CROSSBORDER_ID_IDENTIFIER_TYPE_UUID = "e5e9a994-12e2-42c3-9c02-5abdc0fe40e8";
+	
 	/**
 	 * Gets a patient by their id
 	 * 
@@ -84,23 +86,55 @@ public class AdvancedSearchFragmentController {
 		}
 		
 		String cbId = queryObjects.get(0).get("cbId");
+		String nationalId = queryObjects.get(0).get("nationalId");
 		String clinicNo = queryObjects.get(0).get("clinicNo");
-		String firstName = queryObjects.get(0).get("firstName");
-		String lastName = queryObjects.get(0).get("lastName");
-		String middleName = queryObjects.get(0).get("middleName");
+		String name = queryObjects.get(0).get("name");
+		String gender = queryObjects.get(0).get("gender");
 		String mpi = queryObjects.get(0).get("mpi");
+		
+		List<Patient> matchedByNameOrID = new ArrayList<>();
+		
+		if (cbId != null) {
+			matchedByNameOrID = Context.getPatientService().getPatients(cbId);
+		} else if (clinicNo != null) {
+			matchedByNameOrID = Context.getPatientService().getPatients(clinicNo);
+		} else if (nationalId != null) {
+			matchedByNameOrID = Context.getPatientService().getPatients(nationalId);
+		}
+		
+		if (matchedByNameOrID.isEmpty()) {
+			if (name != null) {
+				matchedByNameOrID = Context.getPatientService().getPatients(name);
+			}
+		} else {
+			if (name != null) {
+				matchedByNameOrID.retainAll(Context.getPatientService().getPatients(name));
+			}
+		}
+		
+		if (!matchedByNameOrID.isEmpty() && gender != null) {
+			List<Patient> list = new ArrayList<>();
+			for (Patient p : matchedByNameOrID) {
+				if (p.getGender().equals(StringUtils.left(gender, 1).toUpperCase())) {
+					list.add(p);
+				}
+			}
+			matchedByNameOrID = list;
+		}
 		
 		if (mpi != null) {
 			// TODO: Query based on selected MPI type
 			// Run main patient search query based on id/name
-			List<Patient> matchedByNameOrID = Context.getPatientService().getPatients(query);
 			HashMap<String, String> searchParams = queryObjects.get(0);
-			// List<Patient> patientList = cbPatientService.searchPatient("Gloria");
+			
 			List<Patient> patientList = cbPatientService.searchPatient(searchParams);
 			
+			matchedByNameOrID.addAll(patientList);
+			
 		}
-		// Run main patient search query based on id/name
-		List<Patient> matchedByNameOrID = Context.getPatientService().getPatients(query);
+		
+		PatientIdentifierType crossborderIdType = Context.getPatientService().getPatientIdentifierTypeByUuid(
+				CROSSBORDER_ID_IDENTIFIER_TYPE_UUID);
 		
 		// Gather up active visits for all patients. These are attached to the returned patient representations.
 		Map<Patient, Visit> patientActiveVisits = getActiveVisitsByPatients();
@@ -123,8 +157,6 @@ public class AdvancedSearchFragmentController {
 				}
 			} else if ("cross-border".equals(which)) {
 				for (Patient patient : matchedByNameOrID) {
-					PatientIdentifierType crossborderIdType = Context.getPatientService().getPatientIdentifierTypeByUuid(
-					    "e5e9a994-12e2-42c3-9c02-5abdc0fe40e8");
 					PatientIdentifier crossborderId = patient.getPatientIdentifier(crossborderIdType);
 					if (crossborderId != null) {
 						matched.add(patient);
@@ -137,6 +169,7 @@ public class AdvancedSearchFragmentController {
 		List<SimpleObject> simplePatients = new ArrayList<SimpleObject>();
 		for (Patient patient : matched) {
 			SimpleObject simplePatient = ui.simplifyObject(patient);
+			simplePatient.put("CrossBorder", patient.getPatientIdentifier(crossborderIdType) != null);
 			
 			Visit activeVisit = patientActiveVisits.get(patient);
 			simplePatient.put("activeVisit", activeVisit != null ? ui.simplifyObject(activeVisit) : null);
