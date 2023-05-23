@@ -102,7 +102,29 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
             $scope.showLoader = false;
         }
 
-        if($scope.query && $scope.which === "checked-in") {
+        $scope.query = [];
+
+        if ($scope.cbIdQuery) {
+            $scope.query.push({"cbId": $scope.cbIdQuery});
+        }
+        if ($scope.clinicNoQuery) {
+            $scope.query.push({"clinicNo": $scope.clinicNoQuery});
+        }
+
+        if ($scope.nameQuery) {
+            $scope.query.push({"name": $scope.nameQuery});
+        }
+        if ($scope.genderQuery) {
+            $scope.query.push({"gender": $scope.genderQuery});
+        }
+        if ($scope.selectMpiQuery) {
+            $scope.query.push({"selectMpi": $scope.selectMpiQuery});
+        }
+        if ($scope.mpiQuery) {
+            $scope.query.push({"mpi": $scope.mpiQuery});
+        }
+
+       if($scope.query && $scope.which === "checked-in") {
             $scope.crossborder = false;
             $scope.checkedInSelected = true;
             $scope.allSelected = false;
@@ -122,6 +144,7 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
             $scope.showLoader = false;
         }
 
+        /*
         if($scope.query && $scope.which === "all") {
             $scope.crossborder = false;
             $scope.checkedInSelected = false;
@@ -133,31 +156,13 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
                     $scope.showLoader = false;
                 }
             });
-        }
+        } */
 
-        if($scope.query && $scope.which === "cross-border") {
+        if($scope.query) {
             $scope.crossborder = true;
             $scope.checkedInSelected = false;
             $scope.allSelected = false;
             $scope.searchObject = [];
-            $scope.query = [];
-
-            if ($scope.cbIdQuery) {
-                $scope.query.push({"cbId": $scope.cbIdQuery});
-            }
-            if ($scope.clinicNoQuery) {
-                $scope.query.push({"clinicNo": $scope.clinicNoQuery});
-            }
-
-            if ($scope.nameQuery) {
-                $scope.query.push({"name": $scope.nameQuery});
-            }
-            if ($scope.genderQuery) {
-                $scope.query.push({"gender": $scope.genderQuery});
-            }
-            if ($scope.mpiQuery) {
-                $scope.query.push({"mpi": $scope.mpiQuery});
-            }
 
             $http.get(ui.fragmentActionLink('crossborder2', 'advancedSearch', 'patients', { appId: $scope.appId, q: JSON.stringify($scope.query), which: $scope.which })).
             success(function(data) {
