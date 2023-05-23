@@ -30,14 +30,14 @@
     </span>
     <label class="ke-field-label">Sex</label>
     <span class="ke-field-content">
-        <input type="radio" name="gender-query" ng-model="genderQuery" ng-enter="updateSearch()" ng-change="onQueryChange()" value="female" />Female
-        <input type="radio" name="gender-query" ng-model="genderQuery" ng-enter="updateSearch()" ng-change="onQueryChange()" value="male" />Male
+        <input type="radio" name="gender-query" ng-model="genderQuery" ng-change="updateSearch()" value="female" />Female
+        <input type="radio" name="gender-query" ng-model="genderQuery" ng-change="updateSearch()" value="male" />Male
     </span>
     <span class="ke-field-content">
-        <label class="ke-field-label">Search MPI <input type="checkbox" name="select-mpi" ng-model="selectMpiQuery" ng-change="onQueryChange()" style="margin-left: 35px" /></label>
+        <label class="ke-field-label">Search MPI <input type="checkbox" name="select-mpi" ng-model="selectMpiQuery" ng-change="updateSearch()" style="margin-left: 35px" /></label>
     </span>
-    <span class="ke-field-content" ng-if="selectMpiQuery">
-        <select name="mpi-query" ng-model="mpiQuery" ng-change="onQueryChange()" style="width: 260px" placeholder="Select MPI" >
+    <span class="ke-field-content" ng-show="selectMpiQuery">
+        <select name="mpi-query" ng-model="mpiQuery" ng-change="updateSearch()" style="width: 260px" placeholder="Select MPI" >
             <option></option>
             <option value="crossborder-mpi">Cross border MPI</option>
         </select>
