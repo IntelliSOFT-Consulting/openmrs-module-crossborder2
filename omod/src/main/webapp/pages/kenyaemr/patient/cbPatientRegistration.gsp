@@ -38,5 +38,5 @@
 </div>
 
 <div class="ke-page-content">
-    ${ ui.includeFragment("kenyaemr", "patient/editPatient", [ person: person, heading: "Step 2: Register Patient" ]) }
+    ${ ui.includeFragment("crossborder2", "kenyaemr/patient/advancedEditPatient", [ person: person ]) }
 </div>
