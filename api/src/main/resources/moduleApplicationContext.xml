@@ -37,6 +37,7 @@
         <property name="commonVisitForms">
             <set>
                 <ref bean="crossborder2.form.cbScreening" />
+                <ref bean="crossborder2.form.cbReferral" />
             </set>
         </property>
         <property name="programVisitForms">
