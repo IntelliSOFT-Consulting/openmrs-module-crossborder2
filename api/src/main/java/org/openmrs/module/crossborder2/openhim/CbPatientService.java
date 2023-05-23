@@ -31,6 +31,8 @@ public class CbPatientService {
 	
 	public static final String NATIONAL_ID_SYSTEM_URN = "urn:oid:2.16.840.1.113883.3.26.1.1";
 	
+	public static final String SYSTEM_ID_SYSTEM_URN = "urn:oid:1.2.840.113619.2.1.3";
+	
 	@Autowired
 	private CbPatientConverter cbPatientConverter;
 	
