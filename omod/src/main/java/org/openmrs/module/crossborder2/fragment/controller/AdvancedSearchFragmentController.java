@@ -67,9 +67,9 @@ public class AdvancedSearchFragmentController {
 		}
 		
 		// If we have a query, try to parse it
-		if (StringUtils.isNotBlank(query)) {
-			return Collections.emptyList();
-		}
+//		if (StringUtils.isBlank(query)) {
+//			return Collections.emptyList();
+//		}
 		
 		// Parse query into list of KeyValuePairs
 		ObjectMapper mapper = new ObjectMapper();
@@ -85,12 +85,50 @@ public class AdvancedSearchFragmentController {
 			//throw new RuntimeException(e);
 		}
 		
-		String cbId = queryObjects.get(0).get("cbId");
-		String nationalId = queryObjects.get(0).get("nationalId");
-		String clinicNo = queryObjects.get(0).get("clinicNo");
-		String name = queryObjects.get(0).get("name");
-		String gender = queryObjects.get(0).get("gender");
-		String mpi = queryObjects.get(0).get("mpi");
+		String name = null;
+		String cbId = null;
+		String nationalId = null;
+		String clinicNo = null;
+		String gender = null;
+		String selectMpi= null;
+		String mpi = null;
+		HashMap<String, String> searchParams = new HashMap<>();
+		for (HashMap<String, String> queryObject : queryObjects) {
+			if (queryObject.get("cbId") != null) {
+				cbId = queryObject.get("cbId");
+				searchParams.put("cbId", cbId);
+			}
+			
+			if (queryObject.get("nationalId") != null) {
+				nationalId = queryObject.get("nationalId");
+				searchParams.put("nationalId", nationalId);
+			}
+			
+			if (queryObject.get("clinicNo") != null) {
+				clinicNo = queryObject.get("clinicNo");
+				searchParams.put("clinicNo", clinicNo);
+			}
+			
+			if (queryObject.get("gender") != null) {
+				gender = queryObject.get("gender");
+				searchParams.put("gender", gender);
+			}
+			
+			if (queryObject.get("selectMpi") != null) {
+				selectMpi = queryObject.get("selectMpi");
+				searchParams.put("selectMpi", selectMpi);
+			}
+			
+			if (queryObject.get("mpi") != null) {
+				mpi = queryObject.get("mpi");
+				searchParams.put("mpi", mpi);
+			}
+			
+			if (queryObject.get("name") != null) {
+				name = queryObject.get("name");
+				searchParams.put("name", name);
+			}
+		}
 		
 		List<Patient> matchedByNameOrID = new ArrayList<>();
 		
@@ -122,10 +160,9 @@ public class AdvancedSearchFragmentController {
 			matchedByNameOrID = list;
 		}
 		
-		if (mpi != null) {
+		if (selectMpi != null && selectMpi.equals("true") && mpi != null) {
 			// TODO: Query based on selected MPI type
 			// Run main patient search query based on id/name
-			HashMap<String, String> searchParams = queryObjects.get(0);
 			
 			List<Patient> patientList = cbPatientService.searchPatient(searchParams);
 			
@@ -168,13 +205,16 @@ public class AdvancedSearchFragmentController {
 		// Simplify and attach active visits to patient objects
 		List<SimpleObject> simplePatients = new ArrayList<SimpleObject>();
 		for (Patient patient : matched) {
-			SimpleObject simplePatient = ui.simplifyObject(patient);
-			simplePatient.put("CrossBorder", patient.getPatientIdentifier(crossborderIdType) != null);
-			
-			Visit activeVisit = patientActiveVisits.get(patient);
-			simplePatient.put("activeVisit", activeVisit != null ? ui.simplifyObject(activeVisit) : null);
-			
-			simplePatients.add(simplePatient);
+			if (patient.getIdentifiers() != null && !patient.getIdentifiers().isEmpty()) {
+				SimpleObject simplePatient = ui.simplifyObject(patient);
+				PatientIdentifier identifier = patient.getPatientIdentifier(crossborderIdType);
+				simplePatient.put("CrossBorderId", identifier != null ? ui.simplifyObject(identifier) : null);
+				
+				Visit activeVisit = patientActiveVisits.get(patient);
+				simplePatient.put("activeVisit", activeVisit != null ? ui.simplifyObject(activeVisit) : null);
+				
+				simplePatients.add(simplePatient);
+			}
 		}
 		
 		return simplePatients;
