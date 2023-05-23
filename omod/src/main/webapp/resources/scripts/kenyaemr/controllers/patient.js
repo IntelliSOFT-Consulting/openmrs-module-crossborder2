@@ -183,6 +183,14 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
         ui.navigate($scope.pageProvider, $scope.page, { patientId: patient.id });
     };
 
+    /**
+     * Result click event handler
+     * @param patient the clicked patient
+     */
+    $scope.onCrossBorderResultClick = function(patient) {
+        ui.navigate($scope.pageProvider, $scope.page, { patientId: patient.id });
+    };
+
 }]);
 
 /**
