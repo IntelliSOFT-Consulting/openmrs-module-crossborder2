@@ -157,15 +157,15 @@ public class CbPatientService {
 			query += "gender" + searchParams.get("gender");
 		}
 		
-/*
-		IGenericClient client = FhirUtil.getInstance().getClient();
-		Bundle bundle = (Bundle) client.search().forResource(org.hl7.fhir.r4.model.Patient.class)
-				.where(new TokenClientParam("identifier").exactly().systemAndCode("oid:2.16.840.1.113883.3.26.1.3", "cbid"))
-				.where(new TokenClientParam("identifier").exactly().systemAndCode("urn:oid:2.16.840.1.113883.3.26.1.2", "clinincno"))
-				.where(new TokenClientParam("identifier").exactly().systemAndCode("urn:oid:2.16.840.1.113883.3.26.1.1", "natid"))
-				.where(new TokenClientParam("gender").exactly().code("male"))
-				.execute();
-*/
+		/*
+				IGenericClient client = FhirUtil.getInstance().getClient();
+				Bundle bundle = (Bundle) client.search().forResource(org.hl7.fhir.r4.model.Patient.class)
+						.where(new TokenClientParam("identifier").exactly().systemAndCode("oid:2.16.840.1.113883.3.26.1.3", "cbid"))
+						.where(new TokenClientParam("identifier").exactly().systemAndCode("urn:oid:2.16.840.1.113883.3.26.1.2", "clinincno"))
+						.where(new TokenClientParam("identifier").exactly().systemAndCode("urn:oid:2.16.840.1.113883.3.26.1.1", "natid"))
+						.where(new TokenClientParam("gender").exactly().code("male"))
+						.execute();
+		*/
 		//TODO: Add logic for clinic number etc
 		String jsonResponse = new Http().get("search", query);
 		List<Patient> openMrsPatients = deserializePatients(jsonResponse);
