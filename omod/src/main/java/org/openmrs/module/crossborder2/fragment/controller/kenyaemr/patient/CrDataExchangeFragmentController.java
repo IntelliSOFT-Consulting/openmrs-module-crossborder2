@@ -37,7 +37,7 @@ public class CrDataExchangeFragmentController {
 		//Check whether this client already has NUPI number hence this is an error verification
 		System.out.println("These are the params" + params);
 		String clientNupi = nationalUniquePatientNumberForClient(params);
-		if (!clientNupi.trim().equalsIgnoreCase("")) {
+		if (clientNupi.trim().equalsIgnoreCase("")) {
 			//TODO add object mapper to map params to patient
 			System.out.println("These are the params" + params);
 			Patient formattedPatient = createDummyPatient(params);
