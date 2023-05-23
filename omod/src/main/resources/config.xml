@@ -28,6 +28,8 @@
 		<require_module version="${metadatadeployVersion}">org.openmrs.module.metadatadeploy</require_module>
 		<require_module version="${fhir2Version}">org.openmrs.module.fhir2</require_module>
 		<require_module version="${eventVersion}">org.openmrs.event</require_module>
+		<require_module version="${idgenVersion}">org.openmrs.module.idgen</require_module>
+
 	</require_modules>
 
 	<!-- Extensions -->
