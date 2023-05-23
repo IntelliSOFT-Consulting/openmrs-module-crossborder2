@@ -19,9 +19,63 @@
                 SELECT COUNT(*) FROM patient_identifier_type WHERE uuid = 'e5e9a994-12e2-42c3-9c02-5abdc0fe40e8';
             </sqlCheck>
         </preConditions>
-        <comment>Adding default Payment method</comment>
+        <comment>Adding cross border identifier type method</comment>
         <sql>
             INSERT INTO patient_identifier_type (name, description, format, check_digit, creator, date_created, required, format_description, validator, location_behavior, retired, retired_by, date_retired, retire_reason, uuid, uniqueness_behavior, date_changed, changed_by) VALUES('Crossborder ID', NULL, NULL, 0, 1, '2023-05-18 07:00:31', 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, 'e5e9a994-12e2-42c3-9c02-5abdc0fe40e8', NULL, NULL, NULL);
         </sql>
     </changeSet>
+
+    <changeSet id="ICL-2023-05-23-31138DCD-4AE0-4988-8547-F870138EE04B" author="moshonk">
+        <preConditions onFail="MARK_RAN" onError="WARN">
+            <dbms type="mysql"/>
+            <sqlCheck expectedResult="0">
+                SELECT count(*) FROM fhir_patient_identifier_system WHERE uuid='290701a2-9659-443f-a428-5952ca1282ad';
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding fhir system identifiers mapping</comment>
+        <sql>
+            INSERT INTO fhir_patient_identifier_system (patient_identifier_type_id, url, name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid) VALUES(4, 'urn:oid:1.2.840.113619.2.1.3', 'CLINIC NUMBER SYSTEM URN', NULL, 1, '2023-05-23 00:00:00', NULL, NULL, 0, NULL, NULL, NULL, '290701a2-9659-443f-a428-5952ca1282ad');
+        </sql>
+    </changeSet>
+
+    <changeSet id="ICL-2023-05-23-777B93C1-9069-4C9A-84E5-FC2FB5853023" author="moshonk">
+        <preConditions onFail="MARK_RAN" onError="WARN">
+            <dbms type="mysql"/>
+            <sqlCheck expectedResult="0">
+                SELECT count(*) FROM fhir_patient_identifier_system WHERE uuid='62cf46af-146f-4a91-8b98-27471ed53389';
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding fhir system identifiers mapping</comment>
+        <sql>
+            INSERT INTO fhir_patient_identifier_system (patient_identifier_type_id, url, name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid) VALUES(5, 'urn:oid:2.16.840.1.113883.3.26.1.1', 'NATIONAL ID SYSTEM URN', NULL, 1, '2023-05-23 00:00:00', NULL, NULL, 0, NULL, NULL, NULL, '62cf46af-146f-4a91-8b98-27471ed53389');
+        </sql>
+    </changeSet>
+
+    <changeSet id="ICL-2023-05-23-66927A74-BC30-4EAD-809E-69F56B94ED1F" author="moshonk">
+        <preConditions onFail="MARK_RAN" onError="WARN">
+            <dbms type="mysql"/>
+            <sqlCheck expectedResult="0">
+                SELECT count(*) FROM fhir_patient_identifier_system WHERE uuid='bf2acc8e-1d73-416d-8514-9bb3b7f0e11f';
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding fhir system identifiers mapping</comment>
+        <sql>
+            INSERT INTO fhir_patient_identifier_system (patient_identifier_type_id, url, name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid) VALUES(32, 'urn:oid:2.16.840.1.113883.3.26.1.3', 'CROSSBORDER ID SYSTEM URN', NULL, 1, '2023-05-23 00:00:00', NULL, NULL, 0, NULL, NULL, NULL, 'bf2acc8e-1d73-416d-8514-9bb3b7f0e11f');
+        </sql>
+    </changeSet>
+
+    <changeSet id="ICL-2023-05-23-9D9A5E91-4EA9-42E1-8BAE-1F3EEEDBB7D4" author="moshonk">
+        <preConditions onFail="MARK_RAN" onError="WARN">
+            <dbms type="mysql"/>
+            <sqlCheck expectedResult="0">
+                SELECT count(*) FROM fhir_patient_identifier_system WHERE uuid='a0aab656-a41f-4264-ba4a-bc36ed5e56c';
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding fhir system identifiers mapping</comment>
+        <sql>
+            INSERT INTO fhir_patient_identifier_system (patient_identifier_type_id, url, name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid) VALUES(3, 'urn:oid:1.2.840.113619.2.1.3', 'SYSTEM ID SYSTEM URN', NULL, 1, '2023-05-23 00:00:00', NULL, NULL, 0, NULL, NULL, NULL, 'a0aab656-a41f-4264-ba4a-bc36ed5e56c');
+
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
