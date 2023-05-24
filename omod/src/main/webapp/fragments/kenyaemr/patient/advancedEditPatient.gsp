@@ -1584,7 +1584,7 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
 
 
         //Using fragment action to post
-        jQuery.getJSON('${ ui.actionLink("kenyaemr", "upi/upiDataExchange", "postUpiClientRegistrationInfoToCR")}',
+        jQuery.getJSON('${ ui.actionLink("kenyaemr", "kenyaemr/patient/crDataExchange", "postUpiClientRegistrationInfoToCR")}',
             {
                 'postParams': JSON.stringify(params)
             })
