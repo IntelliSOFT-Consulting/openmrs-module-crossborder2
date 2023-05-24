@@ -28,7 +28,7 @@
     <bean id="crossborder2.app.cb" factory-bean="kenyacore.appFactoryBean" factory-method="createInstance">
         <constructor-arg value="crossborder2.cb" />
         <constructor-arg value="Cross Border" />
-        <constructor-arg value="crossborder2/cbHome.page" />
+        <constructor-arg value="crossborder2/kenyaemr/patient/cbPatientRegistrationSearch.page" />
         <constructor-arg value="crossborder2:apps/cb.png" />
         <constructor-arg value="2001000" />
     </bean>
