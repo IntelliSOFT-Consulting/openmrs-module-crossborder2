@@ -21,7 +21,7 @@
         </preConditions>
         <comment>Adding cross border identifier type method</comment>
         <sql>
-            INSERT INTO patient_identifier_type (name, description, format, check_digit, creator, date_created, required, format_description, validator, location_behavior, retired, retired_by, date_retired, retire_reason, uuid, uniqueness_behavior, date_changed, changed_by) VALUES('Crossborder ID', NULL, NULL, 0, 1, '2023-05-18 07:00:31', 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, 'e5e9a994-12e2-42c3-9c02-5abdc0fe40e8', NULL, NULL, NULL);
+            INSERT INTO patient_identifier_type (name, description, format, check_digit, creator, date_created, required, format_description, validator, location_behavior, retired, retired_by, date_retired, retire_reason, uuid, uniqueness_behavior, date_changed, changed_by) VALUES('Cross-Border ID', NULL, NULL, 0, 1, '2023-05-18 07:00:31', 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, 'e5e9a994-12e2-42c3-9c02-5abdc0fe40e8', NULL, NULL, NULL);
         </sql>
     </changeSet>
 
