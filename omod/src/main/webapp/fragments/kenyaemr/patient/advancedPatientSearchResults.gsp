@@ -14,4 +14,22 @@
             <img src="${ ui.resourceLink("kenyaui", "images/loader_small.gif") }" />
         </div>
     </div>
+    <div style="display: none">
+        <%= ui.includeFragment("kenyaui", "widget/dialogForm", [
+                buttonConfig: [ label: "Check out of visit", iconProvider: "kenyaui", icon: "buttons/visit_end.png" ],
+                dialogConfig: [ heading: "Import from Regional CR", width: 50, height: 30 ],
+                fields: [
+                        [ hiddenInputName: "visitId", value: "" ],
+                        [ hiddenInputName: "appId", value: "" ],
+                        [ label: "End Date and Time", formFieldName: "stopDatetime", class: java.util.Date, initialValue: new Date(), showTime: true ]
+                ],
+                fragmentProvider: "kenyaemr",
+                fragment: "registrationUtil",
+                action: "stopVisit",
+                onSuccessCallback: "ui.reloadPage()",
+                submitLabel: ui.message("general.submit"),
+                cancelLabel: ui.message("general.cancel")
+        ]) %>
+    </div>
+
 </div>
