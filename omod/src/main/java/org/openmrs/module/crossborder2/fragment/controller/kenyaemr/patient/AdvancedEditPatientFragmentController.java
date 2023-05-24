@@ -34,6 +34,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.ProgramWorkflowService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.crossborder2.CbConstants;
 import org.openmrs.module.crossborder2.openhim.CbPatientService;
 import org.openmrs.module.kenyaemr.Dictionary;
 import org.openmrs.module.kenyaemr.EmrConstants;
@@ -689,6 +690,7 @@ public class AdvancedEditPatientFragmentController {
 			
 			wrapper.getPerson().setTelephoneContact(telephoneContact);
 			wrapper.setNationalIdNumber(nationalIdNumber, location);
+			wrapper.setCrossborderNationalIdNumber(crossborderIdNumber, location);
 			wrapper.setPatientClinicNumber(patientClinicNumber, location);
 			wrapper.setClientNumber(clientNumber, location);
 			wrapper.setPassPortNumber(passPortNumber, location);
@@ -711,7 +713,7 @@ public class AdvancedEditPatientFragmentController {
 			wrapper.setChtReferenceNumber(chtReferenceNumber);
 			wrapper.setCRVerificationStatus(CRVerificationStatus);
 			
-			if (nationalUniquePatientNumber.trim().equalsIgnoreCase("")) {
+			if (crossborderIdNumber.trim().equalsIgnoreCase("")) {
 				wrapper.setCRVerificationMessage(CRVerificationMessage);
 			} else {
 				wrapper.setCRVerificationMessage("");
@@ -1322,11 +1324,12 @@ public class AdvancedEditPatientFragmentController {
 		private String crossborderNationalIdNumber;
 		
 		public String getCrossborderNationalIdNumber() {
-			return crossborderNationalIdNumber;
+			return this.getAsIdentifier(CbConstants._PatientIdentifierType.CROSS_BORDER_IDENTIFIER_UUID);
 		}
 		
-		public void setCrossborderNationalIdNumber(String crossborderNationalIdNumber) {
-			this.crossborderNationalIdNumber = crossborderNationalIdNumber;
+		public void setCrossborderNationalIdNumber(String crossborderNationalIdNumber, Location location) {
+			this.setAsIdentifier(CbConstants._PatientIdentifierType.CROSS_BORDER_IDENTIFIER_UUID,
+			    crossborderNationalIdNumber, location);
 		}
 		
 		public CrossborderPatientWrapper(Patient target) {
