@@ -180,7 +180,14 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
      * @param patient the clicked patient
      */
     $scope.onResultClick = function(patient) {
-        ui.navigate($scope.pageProvider, $scope.page, { patientId: patient.id });
+        if (patient.CrossBorderId !== "") {
+            ui.navigate($scope.pageProvider, $scope.page, { patientId: patient.id });
+        } else {
+            if (confirm("This record has been retrieved from the Regional MPI, confirm that you want to create a new record based on this information")) {
+                ui.navigate($scope.pageProvider, $scope.page, { patientId: patient.id });
+            }
+        }
+
     };
 
     /**
@@ -225,14 +232,6 @@ kenyaemrApp.controller('SimilarPatients', ['$scope', '$http', function($scope, $
             $scope.results = data;
             $scope.showLoader = false;
         });
-    };
-
-    /**
-     * Result click event handler
-     * @param patient the clicked patient
-     */
-    $scope.onResultClick = function(patient) {
-        ui.navigate($scope.pageProvider, $scope.page, { patientId: patient.id });
     };
 
 }]);
