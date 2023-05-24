@@ -208,7 +208,7 @@
                 <tr id="cross-border-id">
                     <td class="ke-field-label">Cross Border Id</td>
                     <td>${ui.includeFragment("kenyaui", "widget/field", [object: command, property: "crossborderIdNumber"])}</td>
-                    <td class="ke-field-instructions"> This will be populated from Regional Client Registry</td>
+                    <td class="ke-field-instructions"> This will be populated from Regional Cross-Border Client Registry</td>
                 </tr>
                 <tr></tr>
                 <tr>
@@ -1492,6 +1492,7 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
 
             // update NUPI
             jQuery("input[name='nationalUniquePatientNumber']").val(crResponseData.client.clientNumber).trigger('change');
+            jQuery("input[name='crossborderIdNumber']").val(crResponseData.client.clientNumber).trigger('change');
             jQuery("input[name='CRVerificationStatus']").val("Verified elsewhere").attr('readonly', true);
             jq('#createPatientBtn').prop('disabled', false);
             jq('#post-registrations').prop('disabled', true);
@@ -1596,23 +1597,23 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
 
                 if(data.status == 200) {
                     if(data.clientNumber) {
-                        jQuery("input[name='nationalUniquePatientNumber']").val(data.clientNumber);
-                        jQuery("#post-msgBox").text("Assigned National UPI : " + data.clientNumber);
+                        jQuery("input[name='crossborderIdNumber']").val(data.clientNumber);
+                        jQuery("#post-msgBox").text("Assigned Cross-Border ID Number: " + data.clientNumber);
                         jQuery("input[name='CRVerificationStatus']").val("Yes").attr('readonly', true);
                         jQuery("input[name='CRVerificationMessage']").val("");
                         jQuery("#post-msgBox").show();
 
-                    } else if(jQuery("input[name='nationalUniquePatientNumber']").val() != "" ) {
-                        jQuery("#post-msgBox").text(jQuery("input[name='nationalUniquePatientNumber']").val());
+                    } else if(jQuery("input[name='crossborderIdNumber']").val() != "" ) {
+                        jQuery("#post-msgBox").text(jQuery("input[name='crossborderIdNumber']").val());
                         jQuery("input[name='CRVerificationStatus']").val("Verified").attr('readonly', true);
                         jQuery("input[name='CRVerificationMessage']").val("");
                         jQuery("#post-msgBox").show();
-                    } else if(jQuery("input[name='nationalUniquePatientNumber']").val() == "" ) {
+                    } else if(jQuery("input[name='crossborderIdNumber']").val() == "" ) {
                         jQuery("input[name='CRVerificationStatus']").val("Pending").attr('readonly', true);
                         jQuery("input[name='CRVerificationMessage']").val("Unknown Error");
                     }
                 } else {
-                    if(jQuery("input[name='nationalUniquePatientNumber']").val() != "" ) {
+                    if(jQuery("input[name='crossborderIdNumber']").val() != "" ) {
                         jQuery("input[name='CRVerificationStatus']").val("Verified");
                         jQuery("input[name='CRVerificationMessage']").val("");
                     } else {
