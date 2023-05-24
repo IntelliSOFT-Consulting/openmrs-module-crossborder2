@@ -160,13 +160,14 @@ public class AdvancedSearchFragmentController {
 			matchedByNameOrID = list;
 		}
 		
+		List<Patient> mpiList = new ArrayList<>();
 		if (selectMpi != null && selectMpi.equals("true") && mpi != null) {
 			// TODO: Query based on selected MPI type
 			// Run main patient search query based on id/name
 			
-			List<Patient> patientList = cbPatientService.searchPatient(searchParams);
+			mpiList = cbPatientService.searchPatient(searchParams);
 			
-			matchedByNameOrID.addAll(patientList);
+			 matchedByNameOrID.addAll(mpiList);
 			
 		}
 		
@@ -208,7 +209,7 @@ public class AdvancedSearchFragmentController {
 			if (patient.getIdentifiers() != null && !patient.getIdentifiers().isEmpty()) {
 				SimpleObject simplePatient = ui.simplifyObject(patient);
 				PatientIdentifier identifier = patient.getPatientIdentifier(crossborderIdType);
-				simplePatient.put("CrossBorderId", identifier != null ? ui.simplifyObject(identifier) : null);
+				simplePatient.put("crossBorderId", identifier != null ? identifier.getIdentifier() : null);
 				
 				Visit activeVisit = patientActiveVisits.get(patient);
 				simplePatient.put("activeVisit", activeVisit != null ? ui.simplifyObject(activeVisit) : null);

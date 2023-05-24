@@ -59,7 +59,7 @@ public class CbPatientService {
 	public Patient findPatient(String crossBorderId) {
 		Patient openMrsPatient = null;
 		try {
-			String jsonResponse = new Http().get("Patient", "id=" + crossBorderId);
+			String jsonResponse = new Http().get("Patient", "identifier=" + crossBorderId);
 			openMrsPatient = deserializePatient(jsonResponse);
 		}
 		catch (Exception ex) {

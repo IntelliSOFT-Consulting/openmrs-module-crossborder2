@@ -8,8 +8,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public class CbPatientRegistrationPageController {
 	
-	public void controller(@RequestParam(value = "personId", required = false) Person person, PageModel model) {
+	public void controller(@RequestParam(value = "personId", required = false) Person person,
+	        @RequestParam(value = "crossBorderId", required = false) String crossBorderId,
+	        @SpringBean CbPatientService cbPatientService, PageModel model) {
 		
+		if (person == null) {
+			if (crossBorderId != null) {
+				person = cbPatientService.findPatient(crossBorderId);
+			}
+		}
 		model.addAttribute("person", person);
+		
 	}
 }

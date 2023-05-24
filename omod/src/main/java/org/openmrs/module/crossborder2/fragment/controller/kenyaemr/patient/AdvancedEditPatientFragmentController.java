@@ -34,6 +34,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.ProgramWorkflowService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.crossborder2.openhim.CbPatientService;
 import org.openmrs.module.kenyaemr.Dictionary;
 import org.openmrs.module.kenyaemr.EmrConstants;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
@@ -106,10 +107,17 @@ public class AdvancedEditPatientFragmentController {
 	 * @param model the model
 	 */
 	public void controller(@FragmentParam(value = "patient", required = false) Patient patient,
-	        @FragmentParam(value = "person", required = false) Person person, FragmentModel model) {
+	        @FragmentParam(value = "person", required = false) Person person,
+	        @RequestParam(value = "crossBorderId", required = false) String crossBorderId,
+	        @SpringBean CbPatientService cbPatientService, FragmentModel model) {
 		
 		if (patient != null && person != null) {
-			throw new RuntimeException("A patient or person can be provided, but not both");
+			if (crossBorderId != null) {
+				patient = cbPatientService.findPatient(crossBorderId);
+			}
+			if (patient == null) {
+				throw new RuntimeException("A patient or person can be provided, but not both");
+			}
 		}
 		
 		Person existing = patient != null ? patient : person;
