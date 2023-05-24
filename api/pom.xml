@@ -78,5 +78,9 @@
             <groupId>org.openmrs</groupId>
             <artifactId>event-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
     </dependencies>
 </project>
