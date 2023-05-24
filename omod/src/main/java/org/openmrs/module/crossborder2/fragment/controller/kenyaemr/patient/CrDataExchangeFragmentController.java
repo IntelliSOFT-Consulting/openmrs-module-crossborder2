@@ -4,10 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PatientIdentifierType;
-import org.openmrs.PersonName;
+import org.openmrs.*;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.crossborder2.CbConstants;
@@ -20,6 +17,7 @@ import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.print.DocFlavor;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -77,20 +75,29 @@ public class CrDataExchangeFragmentController {
 			objectNode = (ObjectNode) mapper.readTree(params);
 			if (objectNode != null) {
 				ArrayNode resultsArrayNode = (ArrayNode) objectNode.get("identifications");
+				ArrayNode addressInformation = (ArrayNode) objectNode.get("residence");
 				patient = new Patient();
 				patient.setUuid(UUID.randomUUID().toString());
 				patient.setGender(StringUtils.left(objectNode.get("gender").asText(), 1).toUpperCase());
 				patient.setBirthdate(new Date());
 				patient.setBirthdateEstimated(false);
-				patient.setDead(false);
+				patient.setDead(objectNode.get("isAlive").asBoolean());
 				patient.setVoided(false);
 				patient.setDeathDate(null);
+
+				PersonAddress personAddress = new PersonAddress();
+			    personAddress.setCountry(StringUtils.left(objectNode.get("country").asText(),2).toUpperCase());
+
 				PersonName personName = new PersonName();
 				personName.setGivenName(objectNode.get("firstName").asText());
 				personName.setMiddleName(objectNode.get("middleName").asText());
 				personName.setFamilyName(objectNode.get("lastName").asText());
 				personName.setUuid(UUID.randomUUID().toString());
+
+
+                patient.addAddress(personAddress);
 				patient.addName(personName);
+
 				if (resultsArrayNode.size() > 0) {
 					for (int i = 0; i < resultsArrayNode.size(); i++) {
 						
