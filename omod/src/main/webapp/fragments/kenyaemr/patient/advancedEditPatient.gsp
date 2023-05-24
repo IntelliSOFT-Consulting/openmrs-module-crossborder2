@@ -89,7 +89,7 @@
 <script type="text/javascript" src="/${ contextPath }/moduleResources/kenyaemr/scripts/KenyaAddressHierarchy.js"></script>
 <script type="text/javascript" src="/${ contextPath }/moduleResources/kenyaemr/scripts/upiVerificationUtils.js"></script>
 
-<form id="edit-patient-form" method="post" action="${ui.actionLink("kenyaemr", "patient/editPatient", "savePatient")}">
+<form id="edit-patient-form" method="post" action="${ui.actionLink("crossborder2", "kenyaemr/patient/advancedEditPatient", "savePatient")}">
     <% if (command.original) { %>
     <input type="hidden" name="personId" value="${command.original.id}"/>
     <% } %>
@@ -795,6 +795,7 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
         }
 
         jQuery('input[name="nationalUniquePatientNumber"]').attr('readonly', true);
+        jQuery('input[name="crossborderIdNumber"]').attr('readonly', true);
         jQuery('#createPatientBtn').prop('disabled', true);
         jQuery('#alien-no').hide();
         jQuery('#huduma-no').hide();
