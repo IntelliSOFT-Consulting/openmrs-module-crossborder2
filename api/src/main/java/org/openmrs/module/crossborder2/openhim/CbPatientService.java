@@ -152,11 +152,11 @@ public class CbPatientService {
 		}
 		query += query.equals("") ? "" : "&";
 		if (searchParams.containsKey("name")) {
-			query += "phonetic" + searchParams.get("name");
+			query += "name=" + searchParams.get("name");
 		}
 		query += query.equals("") ? "" : "&";
 		if (searchParams.containsKey("gender")) {
-			query += "gender" + searchParams.get("gender");
+			query += "gender=" + searchParams.get("gender");
 		}
 		
 		/*
