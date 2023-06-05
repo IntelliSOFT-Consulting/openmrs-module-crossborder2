@@ -39,24 +39,46 @@ public class CrDataExchangeFragmentController {
 		SimpleObject responseObj = null;
 		//Check whether this client already has NUPI number hence this is an error verification
 		Patient patient1 = getPatientUsingNationalIdentifiers(params);
-		PatientIdentifierType crossborderPatientIdType = Context.getPatientService().getPatientIdentifierTypeByUuid(
+		final PatientIdentifierType crossborderPatientIdType = Context.getPatientService().getPatientIdentifierTypeByUuid(
 		    CbConstants._PatientIdentifierType.CROSS_BORDER_IDENTIFIER_UUID);
 		try {
 			responseObj = new SimpleObject();
+			Patient patientToSave = null;
 			if (patient1 == null) {
 				//TODO add object mapper to map params to patient
-				System.out.println("These are the params" + params);
+				// System.out.println("These are the params" + params);
 				Patient formattedPatient = createDummyPatient(params);
 				if (formattedPatient != null) {
-					Patient savedPatient = cbPatientService.createPatient(formattedPatient);
-					responseObj.put("status", "200");
-					responseObj.put("clientNumber", savedPatient.getPatientIdentifier(crossborderPatientIdType)
-					        .getIdentifier());
+					patientToSave = formattedPatient;
 				}
 			} else {
-				Patient savedPatient = cbPatientService.createPatient(patient1);
-				responseObj.put("clientNumber", savedPatient.getPatientIdentifier(crossborderPatientIdType).getIdentifier());
+				patientToSave = patient1;
 			}
+			
+			//if patient to save has a cross border id, update the upstream record, otherwise create a new patient record
+			Patient savedPatient;
+			PatientIdentifier crossborderPatientIdentifier = null;
+			if (patientToSave != null && !patientToSave.getIdentifiers().isEmpty()) {
+				PatientIdentifier found = null;
+				for (PatientIdentifier p : patientToSave.getIdentifiers()) {
+					if (p.getIdentifierType().equals(crossborderPatientIdType)) {
+						found = p;
+						break;
+					}
+				}
+				crossborderPatientIdentifier = found;
+			}
+			
+			if (crossborderPatientIdentifier != null) {
+				savedPatient = cbPatientService.updatePatient(patientToSave, crossborderPatientIdentifier.getIdentifier());
+			} else {
+				savedPatient = cbPatientService.createPatient(patientToSave);
+			}
+			
+			responseObj.put("status", "200");
+			responseObj.put("clientNumber", savedPatient.getPatientIdentifier(crossborderPatientIdType)
+					.getIdentifier());
+			
 		}
 		catch (RuntimeException ex) {
 			responseObj.put("status", "400");
