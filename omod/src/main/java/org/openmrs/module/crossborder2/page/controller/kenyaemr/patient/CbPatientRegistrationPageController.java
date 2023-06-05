@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.ConceptReferenceTerm;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
@@ -23,7 +24,7 @@ public class CbPatientRegistrationPageController {
 	        @SpringBean CbPatientService cbPatientService, SessionContext sessionContext, PageModel model) {
 		
 		if (patient == null) {
-			if (crossBorderId != null) {
+			if (StringUtils.isNotBlank(crossBorderId)) {
 				List<Patient> patients = Context.getPatientService().getPatients(crossBorderId);
 				if (!patients.isEmpty()) {
 					patient = patients.get(0);

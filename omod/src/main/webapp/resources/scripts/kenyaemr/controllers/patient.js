@@ -180,7 +180,7 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
      * @param patient the clicked patient
      */
     $scope.onResultClick = function(patient) {
-        if (patient.openmrsId !== null && patient.openmrsId === "") {
+        if (patient.openmrsId !== null && patient.openmrsId !== "") {
             ui.navigate("crossborder2", "kenyaemr/patient/cbPatientRegistration", { personId: patient.id });
         } else {
             if (patient.crossBorderId !== null && patient.crossBorderId !== "") {

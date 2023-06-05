@@ -218,7 +218,7 @@ public class AdvancedSearchFragmentController {
 				PatientIdentifier crossBorderIdentifier = patient.getPatientIdentifier(crossborderIdType);
 				simplePatient.put("crossBorderId", crossBorderIdentifier != null ? crossBorderIdentifier.getIdentifier() : null);
 				
-				PatientIdentifier openmrsidentifier = patient.getPatientIdentifier(crossborderIdType);
+				PatientIdentifier openmrsidentifier = patient.getPatientIdentifier(openmrsIdType);
 				simplePatient.put("openmrsId", openmrsidentifier != null ? openmrsidentifier.getIdentifier() : null);
 				
 				Visit activeVisit = patientActiveVisits.get(patient);
