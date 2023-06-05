@@ -115,12 +115,18 @@ public class CbPatientService {
 	private List<Patient> deserializePatients(String jsonResponse) {
 		List<Patient> patients = new ArrayList<Patient>();
 		FhirContext fhirContext = FhirContext.forR4();
-		Bundle bundle = fhirContext.newJsonParser().parseResource(Bundle.class, jsonResponse);
-		for (Bundle.BundleEntryComponent entry : bundle.getEntry()) {
-			Resource resource = entry.getResource();
-			Patient p = cbPatientConverter.convertToOpenMrsPatient((org.hl7.fhir.r4.model.Patient) resource);
-			patients.add(p);
+		try {
+			Bundle bundle = fhirContext.newJsonParser().parseResource(Bundle.class, jsonResponse);
+			for (Bundle.BundleEntryComponent entry : bundle.getEntry()) {
+				Resource resource = entry.getResource();
+				Patient p = cbPatientConverter.convertToOpenMrsPatient((org.hl7.fhir.r4.model.Patient) resource);
+				patients.add(p);
+			}
 		}
+		catch (RuntimeException exception) {
+			return patients;
+		}
+		
 		return patients;
 	}
 	
@@ -169,7 +175,7 @@ public class CbPatientService {
 						.execute();
 		*/
 		//TODO: Add logic for clinic number etc
-		String jsonResponse = new Http().get("search", query);
+		String jsonResponse = new Http().get("Patient", query);
 		List<Patient> openMrsPatients = deserializePatients(jsonResponse);
 		return openMrsPatients;
 	}

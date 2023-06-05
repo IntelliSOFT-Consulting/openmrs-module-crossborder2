@@ -180,11 +180,13 @@ kenyaemrApp.controller('AdvancedPatientSearchResults', ['$scope', '$http', funct
      * @param patient the clicked patient
      */
     $scope.onResultClick = function(patient) {
-        if (patient.crossBorderId === null || patient.crossBorderId === "") {
+        if (patient.openmrsId !== null && patient.openmrsId === "") {
             ui.navigate("crossborder2", "kenyaemr/patient/cbPatientRegistration", { personId: patient.id });
         } else {
-            if (confirm("This record has been retrieved from the Regional MPI, confirm that you want to create a new record based on this information")) {
-                ui.navigate("crossborder2", "kenyaemr/patient/cbPatientRegistration", { personId: patient.id, crossBorderId: patient.crossBorderId });
+            if (patient.crossBorderId !== null && patient.crossBorderId !== "") {
+                if (confirm("This record has been retrieved from the Regional MPI, confirm that you want to create a new record based on this information")) {
+                    ui.navigate("crossborder2", "kenyaemr/patient/cbPatientRegistration", { personId: patient.id, crossBorderId: patient.crossBorderId });
+                }
             }
         }
     };

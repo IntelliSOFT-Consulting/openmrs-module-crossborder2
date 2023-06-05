@@ -36,6 +36,7 @@ import org.openmrs.api.ProgramWorkflowService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.crossborder2.CbConstants;
 import org.openmrs.module.crossborder2.openhim.CbPatientService;
+import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.module.kenyaemr.Dictionary;
 import org.openmrs.module.kenyaemr.EmrConstants;
 import org.openmrs.module.kenyaemr.api.KenyaEmrService;
@@ -57,7 +58,6 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.openmrs.module.idgen.service.IdentifierSourceService;
 
 /**
  * Controller for creating and editing patients in the registration app

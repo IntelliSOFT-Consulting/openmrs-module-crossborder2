@@ -20,6 +20,7 @@ import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.Visit;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.crossborder2.CbConstants;
 import org.openmrs.module.crossborder2.openhim.CbPatientService;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
@@ -30,8 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AdvancedSearchFragmentController {
 	
 	protected static final Log log = LogFactory.getLog(AdvancedSearchFragmentController.class);
-	
-	public static final String CROSSBORDER_ID_IDENTIFIER_TYPE_UUID = "e5e9a994-12e2-42c3-9c02-5abdc0fe40e8";
 	
 	/**
 	 * Gets a patient by their id
@@ -172,7 +171,9 @@ public class AdvancedSearchFragmentController {
 		}
 		
 		PatientIdentifierType crossborderIdType = Context.getPatientService().getPatientIdentifierTypeByUuid(
-				CROSSBORDER_ID_IDENTIFIER_TYPE_UUID);
+				CbConstants.CROSSBORDER_ID_IDENTIFIER_TYPE_UUID);
+		PatientIdentifierType openmrsIdType = Context.getPatientService().getPatientIdentifierTypeByUuid(
+				CbConstants.OPENMRS_ID_IDENTIFIER_TYPE_UUID);
 		
 		// Gather up active visits for all patients. These are attached to the returned patient representations.
 		Map<Patient, Visit> patientActiveVisits = getActiveVisitsByPatients();
@@ -208,8 +209,17 @@ public class AdvancedSearchFragmentController {
 		for (Patient patient : matched) {
 			if (patient.getIdentifiers() != null && !patient.getIdentifiers().isEmpty()) {
 				SimpleObject simplePatient = ui.simplifyObject(patient);
-				PatientIdentifier identifier = patient.getPatientIdentifier(crossborderIdType);
-				simplePatient.put("crossBorderId", identifier != null ? identifier.getIdentifier() : null);
+				simplePatient.remove("identifiers");
+				List<SimpleObject> identifiers = new ArrayList<>();
+				for (PatientIdentifier patientIdentifier : patient.getIdentifiers()) {
+					identifiers.add(ui.simplifyObject(patientIdentifier));
+				}
+				simplePatient.put("identifiers", identifiers);
+				PatientIdentifier crossBorderIdentifier = patient.getPatientIdentifier(crossborderIdType);
+				simplePatient.put("crossBorderId", crossBorderIdentifier != null ? crossBorderIdentifier.getIdentifier() : null);
+				
+				PatientIdentifier openmrsidentifier = patient.getPatientIdentifier(crossborderIdType);
+				simplePatient.put("openmrsId", openmrsidentifier != null ? openmrsidentifier.getIdentifier() : null);
 				
 				Visit activeVisit = patientActiveVisits.get(patient);
 				simplePatient.put("activeVisit", activeVisit != null ? ui.simplifyObject(activeVisit) : null);

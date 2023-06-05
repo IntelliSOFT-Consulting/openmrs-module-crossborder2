@@ -8,6 +8,10 @@ public class CbConstants {
 	
 	public static final String PROP_MPI_PASSWORD = "crossborder.mpiServerPassword";
 	
+	public static final String CROSSBORDER_ID_IDENTIFIER_TYPE_UUID = "e5e9a994-12e2-42c3-9c02-5abdc0fe40e8";
+	
+	public static final String OPENMRS_ID_IDENTIFIER_TYPE_UUID = "dfacd928-0370-4315-99d7-6ec1c9f7ae76";
+	
 	public static final class _PatientIdentifierType {
 		
 		public static final String NATIONAL_ID = "49af6cdc-7968-4abb-bf46-de10d7f4859f";
