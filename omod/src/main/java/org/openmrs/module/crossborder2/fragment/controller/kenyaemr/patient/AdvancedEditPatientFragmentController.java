@@ -840,7 +840,7 @@ public class AdvancedEditPatientFragmentController {
 		}
 		
 		public boolean isInHivProgram() {
-			if (original == null || !original.isPatient()) {
+			if (original == null || !original.isPatient() || original.getId() == null) {
 				return false;
 			}
 			ProgramWorkflowService pws = Context.getProgramWorkflowService();
