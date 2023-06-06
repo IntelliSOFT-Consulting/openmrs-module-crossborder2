@@ -53,8 +53,9 @@
         <property name="apps">
             <set>
                 <ref bean="kenyaemr.app.registration" />
-                <ref bean="kenyaemr.app.triage" />
+                <ref bean="kenyaemr.app.intake" />
                 <ref bean="kenyaemr.app.clinician" />
+                <ref bean="kenyaemr.app.chart" />
                 <ref bean="crossborder2.app.cb" />
             </set>
         </property>
