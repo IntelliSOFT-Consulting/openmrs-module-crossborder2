@@ -148,21 +148,21 @@ public class CbPatientService {
 		if (searchParams.containsKey("cbId")) {
 			query += "identifier=" + CROSS_BORDER_ID_SYSTEM_URN + "|" + searchParams.get("cbId");
 		}
-		query += query.equals("") ? "" : "&";
+		
 		if (searchParams.containsKey("clinicNo")) {
-			query += "identifier=" + CLINIC_NUMBER_SYSTEM_URN + "|" + searchParams.get("clinicNo");
+			query += "&identifier=" + CLINIC_NUMBER_SYSTEM_URN + "|" + searchParams.get("clinicNo");
 		}
-		query += query.equals("") ? "" : "&";
+		
 		if (searchParams.containsKey("nationalId")) {
-			query += "identifier=" + NATIONAL_ID_SYSTEM_URN + "|" + searchParams.get("clinicNo");
+			query += "&identifier=" + NATIONAL_ID_SYSTEM_URN + "|" + searchParams.get("clinicNo");
 		}
-		query += query.equals("") ? "" : "&";
+		
 		if (searchParams.containsKey("name")) {
-			query += "name=" + searchParams.get("name");
+			query += "&name=" + searchParams.get("name");
 		}
-		query += query.equals("") ? "" : "&";
+		
 		if (searchParams.containsKey("gender")) {
-			query += "gender=" + searchParams.get("gender");
+			query += "&gender=" + searchParams.get("gender");
 		}
 		
 		/*
