@@ -25,8 +25,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 public class Http {
 	
@@ -38,14 +36,7 @@ public class Http {
 	
 	public String get(String endpoint, String query) {
 		HttpClient httpClient = getHttpClient();
-		String encodedQuery = "";
-		try {
-			encodedQuery = URLEncoder.encode(query, "UTF-8");
-		}
-		catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
-		HttpGet request = new HttpGet(URL + endpoint + "?" + encodedQuery);
+		HttpGet request = new HttpGet(URL + endpoint + "?" + query);
 		request.setHeader("Accept", "application/fhir+json");
 		HttpResponse response;
 		String responseBody;

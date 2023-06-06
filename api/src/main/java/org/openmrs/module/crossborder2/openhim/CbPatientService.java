@@ -7,6 +7,8 @@
  */
 package org.openmrs.module.crossborder2.openhim;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -146,23 +148,24 @@ public class CbPatientService {
 		// TODO: Breakdown the search params
 		String query = "";
 		if (searchParams.containsKey("cbId")) {
-			query += "identifier=" + CROSS_BORDER_ID_SYSTEM_URN + "|" + searchParams.get("cbId");
+			
+			query += "identifier=" + urlEncode(CROSS_BORDER_ID_SYSTEM_URN) + "|" + urlEncode(searchParams.get("cbId"));
 		}
 		
 		if (searchParams.containsKey("clinicNo")) {
-			query += "&identifier=" + CLINIC_NUMBER_SYSTEM_URN + "|" + searchParams.get("clinicNo");
+			query += "&identifier=" + urlEncode(CLINIC_NUMBER_SYSTEM_URN) + "|" + urlEncode(searchParams.get("clinicNo"));
 		}
 		
 		if (searchParams.containsKey("nationalId")) {
-			query += "&identifier=" + NATIONAL_ID_SYSTEM_URN + "|" + searchParams.get("clinicNo");
+			query += "&identifier=" + urlEncode(NATIONAL_ID_SYSTEM_URN) + "|" + urlEncode(searchParams.get("clinicNo"));
 		}
 		
 		if (searchParams.containsKey("name")) {
-			query += "&name=" + searchParams.get("name");
+			query += "&name=" + urlEncode(searchParams.get("name"));
 		}
 		
 		if (searchParams.containsKey("gender")) {
-			query += "&gender=" + searchParams.get("gender");
+			query += "&gender=" + urlEncode(searchParams.get("gender"));
 		}
 		
 		/*
@@ -178,5 +181,15 @@ public class CbPatientService {
 		String jsonResponse = new Http().get("Patient", query);
 		List<Patient> openMrsPatients = deserializePatients(jsonResponse);
 		return openMrsPatients;
+	}
+	
+	private String urlEncode(String crossBorderIdSystemUrn) {
+		try {
+			return URLEncoder.encode(crossBorderIdSystemUrn, "UTF-8");
+		}
+		catch (UnsupportedEncodingException e) {
+			return crossBorderIdSystemUrn;
+			//throw new RuntimeException(e);
+		}
 	}
 }
