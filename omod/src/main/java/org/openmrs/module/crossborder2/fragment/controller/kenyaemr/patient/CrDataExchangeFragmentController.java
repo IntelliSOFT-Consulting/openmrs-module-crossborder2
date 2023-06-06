@@ -76,8 +76,7 @@ public class CrDataExchangeFragmentController {
 			}
 			
 			responseObj.put("status", "200");
-			responseObj.put("clientNumber", savedPatient.getPatientIdentifier(crossborderPatientIdType)
-					.getIdentifier());
+			responseObj.put("clientNumber", savedPatient.getPatientIdentifier(crossborderPatientIdType).getIdentifier());
 			
 		}
 		catch (RuntimeException ex) {
