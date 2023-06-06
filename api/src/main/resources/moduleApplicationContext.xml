@@ -52,6 +52,8 @@
         <property name="targetUuid" value="099d5e12-18fc-11eb-86f3-231df7469c4e" />
         <property name="apps">
             <set>
+                <ref bean="kenyaemr.app.registration" />
+                <ref bean="kenyaemr.app.triage" />
                 <ref bean="kenyaemr.app.clinician" />
                 <ref bean="crossborder2.app.cb" />
             </set>
