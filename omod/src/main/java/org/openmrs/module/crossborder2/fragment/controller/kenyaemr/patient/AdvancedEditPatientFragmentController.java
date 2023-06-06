@@ -112,6 +112,7 @@ public class AdvancedEditPatientFragmentController {
 	        @RequestParam(value = "crossBorderId", required = false) String crossBorderId,
 	        @SpringBean CbPatientService cbPatientService, FragmentModel model) {
 		
+		String pageHeading = "";
 		if (patient != null && person != null) {
 			if (crossBorderId != null) {
 				patient = cbPatientService.findPatient(crossBorderId);
@@ -119,8 +120,11 @@ public class AdvancedEditPatientFragmentController {
 			if (patient == null) {
 				throw new RuntimeException("A patient or person can be provided, but not both");
 			}
+			pageHeading = "Edit Patient";
+		} else {
+			pageHeading = "Add Patient";
 		}
-		
+		model.addAttribute("pageHeading", pageHeading);
 		Person existing = patient != null ? patient : person;
 		
 		model.addAttribute("clientVerificationApi", clientRegistryClientVerificationApi);

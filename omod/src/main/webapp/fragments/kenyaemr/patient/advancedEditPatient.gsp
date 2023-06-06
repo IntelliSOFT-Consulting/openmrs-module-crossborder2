@@ -1,5 +1,5 @@
 <%
-    ui.decorateWith("kenyaui", "panel", [heading: (config.heading ?: "Edit Patient"), frameOnly: true])
+    ui.decorateWith("kenyaui", "panel", [heading: (config.heading ?: pageHeading), frameOnly: true])
     def countyName = command.personAddress.countyDistrict
     def country = command.personAddress.country
     def subCounty = command.personAddress.stateProvince
@@ -95,7 +95,7 @@
     <% } %>
 
     <div class="ke-panel-content">
-
+<!--
         <fieldset id="clientVerificationSection">
             <legend>Client verification with Client Registry</legend>
             <table>
@@ -151,6 +151,7 @@
 
             </table>
         </fieldset>
+        -->
         <div class="ke-form-globalerrors" style="display: none"></div>
 
         <div class="ke-form-instructions">
