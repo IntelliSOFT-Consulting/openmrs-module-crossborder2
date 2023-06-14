@@ -797,7 +797,7 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
 
         jQuery('input[name="nationalUniquePatientNumber"]').attr('readonly', true);
         jQuery('input[name="crossborderIdNumber"]').attr('readonly', true);
-        jQuery('#createPatientBtn').prop('disabled', true);
+        jQuery('#createPatientBtn').prop('disabled', false);
         jQuery('#alien-no').hide();
         jQuery('#huduma-no').hide();
         jQuery('#passport-no').hide();
