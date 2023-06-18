@@ -485,7 +485,7 @@
             <div class="ke-panel-footer centre-content">
                 <div class="buttons-post-create-patient centre-content">
                     <button type="button" id="post-registrations" style="margin-right: 5px; margin-left: 5px;">
-                        <img src="${ui.resourceLink("kenyaui", "images/glyphs/ok.png")}"/> Post to Registry
+                        <img src="${ui.resourceLink("kenyaui", "images/glyphs/ok.png")}"/> Post to Cross Border Registry
                     </button>
                     <div class="wait-loading-post-registration"></div>
                     <button type="submit" id="createPatientBtn" style="margin-right: 5px; margin-left: 5px;">
@@ -788,16 +788,18 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
             let value = jq('input[name="nationalUniquePatientNumber"]').val();
             if(!value || jq.trim(value) === '' || jq.trim(value).length == 0) {
                 jq('#createPatientBtn').prop('disabled', true);
-                jq('#post-registrations').prop('disabled', false);
+                // jq('#post-registrations').prop('disabled', false);
             } else {
                 jq('#createPatientBtn').prop('disabled', false);
-                jq('#post-registrations').prop('disabled', true);
+                // jq('#post-registrations').prop('disabled', true);
             }
         }
 
         jQuery('input[name="nationalUniquePatientNumber"]').attr('readonly', true);
         jQuery('input[name="crossborderIdNumber"]').attr('readonly', true);
         jQuery('#createPatientBtn').prop('disabled', false);
+        //jQuery('#post-registrations').prop('disabled', ${enablePostingToCB});
+        jQuery('#post-registrations').prop('disabled', false);
         jQuery('#alien-no').hide();
         jQuery('#huduma-no').hide();
         jQuery('#passport-no').hide();
@@ -1196,6 +1198,7 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
                 jQuery('input[name="personAddress.address1"]').val(),   //address
                 identifierType,
                 identifierValue,
+                crossborderId,
                 jQuery('input[name="telephoneContact"]').val(),
                 jQuery('input[name="alternatePhoneContact"]').val(),
                 jQuery('input[name="emailAddress"]').val(),
@@ -1531,7 +1534,7 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
         }
     }
 
-    function postRegistrationDetailsToCR(firstName,middleName,lastName,dateOfBirth,gender,maritalStatus,occupationStatus,religion,educationStatus,countryCode,defaultMflCode,nascopCCCNumber,countyOfBirth,countyCode,subCounty,ward,village,landMark,address,identificationType,identificationValue,primaryPhone,secondaryPhone,emailAddress,name,relationship,residence,nokPrimaryPhone,nokSecondaryPhone,nokEmailAddress,isAlive) {
+    function postRegistrationDetailsToCR(firstName,middleName,lastName,dateOfBirth,gender,maritalStatus,occupationStatus,religion,educationStatus,countryCode,defaultMflCode,nascopCCCNumber,countyOfBirth,countyCode,subCounty,ward,village,landMark,address,identificationType,identificationValue,crossborderId,primaryPhone,secondaryPhone,emailAddress,name,relationship,residence,nokPrimaryPhone,nokSecondaryPhone,nokEmailAddress,isAlive) {
         // connect to CR server and post data
 
         // Show spinner
@@ -1576,6 +1579,10 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
                 "CountryCode": countryCode,
                 "identificationType": identificationType,
                 "identificationNumber": identificationValue
+            }, {
+                "CountryCode": countryCode,
+                "identificationType": "cross-border-id",
+                "identificationNumber": crossborderId
             }],
             "contact": {
                 "primaryPhone": primaryPhone,
