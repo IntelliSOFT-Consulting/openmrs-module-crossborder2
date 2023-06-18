@@ -1045,7 +1045,12 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
                 jQuery("#nationalID-msgBox").show();
                 return;
             }
-            //gender:
+            let crossborderId = null;
+            if(jQuery('input[name=crossborderIdNumber]').val() !=""){
+                crossborderId = jQuery('input[name=crossborderIdNumber]').val();
+            }
+
+                //gender:
             var gender;
             if(jQuery('input[name=gender]').val() !="") {
                 jQuery("#gender-msgBox").hide();
@@ -1176,6 +1181,7 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
             var defaultMflCode= '${defaultMflCode}';
             //CCC Number
             var nascopCCCNumber= '${nascopCCCNumber}';
+
             postRegistrationDetailsToCR(
                 jQuery('input[name="personName.givenName"]').val(),
                 jQuery('input[name="personName.middleName"]').val(),
@@ -1579,10 +1585,6 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
                 "CountryCode": countryCode,
                 "identificationType": identificationType,
                 "identificationNumber": identificationValue
-            }, {
-                "CountryCode": countryCode,
-                "identificationType": "cross-border-id",
-                "identificationNumber": crossborderId
             }],
             "contact": {
                 "primaryPhone": primaryPhone,
@@ -1592,6 +1594,13 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
             "nextOfKins": []
         }
 
+        if (crossborderId != null) {
+            params["identifications"].push({
+                "CountryCode": countryCode,
+                "identificationType": "cross-border-id",
+                "identificationNumber": crossborderId
+            });
+        }
 
         //Using fragment action to post
         jQuery.getJSON('${ ui.actionLink("crossborder2", "kenyaemr/patient/crDataExchange", "postUpiClientRegistrationInfoToCR")}',

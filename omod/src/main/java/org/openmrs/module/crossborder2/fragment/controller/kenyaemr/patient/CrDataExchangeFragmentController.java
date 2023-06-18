@@ -92,16 +92,16 @@ public class CrDataExchangeFragmentController {
 		ObjectNode objectNode = null;
 		String identificationType = "";
 		String identificationNumber = "";
-		String nupiNumber = "";
+		String crossborderIdNumber = "";
 		Patient patient = null;
 		try {
 			objectNode = (ObjectNode) mapper.readTree(params);
 			if (objectNode != null) {
-				ArrayNode resultsArrayNode = (ArrayNode) objectNode.get("identifications");
+				ArrayNode identifiersArrayNode = (ArrayNode) objectNode.get("identifications");
 				patient = new Patient();
 				patient.setUuid(UUID.randomUUID().toString());
 				patient.setGender(StringUtils.left(objectNode.get("gender").asText(), 1).toUpperCase());
-				patient.setBirthdate(new Date());
+				// patient.setBirthdate(objectNode.get("dob").asText());
 				patient.setBirthdateEstimated(false);
 				patient.setDead(false);
 				patient.setVoided(false);
@@ -112,17 +112,22 @@ public class CrDataExchangeFragmentController {
 				personName.setFamilyName(objectNode.get("lastName").asText());
 				personName.setUuid(UUID.randomUUID().toString());
 				patient.addName(personName);
-				if (resultsArrayNode.size() > 0) {
-					for (int i = 0; i < resultsArrayNode.size(); i++) {
+				
+				// Get client by identificationType:  Identifier type used
+				PatientIdentifierType natIdentifierType = MetadataUtils.existing(PatientIdentifierType.class,
+				    CommonMetadata._PatientIdentifierType.NATIONAL_ID);
+				PatientIdentifierType birtCertIdentifierType = MetadataUtils.existing(PatientIdentifierType.class,
+				    CommonMetadata._PatientIdentifierType.BIRTH_CERTIFICATE_NUMBER);
+				PatientIdentifierType passportIdentifierType = MetadataUtils.existing(PatientIdentifierType.class,
+				    CommonMetadata._PatientIdentifierType.PASSPORT_NUMBER);
+				PatientIdentifierType crossborderIdentifierType = MetadataUtils.existing(PatientIdentifierType.class,
+				    CbConstants._PatientIdentifierType.CROSS_BORDER_IDENTIFIER_UUID);
+				
+				if (identifiersArrayNode.size() > 0) {
+					for (int i = 0; i < identifiersArrayNode.size(); i++) {
 						
-						identificationType = resultsArrayNode.get(i).get("identificationType").asText();
-						identificationNumber = resultsArrayNode.get(i).get("identificationNumber").asText();
-						
-						// Get client by identificationType:  Identifier type used
-						PatientIdentifierType natIdentifierType = MetadataUtils.existing(PatientIdentifierType.class,
-						    CommonMetadata._PatientIdentifierType.NATIONAL_ID);
-						PatientIdentifierType birtCertIdentifierType = MetadataUtils.existing(PatientIdentifierType.class,
-						    CommonMetadata._PatientIdentifierType.BIRTH_CERTIFICATE_NUMBER);
+						identificationType = identifiersArrayNode.get(i).get("identificationType").asText();
+						identificationNumber = identifiersArrayNode.get(i).get("identificationNumber").asText();
 						
 						PatientService patientService = Context.getPatientService();
 						List<Patient> patients = patientService.getPatients(null, identificationNumber.trim(),
@@ -133,22 +138,24 @@ public class CrDataExchangeFragmentController {
 							
 							// Got patient
 							// Check whether patient already has NUPI
-							PatientIdentifierType nupiIdentifierType = MetadataUtils.existing(PatientIdentifierType.class,
-							    CbConstants._PatientIdentifierType.CROSS_BORDER_IDENTIFIER_UUID);
-							PatientIdentifier nupiObject = patient.getPatientIdentifier(nupiIdentifierType);
-							
-							nupiNumber = nupiObject.getIdentifier();
 						} else {
 							PatientIdentifier patientIdentifier = new PatientIdentifier();
 							patientIdentifier.setPatient(patient);
 							if (identificationType.equals("national-id")) {
 								patientIdentifier.setIdentifierType(natIdentifierType);
-							} else {
+							} else if (identificationType.equals("birth-certificate")) {
 								patientIdentifier.setIdentifierType(birtCertIdentifierType);
+							} else if (identificationType.equals("passport")) {
+								patientIdentifier.setIdentifierType(passportIdentifierType);
+							} else if (identificationType.equals("cross-border-id")) {
+								patientIdentifier.setIdentifierType(crossborderIdentifierType);
 							}
-							patientIdentifier.setIdentifier(identificationNumber);
 							
-							patient.addIdentifier(patientIdentifier);
+							if (patientIdentifier.getIdentifierType() != null) {
+								patientIdentifier.setIdentifier(identificationNumber);
+								patient.addIdentifier(patientIdentifier);
+							}
+							
 						}
 						
 					}
