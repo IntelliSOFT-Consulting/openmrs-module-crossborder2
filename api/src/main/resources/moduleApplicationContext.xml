@@ -86,4 +86,13 @@
             </list>
         </property>
     </bean>
+
+
+    <!-- ===================== Identifiers ===================== -->
+
+    <!-- Cross Border Identification Number -->
+    <bean id="kenyaemr.common.identifier.crossborder" class="org.openmrs.module.kenyacore.identifier.IdentifierDescriptor">
+        <property name="targetUuid" value="e5e9a994-12e2-42c3-9c02-5abdc0fe40e8" />
+        <property name="order" value="200" />
+    </bean>
 </beans>
