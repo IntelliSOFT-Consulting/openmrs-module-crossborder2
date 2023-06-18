@@ -6,9 +6,13 @@
     def menuItems = [
             [ label: "Back to previous step", iconProvider: "kenyaui", icon: "buttons/back.png", href: ui.pageLink("crossborder2", "kenyaemr/patient/cbPatientRegistrationSearch") ]
     ]
+
+    if (person && person.id) {
+        menuItems.push([ label: "Next step - View profile", iconProvider: "kenyaui", icon: "buttons/registration.png", href: ui.pageLink("kenyaemr", "registration/registrationViewPatient?patientId=${person?.id}") ])
+    }
 %>
 <div class="ke-page-sidebar">
-    ${ ui.includeFragment("kenyaui", "widget/panelMenu", [ heading: "Create Patient", items: menuItems ]) }
+    ${ ui.includeFragment("kenyaui", "widget/panelMenu", [ heading: "Create/Edit Patient", items: menuItems ]) }
 
     <% if (!person) { %>
     <div class="ke-panel-frame" id="ng-similarpatients" ng-controller="SimilarPatients" ng-init="init('${ currentApp }', 'kenyaemr', 'registration/registrationViewPatient')">
