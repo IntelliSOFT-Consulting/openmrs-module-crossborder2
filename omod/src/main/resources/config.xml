@@ -60,17 +60,36 @@
 	 /Required Privileges -->
 
 
-	<!-- Required Global Properties 
+	<!-- Required Global Properties -->
 	<globalProperty>
-		<property>@MODULE_ID@.someProperty</property>
-		<defaultValue></defaultValue>
+		<property>@MODULE_ID@.enablePostingToCB</property>
+		<defaultValue>False</defaultValue>
 		<description>
-			A description of the global property goes here.  The description
-			should explain enough for administrators to understand the purpose
-			and possible values for the global property.
+			Property that determines whether or not to post patient data to the cross border client registry
 		</description>
 	</globalProperty>
-	/Required Global Properties -->
+	<globalProperty>
+		<property>@MODULE_ID@.mpiServerUrl</property>
+		<defaultValue>http://hiedhs.intellisoftkenya.com:5001/</defaultValue>
+		<description>
+			CB Registry MPI URL
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.mpiServerUsername</property>
+		<defaultValue>kemr</defaultValue>
+		<description>
+			CB Registry MPI User Name
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.mpiServerPassword</property>
+		<defaultValue>password</defaultValue>
+		<description>
+			CB Registry MPI Passsword
+		</description>
+	</globalProperty>
+	<!-- /Required Global Properties -->
 	
 	<!--
 	<dwr>

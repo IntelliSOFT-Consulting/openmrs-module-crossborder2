@@ -23,16 +23,21 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.crossborder2.CbConstants;
 
 import java.io.IOException;
 
 public class Http {
 	
-	private static final String URL = "http://hiedhs.intellisoftkenya.com:5001/";
+	private static final String URL = Context.getAdministrationService().getGlobalProperty(CbConstants.PROP_MPI_SERVER_URL,
+	    "http://hiedhs.intellisoftkenya.com:5001/");
 	
-	private static final String USERNAME = "kemr";
+	private static final String USERNAME = Context.getAdministrationService().getGlobalProperty(
+	    CbConstants.PROP_MPI_SERVER_USERNAME, "kemr");
 	
-	private static final String PASSWORD = "password";
+	private static final String PASSWORD = Context.getAdministrationService().getGlobalProperty(
+	    CbConstants.PROP_MPI_PASSWORD, "password");
 	
 	public String get(String endpoint, String query) {
 		HttpClient httpClient = getHttpClient();
