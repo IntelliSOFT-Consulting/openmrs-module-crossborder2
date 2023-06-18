@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.parser.DataFormatException;
 import ca.uhn.fhir.parser.IParser;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
@@ -125,8 +126,16 @@ public class CbPatientService {
 				patients.add(p);
 			}
 		}
-		catch (RuntimeException exception) {
-			return patients;
+		catch (DataFormatException exception) {
+			try {
+				org.hl7.fhir.r4.model.Patient patient = fhirContext.newJsonParser().parseResource(
+				    org.hl7.fhir.r4.model.Patient.class, jsonResponse);
+				Patient p = cbPatientConverter.convertToOpenMrsPatient(patient);
+				patients.add(p);
+			}
+			catch (DataFormatException exception1) {
+				return patients;
+			}
 		}
 		
 		return patients;
@@ -149,15 +158,15 @@ public class CbPatientService {
 		String query = "";
 		if (searchParams.containsKey("cbId")) {
 			
-			query += "identifier=" + urlEncode(CROSS_BORDER_ID_SYSTEM_URN) + "|" + urlEncode(searchParams.get("cbId"));
+			query += "identifier=" + urlEncode(CROSS_BORDER_ID_SYSTEM_URN + "|" + searchParams.get("cbId"));
 		}
 		
 		if (searchParams.containsKey("clinicNo")) {
-			query += "&identifier=" + urlEncode(CLINIC_NUMBER_SYSTEM_URN) + "|" + urlEncode(searchParams.get("clinicNo"));
+			query += "&identifier=" + urlEncode(CLINIC_NUMBER_SYSTEM_URN + "|" + searchParams.get("clinicNo"));
 		}
 		
 		if (searchParams.containsKey("nationalId")) {
-			query += "&identifier=" + urlEncode(NATIONAL_ID_SYSTEM_URN) + "|" + urlEncode(searchParams.get("clinicNo"));
+			query += "&identifier=" + urlEncode(NATIONAL_ID_SYSTEM_URN + "|" + searchParams.get("clinicNo"));
 		}
 		
 		if (searchParams.containsKey("name")) {
