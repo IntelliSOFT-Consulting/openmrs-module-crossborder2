@@ -113,17 +113,22 @@ public class AdvancedEditPatientFragmentController {
 	        @SpringBean CbPatientService cbPatientService, FragmentModel model) {
 		
 		String pageHeading = "";
+		
 		if (patient != null && person != null) {
 			if (crossBorderId != null) {
 				patient = cbPatientService.findPatient(crossBorderId);
 			}
 			if (patient == null) {
-				throw new RuntimeException("A patient or person can be provided, but not both");
+				throw new RuntimeException("A patient or person must be provided");
 			}
+		}
+		
+		if ((patient != null && patient.getId() != null) || (person != null && person.getId() != null)) {
 			pageHeading = "Edit Patient";
 		} else {
 			pageHeading = "Add Patient";
 		}
+		
 		model.addAttribute("pageHeading", pageHeading);
 		Person existing = patient != null ? patient : person;
 		
@@ -257,6 +262,9 @@ public class AdvancedEditPatientFragmentController {
 		model.addAttribute("rankOptions", rankOptions);
 		model.addAttribute("isKDoD", isKDoD);
 		model.addAttribute("idTypes", Context.getPatientService().getAllPatientIdentifierTypes());
+		String enablePostingToCB = Context.getAdministrationService().getGlobalPropertyValue(
+		    CbConstants.PROP_ENABLE_POSTING_TO_CROSSBORDER, "False");
+		model.addAttribute("enablePostingToCB", Boolean.valueOf(enablePostingToCB));
 		
 	}
 	
