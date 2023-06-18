@@ -1,5 +1,14 @@
 package org.openmrs.module.crossborder2.fragment.controller.kenyaemr.patient;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
@@ -19,14 +28,6 @@ import org.openmrs.ui.framework.annotation.FragmentParam;
 import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 public class CrDataExchangeFragmentController {
 	
@@ -101,9 +102,11 @@ public class CrDataExchangeFragmentController {
 				patient = new Patient();
 				patient.setUuid(UUID.randomUUID().toString());
 				patient.setGender(StringUtils.left(objectNode.get("gender").asText(), 1).toUpperCase());
-				// patient.setBirthdate(objectNode.get("dob").asText());
+				SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MMM-yyyy");
+				Date dob = DATE_FORMAT.parse(objectNode.get("dateOfBirth").asText());
+				patient.setBirthdate(dob);
 				patient.setBirthdateEstimated(false);
-				patient.setDead(false);
+				patient.setDead(!Boolean.valueOf(objectNode.get("isAlive").asText()));
 				patient.setVoided(false);
 				patient.setDeathDate(null);
 				PersonName personName = new PersonName();
