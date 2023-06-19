@@ -484,7 +484,7 @@
         <fieldset>
             <div class="ke-panel-footer centre-content">
                 <div class="buttons-post-create-patient centre-content">
-                    <button type="button" id="post-registrations" style="margin-right: 5px; margin-left: 5px;">
+                    <button type="button" id="post-registrations" style="margin-right: 5px; margin-left: 5px;display: none">
                         <img src="${ui.resourceLink("kenyaui", "images/glyphs/ok.png")}"/> Post to Cross Border Registry
                     </button>
                     <div class="wait-loading-post-registration"></div>
