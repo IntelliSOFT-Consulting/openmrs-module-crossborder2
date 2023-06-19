@@ -15,7 +15,7 @@ public class CbMetadata extends AbstractMetadataBundle {
 	
 	public static class _Privilege {
 		
-		public static final String APP_CROSS_BORDER_ADMIN = "App: crossborder2.app.cb";
+		public static final String APP_CROSS_BORDER_ADMIN = "App: crossborder2.cb";
 	}
 	
 	public static final class _Role {
