@@ -1,8 +1,9 @@
 package org.openmrs.module.crossborder2.metadata;
 
+import static org.openmrs.module.crossborder2.CbConstants._EncounterType.CB_SCREENING_ENCOUNTER_TYPE_UUID;
 import static org.openmrs.module.metadatadeploy.bundle.CoreConstructors.*;
 
-import org.openmrs.module.kenyaemr.metadata.HivMetadata;
+import org.openmrs.module.crossborder2.CbConstants;
 import org.openmrs.module.metadatadeploy.bundle.AbstractMetadataBundle;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +26,14 @@ public class CbMetadata extends AbstractMetadataBundle {
 	
 	@Override
 	public void install() throws Exception {
-		install(form("Cross Border Screening", null, HivMetadata._EncounterType.HIV_CONSULTATION, "1",
+		
+		install(encounterType("Cross Border Screening", CbConstants._EncounterType.CB_SCREENING_ENCOUNTER_TYPE_UUID, "1"));
+
+		install(encounterType("Cross Border Referral", CbConstants._EncounterType.CB_REFERRAL_ENCOUNTER_TYPE_UUID, "1"));
+		
+		install(form("Cross Border Screening", null, CbConstants._EncounterType.CB_SCREENING_ENCOUNTER_TYPE_UUID, "1",
 		    CB_SCREENING_FORM_UUID));
-		install(form("Cross Border Referral", null, HivMetadata._EncounterType.HIV_CONSULTATION, "1", CB_REFERRAL_FORM_UUID));
+		install(form("Cross Border Referral", null, CbConstants._EncounterType.CB_REFERRAL_ENCOUNTER_TYPE_UUID, "1", CB_REFERRAL_FORM_UUID));
 		
 		install(privilege(_Privilege.APP_CROSS_BORDER_ADMIN, "Able to access Cross-Border App"));
 		

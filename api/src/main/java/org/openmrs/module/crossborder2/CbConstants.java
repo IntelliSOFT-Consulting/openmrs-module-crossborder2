@@ -14,6 +14,13 @@ public class CbConstants {
 	
 	public static final String PROP_ENABLE_POSTING_TO_CROSSBORDER = "crossborder2.enablePostingToCB";
 	
+	public static final class _EncounterType {
+		
+		public static final String CB_REFERRAL_ENCOUNTER_TYPE_UUID = "5C6DA02B-51E8-4B3D-BB67-BE8F75C4CCE1";
+		
+		public static final String CB_SCREENING_ENCOUNTER_TYPE_UUID = "6536A8A3-7B77-414D-A0F0-E08A7178FF0F";
+	}
+	
 	public static final class _PatientIdentifierType {
 		
 		public static final String NATIONAL_ID = "49af6cdc-7968-4abb-bf46-de10d7f4859f";
