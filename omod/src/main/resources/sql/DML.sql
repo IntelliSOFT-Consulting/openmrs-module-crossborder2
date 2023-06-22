@@ -68,7 +68,6 @@ SET populate_script_id = LAST_INSERT_ID();
 CALL sp_populate_etl_crossborder_screening();
 
 
-
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= populate_script_id;
 
 SELECT "Completed first time setup", CONCAT("Time: ", NOW());
