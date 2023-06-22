@@ -95,4 +95,25 @@
         <property name="targetUuid" value="e5e9a994-12e2-42c3-9c02-5abdc0fe40e8" />
         <property name="order" value="200" />
     </bean>
+
+    <bean id="kenyaemr.crossborder.etl.routines" class="org.openmrs.module.kenyacore.etl.ETLConfiguration">
+        <property name="sourceModule">
+            <value>2</value>
+        </property>
+        <property name="ddlProcedures">
+            <set>
+                <value>create_crossborder_etl_tables</value>
+            </set>
+        </property>
+        <property name="dmlProcedures">
+            <set>
+                <value>sp_first_time_crossborder_setup</value>
+            </set>
+        </property>
+        <property name="incrementalUpdatesProcedures">
+            <set>
+                <value>sp_scheduled_crossborder_updates</value>
+            </set>
+        </property>
+    </bean>
 </beans>
