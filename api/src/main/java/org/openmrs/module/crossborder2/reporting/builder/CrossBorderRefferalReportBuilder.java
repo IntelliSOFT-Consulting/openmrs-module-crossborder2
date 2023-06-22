@@ -16,26 +16,28 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-
 @Component
 @Builds({ "cross.border.referral" })
 public class CrossBorderRefferalReportBuilder extends AbstractReportBuilder {
-    private final CrossBorderReferralDataset crossRefeeralDataset;
-
-    @Autowired
-    public CrossBorderRefferalReportBuilder(CrossBorderReferralDataset crossRefeeralDataset) {
-        this.crossRefeeralDataset = crossRefeeralDataset;
-    }
-
-    @Override
-    protected List<Parameter> getParameters(ReportDescriptor reportDescriptor) {
-        return Arrays.asList(new Parameter("startDate", "Start Date", Date.class), new Parameter("endDate", "End Date",
-                Date.class), new Parameter("dateBasedReporting", "", String.class));
-    }
-
-    @Override
-    protected List<Mapped<DataSetDefinition>> buildDataSets(ReportDescriptor reportDescriptor, ReportDefinition reportDefinition) {
-
-        return Arrays.asList(ReportUtils.map(crossRefeeralDataset.getCrossBorderDataset(), "startDate=${startDate},endDate=${endDate}"));
-    }
+	
+	private final CrossBorderReferralDataset crossRefeeralDataset;
+	
+	@Autowired
+	public CrossBorderRefferalReportBuilder(CrossBorderReferralDataset crossRefeeralDataset) {
+		this.crossRefeeralDataset = crossRefeeralDataset;
+	}
+	
+	@Override
+	protected List<Parameter> getParameters(ReportDescriptor reportDescriptor) {
+		return Arrays.asList(new Parameter("startDate", "Start Date", Date.class), new Parameter("endDate", "End Date",
+		        Date.class), new Parameter("dateBasedReporting", "", String.class));
+	}
+	
+	@Override
+	protected List<Mapped<DataSetDefinition>> buildDataSets(ReportDescriptor reportDescriptor,
+	        ReportDefinition reportDefinition) {
+		
+		return Arrays.asList(ReportUtils.map(crossRefeeralDataset.getCrossBorderDataset(),
+		    "startDate=${startDate},endDate=${endDate}"));
+	}
 }

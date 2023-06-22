@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component;
 @Component
 @Builds({ "cross.border.referral" })
 public class CrossBorderReferralListReportBuilder {
-
+	
 }
