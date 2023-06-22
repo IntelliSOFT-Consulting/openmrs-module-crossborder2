@@ -11,12 +11,7 @@ package org.openmrs.module.crossborder2;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Encounter;
-import org.openmrs.api.context.Context;
-import org.openmrs.event.Event;
-import org.openmrs.event.EventListener;
 import org.openmrs.module.BaseModuleActivator;
-import org.openmrs.module.crossborder2.openhim.listener.EncounterEventListener;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
@@ -25,16 +20,16 @@ public class CbApplicationActivator extends BaseModuleActivator {
 	
 	private Log log = LogFactory.getLog(this.getClass());
 	
-	private EventListener getEncounterEventListener() {
-		return Context.getRegisteredComponent("cb.EncounterEventListener", EncounterEventListener.class);
-	}
+	//	private EventListener getEncounterEventListener() {
+	//		return Context.getRegisteredComponent("cb.EncounterEventListener", EncounterEventListener.class);
+	//	}
 	
 	/**
 	 * @see #started()
 	 */
 	public void started() {
 		log.info("Started CB Application");
-		Event.subscribe(Encounter.class, null, getEncounterEventListener());
+		// Event.subscribe(Encounter.class, null, getEncounterEventListener());
 	}
 	
 	/**
