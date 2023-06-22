@@ -22,40 +22,38 @@ BEGIN
 
 
 -- Create table etl_clinical_referral --
-    create table kenyaemr_etl.etl_crossborder_referral
-    (
-        patient_id                               INT(11),
-        encounter_id                             INT(11) NOT NULL primary key,
-        visit_id                                 INT(11),
-        location_id                              INT(11),
-        visit_date                               DATE,
-        nationality                              INT(15),
-        nationality_other                        VARCHAR(255),
-        referring_facility_name                  VARCHAR(255) not null,
-        referred_facility_name                   VARCHAR(255) not null,
-        type_of_care                             INT(15),
-        type_of_care_other                       VARCHAR(255),
-        date_of_referral                         DATETIME,
-        lhss_site                                VARCHAR(255),
-        target_population                        INT(15),
-        target_population_other                  VARCHAR(255),
-        hypersensitivity                         VARCHAR(255),
-        poor_adherence                           VARCHAR(255),
-        reason_for_referral                      VARCHAR(255),
-        reason_for_referral_other                VARCHAR(255),
-        general_comments_if_reffered             VARCHAR(255),
-        referral_recommendation_continue_ctx     VARCHAR(255),
-        referral_recommendation_eligible_for_art VARCHAR(255),
-        referral_recommendation_continue_art     VARCHAR(255),
-        creator                                  INT(11),
-        date_created                             DATETIME,
-        date_last_modified                       DATETIME,
-        INDEX (patient_id),
-        INDEX (visit_id),
-        INDEX (visit_date),
-        INDEX (encounter_id)
-    );
-    SELECT "Successfully created etl_crossborder_referral table";
+
+create table kenyaemr_etl.etl_crossborder_referral
+(
+    patient_id                               INT,
+    encounter_id                             INT,
+    visit_id                                 INT,
+    location_id                              INT,
+    visit_date                               DATE,
+    nationality                              INT(15),
+    referring_facility_name                  VARCHAR(255) not null,
+    referred_facility_name                   VARCHAR(255) not null,
+    type_of_care                             INT(15),
+    date_of_referral                         DATETIME,
+    target_population                        INT(15),
+    reason_for_referral                      VARCHAR(255),
+    general_comments_if_reffered             VARCHAR(255),
+    referral_recommendation_continue_art     VARCHAR(255),
+    referring_hc_provider                    VARCHAR(255),
+    referring_hc_provider_email              VARCHAR(255),
+    referring_hc_provider_telephone          VARCHAR(255),
+    referring_hc_provider_cadre              VARCHAR(255),
+    creator                                  INT,
+    date_created                             DATETIME,
+    date_last_modified                       DATETIME,
+    voided                                   INT,
+    INDEX (patient_id),
+    INDEX (visit_id),
+    INDEX (visit_date),
+    INDEX (encounter_id)
+);
+
+SELECT "Successfully created etl_crossborder_referral table";
 
 -- Create table etl_crossborder_screening--
     create table kenyaemr_etl.etl_crossborder_screening
