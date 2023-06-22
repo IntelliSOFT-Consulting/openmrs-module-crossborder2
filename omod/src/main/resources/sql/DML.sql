@@ -38,7 +38,7 @@ select
     max(if(o.concept_id=5000015,o.value_coded,null)) as traveled_last_12_months,
     max(if(o.concept_id=5000016,o.value_numeric,null)) as duration_of_stay,
     max(if(o.concept_id=5000018,o.value_coded,null)) as frequency_of_travel,
-    max(if(o.concept_id=5000030,o.value_coded,null))sp_first_time_crossborder_setup as type_of_service
+    max(if(o.concept_id=5000030,o.value_coded,null)) as type_of_service
 from encounter e
          inner join
      (
