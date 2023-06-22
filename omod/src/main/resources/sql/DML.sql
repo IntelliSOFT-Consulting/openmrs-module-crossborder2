@@ -1,3 +1,8 @@
+-- Procedure sp_populate_etl_crossborder_screening --
+DROP PROCEDURE IF EXISTS sp_populate_etl_crossborder_screening $$
+CREATE PROCEDURE sp_populate_etl_crossborder_screening()
+BEGIN
+    SELECT "Processing crossborder screening report";
 INSERT INTO kenyaemr_etl.etl_crossborder_screening
     (patient_id,
     visit_id,
@@ -33,7 +38,7 @@ select
     max(if(o.concept_id=5000015,o.value_coded,null)) as traveled_last_12_months,
     max(if(o.concept_id=5000016,o.value_numeric,null)) as duration_of_stay,
     max(if(o.concept_id=5000018,o.value_coded,null)) as frequency_of_travel,
-    max(if(o.concept_id=5000030,o.value_coded,null)) as type_of_service
+    max(if(o.concept_id=5000030,o.value_coded,null))sp_first_time_crossborder_setup as type_of_service
 from encounter e
          inner join
      (
@@ -44,3 +49,27 @@ from encounter e
     and o.concept_id in (5000010,5000023,5000022,5000013,5000014,5000015,5000016,5000018,5000030)
 where e.voided=0
 group by e.patient_id, e.encounter_id;
+
+ SELECT "Completed processing crossborder screening report";
+END $$
+
+
+
+-- ------------------------------------------- running all procedures -----------------------------
+
+DROP PROCEDURE IF EXISTS sp_first_time_crossborder_setup $$
+CREATE PROCEDURE sp_first_time_crossborder_setup()
+BEGIN
+DECLARE populate_script_id INT(11);
+SELECT "Beginning first time setup", CONCAT("Time: ", NOW());
+INSERT INTO kenyaemr_etl.etl_script_status(script_name, start_time) VALUES('initial_population_of_tables', NOW());
+SET populate_script_id = LAST_INSERT_ID();
+
+CALL sp_populate_etl_crossborder_screening();
+
+
+
+UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= populate_script_id;
+
+SELECT "Completed first time setup", CONCAT("Time: ", NOW());
+END $$
