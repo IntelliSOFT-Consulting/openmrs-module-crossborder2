@@ -27,13 +27,16 @@ public class CbMetadata extends AbstractMetadataBundle {
 	@Override
 	public void install() throws Exception {
 		
-		install(encounterType("Cross Border Screening", "Cross Border Screening encounter type", CbConstants._EncounterType.CB_SCREENING_ENCOUNTER_TYPE_UUID));
-
-		install(encounterType("Cross Border Referral","Cross Border Referral encounter type", CbConstants._EncounterType.CB_REFERRAL_ENCOUNTER_TYPE_UUID ));
+		install(encounterType("Cross Border Screening", "Cross Border Screening encounter type",
+		    CbConstants._EncounterType.CB_SCREENING_ENCOUNTER_TYPE_UUID));
+		
+		install(encounterType("Cross Border Referral", "Cross Border Referral encounter type",
+		    CbConstants._EncounterType.CB_REFERRAL_ENCOUNTER_TYPE_UUID));
 		
 		install(form("Cross Border Screening", null, CbConstants._EncounterType.CB_SCREENING_ENCOUNTER_TYPE_UUID, "1",
 		    CB_SCREENING_FORM_UUID));
-		install(form("Cross Border Referral", null, CbConstants._EncounterType.CB_REFERRAL_ENCOUNTER_TYPE_UUID, "1", CB_REFERRAL_FORM_UUID));
+		install(form("Cross Border Referral", null, CbConstants._EncounterType.CB_REFERRAL_ENCOUNTER_TYPE_UUID, "1",
+		    CB_REFERRAL_FORM_UUID));
 		
 		install(privilege(_Privilege.APP_CROSS_BORDER_ADMIN, "Able to access Cross-Border App"));
 		
