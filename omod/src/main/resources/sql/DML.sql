@@ -1,4 +1,8 @@
--- Populating etl_crossborder_screening table
+-- Procedure sp_populate_etl_crossborder_screening --
+DROP PROCEDURE IF EXISTS sp_populate_etl_crossborder_screening $$
+CREATE PROCEDURE sp_populate_etl_crossborder_screening()
+BEGIN
+SELECT "Processing crossborder screening report";
 INSERT INTO kenyaemr_etl.etl_crossborder_screening
     (patient_id,
     visit_id,
@@ -45,9 +49,13 @@ from encounter e
     and o.concept_id in (5000010,5000023,5000022,5000013,5000014,5000015,5000016,5000018,5000030)
 where e.voided=0
 group by e.patient_id, e.encounter_id;
+SELECT "Completed processing crossborder screening report";
+END $$
 
 -- Populating etl_crossborder_referral table
-
+DROP PROCEDURE IF EXISTS sp_populate_etl_crossborder_referral $$
+CREATE PROCEDURE sp_populate_etl_crossborder_referral()
+BEGIN
 Insert INTO kenyaemr_etl.etl_crossborder_referral
 (
     patient_id,
@@ -106,5 +114,24 @@ from encounter e
     and o.concept_id in (161550,162724,5000030,163181,1887,161011,5000043,5000044,5000045,5000046,5000047,5000023,5000022)
 where e.voided=0
 group by e.patient_id, e.encounter_id;
+SELECT "Completed processing crossborder referral report";
+END $$
 
 
+-- ------------------------------------------- running all procedures -----------------------------
+
+DROP PROCEDURE IF EXISTS sp_first_time_crossborder_setup $$
+CREATE PROCEDURE sp_first_time_crossborder_setup()
+BEGIN
+DECLARE populate_script_id INT(11);
+SELECT "Beginning first time setup", CONCAT("Time: ", NOW());
+INSERT INTO kenyaemr_etl.etl_script_status(script_name, start_time) VALUES('initial_population_of_tables', NOW());
+SET populate_script_id = LAST_INSERT_ID();
+
+CALL sp_populate_etl_crossborder_screening();
+
+
+UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= populate_script_id;
+
+SELECT "Completed first time setup", CONCAT("Time: ", NOW());
+END $$
