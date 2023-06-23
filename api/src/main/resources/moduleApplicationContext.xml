@@ -110,11 +110,11 @@
                 <value>sp_first_time_crossborder_setup</value>
             </set>
         </property>
-<!--        <property name="incrementalUpdatesProcedures">-->
-<!--            <set>-->
-<!--                <value>sp_scheduled_crossborder_updates</value>-->
-<!--            </set>-->
-<!--        </property>-->
+        <property name="incrementalUpdatesProcedures">
+            <set>
+                <value>cb_sp_scheduled_updates</value>
+            </set>
+        </property>
     </bean>
     <bean id="cross.border.config.report" class="org.openmrs.module.kenyacore.report.ReportConfiguration">
         <property name="commonReports">
@@ -139,7 +139,7 @@
     <bean id="cross.border.referral" class="org.openmrs.module.kenyacore.report.HybridReportDescriptor">
         <property name="targetUuid" value="e6f85c19-8aa7-4d59-b804-12e9bcf4acbd" />
         <property name="name" value="Cross Border Referral" />
-        <property name="description" value="Cross Border Referral Report" />
+        <property name="description" value="Cross Border Referral Listing" />
         <property name="apps">
             <set>
                 <ref bean="kenyaemr.app.reports" />
