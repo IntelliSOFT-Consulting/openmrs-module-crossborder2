@@ -35,14 +35,17 @@ public class CrossBorderScreeningDataset {
 		ind.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		ind.addParameter(new Parameter("endDate", "End Date", Date.class));
 		ind.addDimension("gender", ReportUtils.map(commonDimensions.getGender(), ""));
-		EmrReportingUtils.addRow(ind,“SC”, “Screening”, ReportUtils.map(crossBorderIndicators.getCrossborderReferralPatients(), indParams), getGender(), Arrays.asList("01","02"));
-		ind.addColumn("referral", "Number referrals",
-		    ReportUtils.map(crossBorderIndicators.getCrossborderReferralPatients(), indParams), "");
+		EmrReportingUtils.addRow(ind, "SC", "Screening",
+		    ReportUtils.map(crossBorderIndicators.getCrossborderReferralPatients(), indParams), getGender(),
+		    Arrays.asList("01", "02","03"));
+
 		return ind;
 	}
+	
 	private List<ColumnParameters> getGender() {
-		ColumnParameters cpMale = new ColumnParameters("Male","Male","gender=M");
-		ColumnParameters cpFemale = new ColumnParameters("Female","Female","gender=F");
-		return Arrays.asList(cpMale,cpFemale);
+		ColumnParameters cpMale = new ColumnParameters("Male", "Male", "gender=M");
+		ColumnParameters cpFemale = new ColumnParameters("Female", "Female", "gender=F");
+		ColumnParameters cpTotal = new ColumnParameters("Total", "Total", "");
+		return Arrays.asList(cpMale, cpFemale, cpTotal);
 	}
 }
