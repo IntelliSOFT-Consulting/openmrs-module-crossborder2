@@ -1,9 +1,10 @@
--- Procedure sp_populate_etl_crossborder_screening --
+
+-- Update crossborder screening procedure ----
 DROP PROCEDURE IF EXISTS sp_populate_etl_crossborder_screening $$
-CREATE PROCEDURE sp_populate_etl_crossborder_screening()
+CREATE PROCEDURE sp_populate_etl_crossborder_screening(IN last_update_time DATETIME)
 
 BEGIN
-SELECT "Processing crossborder screening report";
+
 INSERT INTO kenyaemr_etl.etl_crossborder_screening
     (patient_id,
     visit_id,
@@ -48,15 +49,38 @@ from encounter e
          inner join person p on p.person_id=e.patient_id and p.voided=0
          left outer join obs o on o.encounter_id=e.encounter_id and o.voided=0
     and o.concept_id in (5000010,5000023,5000022,5000013,5000014,5000015,5000016,5000018,5000030)
-where e.voided=0
-group by e.patient_id, e.encounter_id;
-SELECT "Completed processing crossborder screening report";
+where e.voided=0 and e.date_created >= last_update_time
+   or e.date_changed >=  last_update_time
+   or e.date_voided >=  last_update_time
+   or o.date_created >= last_update_time
+   or o.date_voided >=  last_update_time
+group by e.patient_id, e.encounter_id
+    ON DUPLICATE KEY UPDATE
+                         visit_date=VALUES(visit_date),
+                         date_created=VALUES(date_created),
+                         visit_date=VALUES(visit_date),
+                         date_created=VALUES(date_created),
+                         date_last_modified=VALUES(date_last_modified),
+                         place_of_residence_country=VALUES(place_of_residence_country),
+                         nationality=VALUES(nationality),
+                         target_population=VALUES(target_population),
+                         traveled_last_3_months=VALUES(traveled_last_3_months),
+                         traveled_last_6_months=VALUES(traveled_last_6_months),
+                         traveled_last_12_months=VALUES(traveled_last_12_months),
+                         duration_of_stay=VALUES(duration_of_stay),
+                         frequency_of_travel=VALUES(frequency_of_travel),
+                         type_of_service=VALUES(type_of_service),
+                         creator=VALUES(creator);
+
 END $$
 
--- Populating etl_crossborder_referral table
+-- Update crossBorder referral procedure ----
+
 DROP PROCEDURE IF EXISTS sp_populate_etl_crossborder_referral $$
-CREATE PROCEDURE sp_populate_etl_crossborder_referral()
+CREATE PROCEDURE sp_populate_etl_crossborder_referral(IN last_update_time DATETIME)
+
 BEGIN
+
 Insert INTO kenyaemr_etl.etl_crossborder_referral
 (
     patient_id,
@@ -113,27 +137,52 @@ from encounter e
          inner join person p on p.person_id=e.patient_id and p.voided=0
          left outer join obs o on o.encounter_id=e.encounter_id and o.voided=0
     and o.concept_id in (161550,162724,5000030,163181,1887,161011,5000043,5000044,5000045,5000046,5000047,5000023,5000022)
-where e.voided=0
-group by e.patient_id, e.encounter_id;
-SELECT "Completed processing crossborder referral report";
+where e.voided=0 and e.date_created >= last_update_time
+   or e.date_changed >=  last_update_time
+   or e.date_voided >=  last_update_time
+   or o.date_created >=  last_update_time
+   or o.date_voided >=  last_update_time
+group by e.patient_id, e.encounter_id
+    ON DUPLICATE KEY UPDATE
+                         visit_date=VALUES(visit_date),
+                         nationality=VALUES(nationality),
+                         referring_facility_name=VALUES(referring_facility_name),
+                         referred_facility_name=VALUES(referred_facility_name),
+                         type_of_care=VALUES(type_of_care),
+                         date_of_referral=VALUES(date_of_referral),
+                         reason_for_referral=VALUES(reason_for_referral),
+                         target_population=VALUES(target_population),
+                         general_comments_if_reffered=VALUES(general_comments_if_reffered),
+                         referral_recommendation_continue_art=VALUES(referral_recommendation_continue_art),
+                         referring_hc_provider=VALUES(referring_hc_provider),
+                         referring_hc_provider_email=VALUES(referring_hc_provider_email),
+                         referring_hc_provider_telephone=VALUES(referring_hc_provider_telephone),
+                         referring_hc_provider_cadre=VALUES(referring_hc_provider_cadre),
+                         date_last_modified=VALUES(date_last_modified),
+                         creator=VALUES(creator),
+                         voided=VALUES(voided),
+                         creator=VALUES(creator);
 END $$
 
+-- ----------------------------  scheduled updates ---------------------
 
--- ------------------------------------------- running all procedures -----------------------------
-
-DROP PROCEDURE IF EXISTS sp_first_time_crossborder_setup $$
-CREATE PROCEDURE sp_first_time_crossborder_setup()
+DROP PROCEDURE IF EXISTS cb_sp_scheduled_updates $$
+CREATE PROCEDURE cb_sp_scheduled_updates()
 BEGIN
-DECLARE populate_script_id INT(11);
-SELECT "Beginning first time setup", CONCAT("Time: ", NOW());
-INSERT INTO kenyaemr_etl.etl_script_status(script_name, start_time) VALUES('initial_population_of_tables', NOW());
-SET populate_script_id = LAST_INSERT_ID();
+    DECLARE update_script_id INT(11);
+    DECLARE last_update_time DATETIME;
+SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status where stop_time is not null or stop_time !="";
 
-CALL sp_populate_etl_crossborder_screening();
-CALL sp_populate_etl_crossborder_referral();
+INSERT INTO kenyaemr_etl.etl_script_status(script_name, start_time) VALUES('scheduled_updates', NOW());
+SET update_script_id = LAST_INSERT_ID();
+
+CALL sp_populate_etl_crossborder_referral(last_update_time);
+CALL sp_populate_etl_crossborder_screening(last_update_time);
 
 
-UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where id= populate_script_id;
+UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where  id= update_script_id;
+DELETE FROM kenyaemr_etl.etl_script_status where script_name in ("KenyaEMR_Data_Tool", "scheduled_updates") and start_time < DATE_SUB(NOW(), INTERVAL 12 HOUR);
+SELECT update_script_id;
 
-SELECT "Completed first time setup", CONCAT("Time: ", NOW());
 END $$
+
