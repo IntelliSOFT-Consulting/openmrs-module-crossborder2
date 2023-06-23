@@ -121,13 +121,14 @@
             <set>
                 <ref bean="cross.border.referral" />
                 <ref bean="cross.border.screening" />
+                <ref bean="cross.border.indicator.screening" />
             </set>
         </property>
     </bean>
 
     <bean id="cross.border.indicator.screening" class="org.openmrs.module.kenyacore.report.IndicatorReportDescriptor">
         <property name="targetUuid" value="45D65E3A-72A0-4AA8-8DCA-5B166F1F0AA6" />
-        <property name="name" value="Cross Border Referral" />
+        <property name="name" value="Cross Border Referral Indicator" />
         <property name="description" value="Cross Border Referral Report" />
         <property name="apps">
             <set>
