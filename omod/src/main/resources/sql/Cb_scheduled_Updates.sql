@@ -1,7 +1,7 @@
 
 -- Update crossborder screening procedure ----
-DROP PROCEDURE IF EXISTS sp_populate_etl_crossborder_screening $$
-CREATE PROCEDURE sp_populate_etl_crossborder_screening(IN last_update_time DATETIME)
+DROP PROCEDURE IF EXISTS sp_update_etl_crossborder_screening $$
+CREATE PROCEDURE sp_update_etl_crossborder_screening(IN last_update_time DATETIME)
 
 BEGIN
 
@@ -76,8 +76,8 @@ END $$
 
 -- Update crossBorder referral procedure ----
 
-DROP PROCEDURE IF EXISTS sp_populate_etl_crossborder_referral $$
-CREATE PROCEDURE sp_populate_etl_crossborder_referral(IN last_update_time DATETIME)
+DROP PROCEDURE IF EXISTS sp_update_etl_crossborder_referral $$
+CREATE PROCEDURE sp_update_etl_crossborder_referral(IN last_update_time DATETIME)
 
 BEGIN
 
@@ -176,8 +176,8 @@ SELECT max(start_time) into last_update_time from kenyaemr_etl.etl_script_status
 INSERT INTO kenyaemr_etl.etl_script_status(script_name, start_time) VALUES('scheduled_updates', NOW());
 SET update_script_id = LAST_INSERT_ID();
 
-CALL sp_populate_etl_crossborder_referral(last_update_time);
-CALL sp_populate_etl_crossborder_screening(last_update_time);
+CALL sp_update_etl_crossborder_referral(last_update_time);
+CALL sp_update_etl_crossborder_screening(last_update_time);
 
 
 UPDATE kenyaemr_etl.etl_script_status SET stop_time=NOW() where  id= update_script_id;
