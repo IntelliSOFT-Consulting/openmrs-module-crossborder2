@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@Builds({ "cross.border.screening" })
+@Builds({ "cross.border.indicator.screening" })
 public class CrossBorderScreeningIndicatorReportBuilder extends AbstractReportBuilder {
 	
 	private final CrossBorderScreeningDataset crossBorderScreeningDataset;
