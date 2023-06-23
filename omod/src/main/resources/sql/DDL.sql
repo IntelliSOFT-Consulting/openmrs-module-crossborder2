@@ -59,7 +59,7 @@ SELECT "Successfully created etl_crossborder_referral table";
     create table kenyaemr_etl.etl_crossborder_screening
     (
         patient_id                         INT(11),
-        encounter_id                       INT(11) NOT NULL primary key,,
+        encounter_id                       INT(11) NOT NULL primary key,
         visit_id                           INT(11),
         location_id                        INT(11),
         visit_date                         DATE,
