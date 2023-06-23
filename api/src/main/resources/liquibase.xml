@@ -79,4 +79,26 @@
         </sql>
     </changeSet>
 
+    <changeSet id="kenyaemrChart-20230623-1715" author="moshonk">
+        <comment>
+            Execute DDL script for ETL
+        </comment>
+        <sqlFile path="sql/DDL.sql" endDelimiter="\$\$" stripComments="true" />
+    </changeSet>
+
+    <changeSet id="kenyaemrChart-20230623-1725" author="moshonk">
+        <comment>
+            Execute DML script for ETL
+        </comment>
+        <sqlFile path="sql/DML.sql" endDelimiter="\$\$" stripComments="true" />
+    </changeSet>
+
+    <changeSet id="kenyaemrChart-20230623-1735" author="moshonk">
+        <comment>
+            Execute Scheduled Updates script for ETL
+        </comment>
+        <sqlFile path="sql/Cb_scheduled_Updates.sql" endDelimiter="\$\$" stripComments="true" />
+    </changeSet>
+
+
 </databaseChangeLog>
