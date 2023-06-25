@@ -484,7 +484,7 @@
         <fieldset>
             <div class="ke-panel-footer centre-content">
                 <div class="buttons-post-create-patient centre-content">
-                    <button type="button" id="post-registrations" style="margin-right: 5px; margin-left: 5px;display: none">
+                    <button type="button" id="post-registrations" style="margin-right: 5px; margin-left: 5px;<% if (enablePostingToCB == false) {%> display: none<%}%>">
                         <img src="${ui.resourceLink("kenyaui", "images/glyphs/ok.png")}"/> Post to Cross Border Registry
                     </button>
                     <div class="wait-loading-post-registration"></div>
@@ -798,7 +798,7 @@ ${ui.includeFragment("kenyaui", "widget/dialogForm", [
         jQuery('input[name="nationalUniquePatientNumber"]').attr('readonly', true);
         jQuery('input[name="crossborderIdNumber"]').attr('readonly', true);
         jQuery('#createPatientBtn').prop('disabled', false);
-        jQuery('#post-registrations').prop('disabled', ${enablePostingToCB});
+        jQuery('#post-registrations').prop('disabled', ${!enablePostingToCB});
         jQuery('#alien-no').hide();
         jQuery('#huduma-no').hide();
         jQuery('#passport-no').hide();
