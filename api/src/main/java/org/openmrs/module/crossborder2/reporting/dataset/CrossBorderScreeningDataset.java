@@ -13,6 +13,7 @@ import org.openmrs.module.kenyaemr.reporting.EmrReportingUtils;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class CrossBorderScreeningDataset {
@@ -37,8 +38,8 @@ public class CrossBorderScreeningDataset {
 		ind.addDimension("gender", ReportUtils.map(commonDimensions.getGender(), ""));
 		EmrReportingUtils.addRow(ind, "SC", "Screening",
 		    ReportUtils.map(crossBorderIndicators.getCrossborderReferralPatients(), indParams), getGender(),
-		    Arrays.asList("01", "02","03"));
-
+		    Arrays.asList("01", "02", "03"));
+		
 		return ind;
 	}
 	
