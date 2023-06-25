@@ -28,4 +28,8 @@ public class CrossborderQueries {
 		        + "INNER JOIN kenyaemr_etl.etl_patient_demographics epd  on epd.patient_id = pn.patient_id \n"
 		        + "WHERE ecs.visit_date BETWEEN :startDate and :endDate";
 	}
+	
+	public static String getCrossBorderScreeningIndicatorReport() {
+		return "select patient_id from kenyaemr_etl.etl_crossborder_screening where visit_date between :startDate AND :endDate";
+	}
 }
