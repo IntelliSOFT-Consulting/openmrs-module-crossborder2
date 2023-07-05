@@ -19,12 +19,12 @@ import java.util.List;
 
 @Component
 @Builds({ "cross.border.txCurr.screening" })
-public class CrossBorderTxCurrIndicatorReportBuilder extends AbstractReportBuilder {
+public class CrossBorderIndicatorReportBuilder extends AbstractReportBuilder {
 	
 	private final CrossBorderScreeningDataset crossBorderScreeningDataset;
 	
 	@Autowired
-	public CrossBorderTxCurrIndicatorReportBuilder(CrossBorderScreeningDataset crossBorderScreeningDataset) {
+	public CrossBorderIndicatorReportBuilder(CrossBorderScreeningDataset crossBorderScreeningDataset) {
 		this.crossBorderScreeningDataset = crossBorderScreeningDataset;
 	}
 	
@@ -38,7 +38,7 @@ public class CrossBorderTxCurrIndicatorReportBuilder extends AbstractReportBuild
 	protected List<Mapped<DataSetDefinition>> buildDataSets(ReportDescriptor reportDescriptor,
 	        ReportDefinition reportDefinition) {
 		
-		return Collections.singletonList(ReportUtils.map(crossBorderScreeningDataset.getCbTxCurrDataset(),
+		return Collections.singletonList(ReportUtils.map(crossBorderScreeningDataset.getCbReportIndicatorDataset(),
 		    "startDate=${startDate},endDate=${endDate}"));
 	}
 }

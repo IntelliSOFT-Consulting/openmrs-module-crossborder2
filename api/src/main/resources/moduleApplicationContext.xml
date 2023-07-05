@@ -163,8 +163,8 @@
     </bean>
     <bean id="cross.border.txCurr.screening" class="org.openmrs.module.kenyacore.report.IndicatorReportDescriptor">
         <property name="targetUuid" value="c87d34f5-7b7b-43a1-90b2-dca06f681893" />
-        <property name="name" value="Cross Border TxCurr Indicator" />
-        <property name="description" value="Cross Border TxCurr Indicator" />
+        <property name="name" value="Cross Border Indicator Report" />
+        <property name="description" value="Cross Border Indicator Report" />
         <property name="apps">
             <set>
                 <ref bean="kenyaemr.app.reports" />

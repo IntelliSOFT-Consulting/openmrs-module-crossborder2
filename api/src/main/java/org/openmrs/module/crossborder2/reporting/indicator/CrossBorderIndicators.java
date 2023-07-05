@@ -23,11 +23,6 @@ public class CrossBorderIndicators {
 		    map(crossBorderCohortDefinition.getReferralPatients(), "startDate=${startDate},endDate=${endDate}"));
 	}
 	
-	public CohortIndicator getCbTxCurrPatients() {
-		return cohortIndicator("referral",
-		    map(crossBorderCohortDefinition.getCbTxCurrPatients(), "startDate=${startDate},endDate=${endDate}"));
-	}
-	
 	public CohortIndicator getCrossBorderPatients() {
 		return cohortIndicator("Cross Border Patients",
 		    map(crossBorderCohortDefinition.getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
@@ -52,8 +47,4 @@ public class CrossBorderIndicators {
 		        "startDate=${startDate},endDate=${endDate}"));
 	}
 	
-	//	public CohortIndicator getCrossborderScreeningPatients() {
-	//		return cohortIndicator("screening",
-	//		    map(crossBorderCohortDefinition.getCrossborderScreeningPatients(), "startDate=${startDate},endDate=${endDate}"));
-	//	}
 }

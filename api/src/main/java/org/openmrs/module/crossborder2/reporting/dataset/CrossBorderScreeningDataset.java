@@ -43,27 +43,27 @@ public class CrossBorderScreeningDataset {
 		return ind;
 	}
 	
-	public DataSetDefinition getCbTxCurrDataset() {
+	public DataSetDefinition getCbReportIndicatorDataset() {
 		String indParams = "startDate=${startDate},endDate=${endDate}";
-		
 		CohortIndicatorDataSetDefinition ind = new CohortIndicatorDataSetDefinition();
-		ind.setName("random name");
+		ind.setName("Cross Border Indicator Report");
 		ind.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		ind.addParameter(new Parameter("endDate", "End Date", Date.class));
 		ind.addDimension("gender", ReportUtils.map(commonDimensions.getGender(), ""));
-		EmrReportingUtils.addRow(ind, "CB Patients", "CB Patients",
+		EmrReportingUtils.addRow(ind, "1", "Cross Border Patients",
 		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatients(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
-		EmrReportingUtils.addRow(ind, "Other Nationalities", "Other Nationalities",
+		EmrReportingUtils.addRow(ind, "2", "Number of nationalities accessing specified services",
 		    ReportUtils.map(crossBorderIndicators.getOtherNationalitiesAccessingCbServices(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
-		EmrReportingUtils.addRow(ind, "Residents", "Residents",
+		EmrReportingUtils.addRow(ind, "3",
+		    "Number of residents of other districts/counties accessing services at the border facility",
 		    ReportUtils.map(crossBorderIndicators.getResidentsAccessingCbServices(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
-		EmrReportingUtils.addRow(ind, "Travelling  Patients", "Travelling  Patients",
+		EmrReportingUtils.addRow(ind, "4", "Number reporting travelled to another country last 3/6/12 months",
 		    ReportUtils.map(crossBorderIndicators.getNumberOfPatientsTravelledToAnotherCountryWithinTheYear(), indParams),
 		    getGender(), Arrays.asList("01", "02", "03"));
 		

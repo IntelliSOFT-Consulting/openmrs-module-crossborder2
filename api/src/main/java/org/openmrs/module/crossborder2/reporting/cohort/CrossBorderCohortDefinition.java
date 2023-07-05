@@ -34,15 +34,6 @@ public class CrossBorderCohortDefinition {
 		return gcd;
 	}
 	
-	public CohortDefinition getCbTxCurrPatients() {
-		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
-		sqlCohortDefinition.setName("Referral");
-		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
-		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
-		sqlCohortDefinition.setQuery(CrossborderQueries.getCrossBorderTxCurrPatientsIndicatorReport());
-		return sqlCohortDefinition;
-	}
-	
 	public CohortDefinition getCrossBorderPatients() {
 		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
 		sqlCohortDefinition.setName("Cross Border Patients");
@@ -54,7 +45,7 @@ public class CrossBorderCohortDefinition {
 	
 	public CohortDefinition getOtherNationalitiesAccessingCbServices() {
 		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
-		sqlCohortDefinition.setName("Other Nationalities Accessing CB Services");
+		sqlCohortDefinition.setName("Number of other nationalities accessing specified services");
 		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
 		sqlCohortDefinition.setQuery(CrossborderQueries.getOtherNationalitiesAccessingCbServices());
@@ -63,7 +54,8 @@ public class CrossBorderCohortDefinition {
 	
 	public CohortDefinition getResidentsAccessingCbServices() {
 		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
-		sqlCohortDefinition.setName("Residents Accessing CB Services");
+		sqlCohortDefinition
+		        .setName("Number of residents of other districts/counties accessing services at the border facility");
 		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
 		sqlCohortDefinition.setQuery(CrossborderQueries.getResidentsAccessingCbServices());
@@ -72,7 +64,7 @@ public class CrossBorderCohortDefinition {
 	
 	public CohortDefinition getNumberOfPatientsTravelledToAnotherCountryWithinTheYear() {
 		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
-		sqlCohortDefinition.setName("Patients Travelled Outside The Country Within 1 year");
+		sqlCohortDefinition.setName("Number reporting travelled to another country last 3/6/12 months");
 		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
 		sqlCohortDefinition.setQuery(CrossborderQueries.getNumberOfPatientsTravelledToAnotherCountryWithinTheYear());
