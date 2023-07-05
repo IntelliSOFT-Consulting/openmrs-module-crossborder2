@@ -43,15 +43,39 @@ public class CrossBorderCohortDefinition {
 		return sqlCohortDefinition;
 	}
 	
-	//
-	//	public CohortDefinition getCrossborderScreeningPatients() {
-	//		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
-	//		sqlCohortDefinition.setName("Crossborder");
-	//		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
-	//		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
-	//		sqlCohortDefinition.setQuery(CrossborderQueries.getCrossborderScreeningPatients());
-	////		return sqlCohortDefinition;
-	//	}
-	//
+	public CohortDefinition getCrossBorderPatients() {
+		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
+		sqlCohortDefinition.setName("Cross Border Patients");
+		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
+		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
+		sqlCohortDefinition.setQuery(CrossborderQueries.getCrossBorderPatients());
+		return sqlCohortDefinition;
+	}
 	
+	public CohortDefinition getOtherNationalitiesAccessingCbServices() {
+		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
+		sqlCohortDefinition.setName("Other Nationalities Accessing CB Services");
+		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
+		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
+		sqlCohortDefinition.setQuery(CrossborderQueries.getOtherNationalitiesAccessingCbServices());
+		return sqlCohortDefinition;
+	}
+	
+	public CohortDefinition getResidentsAccessingCbServices() {
+		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
+		sqlCohortDefinition.setName("Residents Accessing CB Services");
+		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
+		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
+		sqlCohortDefinition.setQuery(CrossborderQueries.getResidentsAccessingCbServices());
+		return sqlCohortDefinition;
+	}
+	
+	public CohortDefinition getNumberOfPatientsTravelledToAnotherCountryWithinTheYear() {
+		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
+		sqlCohortDefinition.setName("Patients Travelled Outside The Country Within 1 year");
+		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
+		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
+		sqlCohortDefinition.setQuery(CrossborderQueries.getNumberOfPatientsTravelledToAnotherCountryWithinTheYear());
+		return sqlCohortDefinition;
+	}
 }

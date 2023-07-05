@@ -51,9 +51,21 @@ public class CrossBorderScreeningDataset {
 		ind.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		ind.addParameter(new Parameter("endDate", "End Date", Date.class));
 		ind.addDimension("gender", ReportUtils.map(commonDimensions.getGender(), ""));
-		EmrReportingUtils.addRow(ind, "SC", "Screening",
-		    ReportUtils.map(crossBorderIndicators.getCbTxCurrPatients(), indParams), getGender(),
+		EmrReportingUtils.addRow(ind, "SC", "CB Patients",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatients(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "SC", "Other Nationalities",
+		    ReportUtils.map(crossBorderIndicators.getOtherNationalitiesAccessingCbServices(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "SC", "Residents",
+		    ReportUtils.map(crossBorderIndicators.getResidentsAccessingCbServices(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "SC", "Travelling  Patients",
+		    ReportUtils.map(crossBorderIndicators.getNumberOfPatientsTravelledToAnotherCountryWithinTheYear(), indParams),
+		    getGender(), Arrays.asList("01", "02", "03"));
 		
 		return ind;
 	}
