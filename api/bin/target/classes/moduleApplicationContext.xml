@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Beans to add to the current Application context definition -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+  		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  		    http://www.springframework.org/schema/context
+  		    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+  		    http://www.springframework.org/schema/jee
+  		    http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+  		    http://www.springframework.org/schema/tx
+  		    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+  		    http://www.springframework.org/schema/aop
+  		    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+  		    http://www.springframework.org/schema/util
+  		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <context:component-scan base-package="org.openmrs.module.crossborder2" />
+
+    <bean id="crossborder2.app.cb" factory-bean="kenyacore.appFactoryBean" factory-method="createInstance">
+        <constructor-arg value="crossborder2.cb" />
+        <constructor-arg value="Cross Border" />
+        <constructor-arg value="crossborder2/kenyaemr/patient/cbPatientRegistrationSearch.page" />
+        <constructor-arg value="crossborder2:apps/cb.png" />
+        <constructor-arg value="2001000" />
+    </bean>
+
+    <bean id="crossborder2.config.form" class="org.openmrs.module.kenyacore.form.FormConfiguration">
+        <property name="commonVisitForms">
+            <set>
+                <ref bean="crossborder2.form.cbScreening" />
+                <ref bean="crossborder2.form.cbReferral" />
+            </set>
+        </property>
+        <property name="programVisitForms">
+            <map>
+                <entry key-ref="kenyaemr.hiv.program">
+                    <set><ref bean="crossborder2.form.cbReferral" /></set>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <bean id="crossborder2.form.cbScreening" class="org.openmrs.module.kenyacore.form.FormDescriptor">
+        <property name="targetUuid" value="099d5e12-18fc-11eb-86f3-231df7469c4e" />
+        <property name="apps">
+            <set>
+                <ref bean="kenyaemr.app.registration" />
+                <ref bean="kenyaemr.app.intake" />
+                <ref bean="kenyaemr.app.clinician" />
+                <ref bean="kenyaemr.app.chart" />
+                <ref bean="crossborder2.app.cb" />
+            </set>
+        </property>
+
+        <property name="icon" value="kenyaui:forms/generic.png" />
+        <property name="htmlform" value="crossborder2:cbScreening.html" />
+        <property name="order" value="10002" />
+    </bean>
+    <bean id="crossborder2.form.cbReferral" class="org.openmrs.module.kenyacore.form.FormDescriptor">
+        <property name="targetUuid" value="01839000-c275-11ed-9fc5-0b220ae9bf59" />
+        <property name="apps">
+            <set>
+                <ref bean="kenyaemr.app.clinician" />
+                <ref bean="crossborder2.app.cb" />
+            </set>
+        </property>
+
+        <property name="icon" value="kenyaui:forms/generic.png" />
+        <property name="htmlform" value="crossborder2:cbReferral.html" />
+        <property name="order" value="10003" />
+    </bean>
+
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list>
+                <value>org.openmrs.module.crossborder2.api.FhirResourceBuilder</value>
+                <ref bean="fhirResourceBuilder"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <!-- ===================== Identifiers ===================== -->
+
+    <!-- Cross Border Identification Number -->
+    <bean id="kenyaemr.common.identifier.crossborder" class="org.openmrs.module.kenyacore.identifier.IdentifierDescriptor">
+        <property name="targetUuid" value="e5e9a994-12e2-42c3-9c02-5abdc0fe40e8" />
+        <property name="order" value="200" />
+    </bean>
+
+    <bean id="kenyaemr.crossborder.etl.routines" class="org.openmrs.module.kenyacore.etl.ETLConfiguration">
+        <property name="sourceModule">
+            <value>2</value>
+        </property>
+        <property name="ddlProcedures">
+            <set>
+                <value>create_crossborder_etl_tables</value>
+            </set>
+        </property>
+        <property name="dmlProcedures">
+            <set>
+                <value>sp_first_time_crossborder_setup</value>
+            </set>
+        </property>
+        <property name="incrementalUpdatesProcedures">
+            <set>
+                <value>cb_sp_scheduled_updates</value>
+            </set>
+        </property>
+    </bean>
+    <bean id="cross.border.config.report" class="org.openmrs.module.kenyacore.report.ReportConfiguration">
+        <property name="commonReports">
+            <set>
+                <ref bean="cross.border.referral" />
+                <ref bean="cross.border.screening" />
+                <ref bean="cross.border.indicator.screening" />
+            </set>
+        </property>
+    </bean>
+
+    <bean id="cross.border.indicator.screening" class="org.openmrs.module.kenyacore.report.IndicatorReportDescriptor">
+        <property name="targetUuid" value="45D65E3A-72A0-4AA8-8DCA-5B166F1F0AA6" />
+        <property name="name" value="Cross Border Referral Indicator" />
+        <property name="description" value="Cross Border Referral Report" />
+        <property name="apps">
+            <set>
+                <ref bean="kenyaemr.app.reports" />
+            </set>
+        </property>
+        <property name="template" value="crossborder2:cbr.xls" />
+    </bean>
+    <bean id="cross.border.referral" class="org.openmrs.module.kenyacore.report.HybridReportDescriptor">
+        <property name="targetUuid" value="e6f85c19-8aa7-4d59-b804-12e9bcf4acbd" />
+        <property name="name" value="Cross Border Referral" />
+        <property name="description" value="Cross Border Referral Listing" />
+        <property name="apps">
+            <set>
+                <ref bean="kenyaemr.app.reports" />
+            </set>
+        </property>
+        <property name="repeatingSection" value="sheet:1,row:4,dataset:ReferralsList" />
+    </bean>
+    <bean id="cross.border.screening" class="org.openmrs.module.kenyacore.report.HybridReportDescriptor">
+        <property name="targetUuid" value="65c915a5-19ab-4e9f-a9b4-1b771ccce1de" />
+        <property name="name" value="Cross border screening" />
+        <property name="description" value="Cross border screening list" />
+        <property name="apps">
+            <set>
+                <ref bean="kenyaemr.app.reports" />
+            </set>
+        </property>
+        <property name="template" value="crossborder2:cbs.xls" />
+        <property name="repeatingSection" value="sheet:1,row:4,dataset:ScreeningList" />
+    </bean>
+</beans>
