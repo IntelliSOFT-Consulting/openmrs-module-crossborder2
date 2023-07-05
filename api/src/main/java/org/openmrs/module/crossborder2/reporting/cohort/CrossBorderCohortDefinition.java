@@ -34,6 +34,15 @@ public class CrossBorderCohortDefinition {
 		return gcd;
 	}
 	
+	public CohortDefinition getCbTxCurrPatients() {
+		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
+		sqlCohortDefinition.setName("Referral");
+		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
+		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
+		sqlCohortDefinition.setQuery(CrossborderQueries.getCrossBorderTxCurrPatientsIndicatorReport());
+		return sqlCohortDefinition;
+	}
+	
 	//
 	//	public CohortDefinition getCrossborderScreeningPatients() {
 	//		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();

@@ -30,4 +30,9 @@ public class CrossborderQueries {
 	public static String getCrossBorderScreeningIndicatorReport() {
 		return "select patient_id from kenyaemr_etl.etl_crossborder_screening where visit_date between :startDate AND :endDate";
 	}
+	
+	public static String getCrossBorderTxCurrPatientsIndicatorReport() {
+		return "select patient_id from kenyaemr_etl.etl_crossborder_screening where visit_date between :startDate AND :endDate";
+	}
+
 }

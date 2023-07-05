@@ -43,6 +43,21 @@ public class CrossBorderScreeningDataset {
 		return ind;
 	}
 	
+	public DataSetDefinition getCbTxCurrDataset() {
+		String indParams = "startDate=${startDate},endDate=${endDate}";
+		
+		CohortIndicatorDataSetDefinition ind = new CohortIndicatorDataSetDefinition();
+		ind.setName("random name");
+		ind.addParameter(new Parameter("startDate", "Start Date", Date.class));
+		ind.addParameter(new Parameter("endDate", "End Date", Date.class));
+		ind.addDimension("gender", ReportUtils.map(commonDimensions.getGender(), ""));
+		EmrReportingUtils.addRow(ind, "SC", "Screening",
+		    ReportUtils.map(crossBorderIndicators.getCbTxCurrPatients(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		return ind;
+	}
+	
 	private List<ColumnParameters> getGender() {
 		ColumnParameters cpMale = new ColumnParameters("Male", "Male", "gender=M");
 		ColumnParameters cpFemale = new ColumnParameters("Female", "Female", "gender=F");
