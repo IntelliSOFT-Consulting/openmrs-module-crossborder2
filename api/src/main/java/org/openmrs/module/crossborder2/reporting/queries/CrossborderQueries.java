@@ -4,8 +4,9 @@ public class CrossborderQueries {
 	
 	public static String getCrossborderReferralPatients() {
 		return "SELECT \n"
+				+ " CONCAT(COALESCE(epd.given_name, ''), ' ', COALESCE(epd.middle_name, ''), ' ', COALESCE(epd.family_name, '')) AS 'Name',\n"
 		        + "visit_date as 'Visit Date',\n"
-		        + " CONCAT(COALESCE(epd.given_name, ''), ' ', COALESCE(epd.middle_name, ''), ' ', COALESCE(epd.family_name, '')) AS 'Patient Names',\n"
+		        + "epd.gender as 'Sex',\n"
 		        + " cn_target_pop.name As 'Target Population',\n"
 		        + " cn_nationality.name As 'Nationality',\n"
 		        + " referring_facility_name as 'Referring Facility Name',\n"
@@ -36,9 +37,9 @@ public class CrossborderQueries {
 	
 	public static String getCrossborderScreeningPatients() {
 		return "SELECT\n"
+				+ "    CONCAT(COALESCE(epd.given_name, ''), ' ', COALESCE(epd.middle_name, ''), ' ', COALESCE(epd.family_name, '')) AS 'Name',\n"
 		        + "    ecs.visit_date,\n"
-		        + "    CONCAT(COALESCE(epd.given_name, ''), ' ', COALESCE(epd.middle_name, ''), ' ', COALESCE(epd.family_name, '')) AS 'Patient Names',\n"
-		        + "    epd.Gender,\n"
+		        + "    epd.Gender as Sex,\n"
 		        + "    epd.DOB,\n"
 		        + "    cn_country.name AS 'Country of Residence',\n"
 		        + "    cn_nationality.name As 'Nationality',\n"

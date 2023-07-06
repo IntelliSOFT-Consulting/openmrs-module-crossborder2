@@ -33,7 +33,7 @@ public class CrossBorderReferralListReportBuilder extends AbstractReportBuilder 
 		dsd.setName("ReferralsList");
 		dsd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		dsd.addParameter(new Parameter("endDate", "End Date", Date.class));
-		dsd.setSqlQuery(CrossborderQueries.getCrossborderReferralPatients());
+		dsd.setSqlQuery(CrossborderQueries.getCrossborderReferralPatientList());
 		
 		return Collections.singletonList(ReportUtils.map((DataSetDefinition) dsd,
 		    "startDate=${startDate},endDate=${endDate}"));

@@ -43,7 +43,7 @@ public class CrossBorderScreeningDataset {
 		return ind;
 	}
 	
-	public DataSetDefinition getCbReportIndicatorDataset() {
+	public DataSetDefinition getCbReportIndicatorDatasetDefinition() {
 		String indParams = "startDate=${startDate},endDate=${endDate}";
 		CohortIndicatorDataSetDefinition ind = new CohortIndicatorDataSetDefinition();
 		ind.setName("Cross Border Indicator Report");

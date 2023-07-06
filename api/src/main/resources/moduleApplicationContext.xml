@@ -152,7 +152,7 @@
     <bean id="cross.border.screening" class="org.openmrs.module.kenyacore.report.HybridReportDescriptor">
         <property name="targetUuid" value="65c915a5-19ab-4e9f-a9b4-1b771ccce1de" />
         <property name="name" value="Cross border screening" />
-        <property name="description" value="Cross border screening list" />
+        <property name="description" value="Cross Border screening list" />
         <property name="apps">
             <set>
                 <ref bean="kenyaemr.app.reports" />
