@@ -3,15 +3,35 @@ package org.openmrs.module.crossborder2.reporting.queries;
 public class CrossborderQueries {
 	
 	public static String getCrossborderReferralPatients() {
-		return "SELECT \n" + "\tr.visit_date ,\n"
-		        + "\tepd.given_name + ' ' + epd.middle_name + ' ' + epd.family_name as patient_name,\n" + "\tepd.Gender, \n"
-		        + "\tepd.DOB,\n" + "\tepd.national_id_no,\n" + "\tr.nationality ,\n" + "\tr.referring_facility_name ,\n"
-		        + "\tr.target_population ,\n" + "\tr.reason_for_referral ,\n"
-		        + "\tr.general_comments_if_reffered as general_comments,\n"
-		        + "\tr.referral_recommendation_continue_art  as continue_art\n" + "FROM \n"
-		        + "\tkenyaemr_etl.etl_crossborder_referral r\n"
-		        + "\tINNER JOIN kenyaemr_etl.etl_patient_demographics epd  on r.patient_id = epd.patient_id \n"
-		        + "WHERE r.visit_date BETWEEN :startDate and :endDate";
+		return "SELECT \n" +
+				"visit_date as 'Visit Date',\n" +
+				" CONCAT(COALESCE(epd.given_name, ''), ' ', COALESCE(epd.middle_name, ''), ' ', COALESCE(epd.family_name, '')) AS 'Patient Names',\n" +
+				" cn_target_pop.name As 'Target Population',\n" +
+				" cn_nationality.name As 'Nationality',\n" +
+				" referring_facility_name as 'Referring Facility Name',\n" +
+				" referred_facility_name as 'Referred Facility Name',\n" +
+				" cn_careType.name as 'Type OF Care',\n" +
+				" date_of_referral as 'Referral Date',\n" +
+				" cn_referralReason.name as 'Referral Reason',\n" +
+				" general_comments_if_reffered as 'General Comments',\n" +
+				" referral_recommendation_continue_art as 'Referral Recommendation',\n" +
+				" referring_hc_provider as 'Referring HC Provider',\n" +
+				" referring_hc_provider_email as 'Referring HC Provider Email',\n" +
+				" referring_hc_provider_telephone as 'Referring HC Provider Telephone',\n" +
+				" referring_hc_provider_cadre as 'Referring HC Provider Telephone'\n" +
+				"FROM \n" +
+				"kenyaemr_etl.etl_crossborder_referral ref\n" +
+				"INNER JOIN\n" +
+				"    kenyaemr_etl.etl_patient_demographics epd ON ref.patient_id = epd.patient_id \n" +
+				"INNER JOIN\n" +
+				"    concept_name cn_target_pop ON cn_target_pop.concept_id = ref.target_population and cn_target_pop.concept_name_type = 'FULLY_SPECIFIED'  \n" +
+				"INNER JOIN\n" +
+				"    concept_name cn_nationality ON cn_nationality.concept_id = ref.nationality and cn_nationality.concept_name_type = 'FULLY_SPECIFIED' \n" +
+				"INNER JOIN\n" +
+				"    concept_name cn_careType ON cn_careType.concept_id = ref.type_of_care and cn_careType.concept_name_type = 'FULLY_SPECIFIED'   \n" +
+				"INNER JOIN\n" +
+				"    concept_name cn_referralReason ON cn_referralReason.concept_id = ref.reason_for_referral and cn_referralReason.concept_name_type = 'FULLY_SPECIFIED' and cn_referralReason.locale = \"en\"   \n" +
+				"and visit_date between :startDate and :endDate";
 	}
 	
 	public static String getCrossborderScreeningPatients() {
