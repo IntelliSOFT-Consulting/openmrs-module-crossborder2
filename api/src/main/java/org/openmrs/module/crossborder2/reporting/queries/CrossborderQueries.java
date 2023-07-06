@@ -2,9 +2,9 @@ package org.openmrs.module.crossborder2.reporting.queries;
 
 public class CrossborderQueries {
 	
-	public static String getCrossborderReferralPatients() {
+	public static String getCrossborderReferralPatientList() {
 		return "SELECT \n" + "\tr.visit_date ,\n"
-		        + "\tepd.given_name + ' ' + epd.middle_name + ' ' + epd.family_name as patient_name,\n" + "\tepd.Gender, \n"
+		        + "\tCONCAT(epd.given_name , ' ' , epd.middle_name , ' ' , epd.family_name) as Name,\n" + "\tepd.Gender as Sex, \n"
 		        + "\tepd.DOB,\n" + "\tepd.national_id_no,\n" + "\tr.nationality ,\n" + "\tr.referring_facility_name ,\n"
 		        + "\tr.target_population ,\n" + "\tr.reason_for_referral ,\n"
 		        + "\tr.general_comments_if_reffered as general_comments,\n"
@@ -14,9 +14,9 @@ public class CrossborderQueries {
 		        + "WHERE r.visit_date BETWEEN :startDate and :endDate";
 	}
 	
-	public static String getCrossborderScreeningPatients() {
+	public static String getCrossborderScreeningPatientList() {
 		return "SELECT \n" + "ecs.visit_date ,\n"
-		        + "epd.given_name + ' ' + epd.middle_name + ' ' + epd.family_name as patient_name,\n" + "epd.Gender, \n"
+		        + "CONCAT(epd.given_name , ' ' , epd.middle_name , ' ' , epd.family_name) as Name,\n" + "epd.Gender as Sex, \n"
 		        + "epd.DOB,\n" + "epd.national_id_no,\n" + "ecs.place_of_residence_country as country_of_residence,\n"
 		        + "ecs.place_of_residence_village as village_of_residence,\n"
 		        + "ecs.place_of_residence_landmark as landmark,\n" + "ecs.nationality ,\n" + "ecs.target_population ,\n"
