@@ -2,9 +2,9 @@ package org.openmrs.module.crossborder2.reporting.queries;
 
 public class CrossborderQueries {
 	
-	public static String getCrossborderReferralPatients() {
+	public static String getCrossborderReferralPatientList() {
 		return "SELECT \n"
-				+ " CONCAT(COALESCE(epd.given_name, ''), ' ', COALESCE(epd.middle_name, ''), ' ', COALESCE(epd.family_name, '')) AS 'Name',\n"
+		        + " CONCAT(COALESCE(epd.given_name, ''), ' ', COALESCE(epd.middle_name, ''), ' ', COALESCE(epd.family_name, '')) AS 'Name',\n"
 		        + "visit_date as 'Visit Date',\n"
 		        + "epd.gender as 'Sex',\n"
 		        + " cn_target_pop.name As 'Target Population',\n"
@@ -35,9 +35,9 @@ public class CrossborderQueries {
 		        + "and visit_date between :startDate AND :endDate ";
 	}
 	
-	public static String getCrossborderScreeningPatients() {
+	public static String getCrossborderScreeningPatientList() {
 		return "SELECT\n"
-				+ "    CONCAT(COALESCE(epd.given_name, ''), ' ', COALESCE(epd.middle_name, ''), ' ', COALESCE(epd.family_name, '')) AS 'Name',\n"
+		        + "    CONCAT(COALESCE(epd.given_name, ''), ' ', COALESCE(epd.middle_name, ''), ' ', COALESCE(epd.family_name, '')) AS 'Name',\n"
 		        + "    ecs.visit_date,\n"
 		        + "    epd.Gender as Sex,\n"
 		        + "    epd.DOB,\n"
