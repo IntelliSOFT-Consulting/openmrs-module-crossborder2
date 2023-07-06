@@ -38,7 +38,8 @@ public class CrossBorderIndicatorReportBuilder extends AbstractReportBuilder {
 	protected List<Mapped<DataSetDefinition>> buildDataSets(ReportDescriptor reportDescriptor,
 	        ReportDefinition reportDefinition) {
 		
-		return Collections.singletonList(ReportUtils.map(crossBorderIndicatorDataset.getCbReportIndicatorDatasetDefinition(),
-		    "startDate=${startDate},endDate=${endDate}"));
+		return Collections
+		        .singletonList(ReportUtils.map(crossBorderIndicatorDataset.getCbReportIndicatorDatasetDefinition(),
+		            "startDate=${startDate},endDate=${endDate}"));
 	}
 }
