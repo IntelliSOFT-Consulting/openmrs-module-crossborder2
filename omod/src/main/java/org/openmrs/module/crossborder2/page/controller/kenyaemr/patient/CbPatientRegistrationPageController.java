@@ -13,6 +13,8 @@ import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appframework.context.SessionContext;
+import org.openmrs.module.appframework.domain.AppDescriptor;
+import org.openmrs.module.appframework.service.AppFrameworkService;
 import org.openmrs.module.crossborder2.CbConstants;
 import org.openmrs.module.crossborder2.openhim.CbPatientService;
 import org.openmrs.module.idgen.service.IdentifierSourceService;
@@ -26,7 +28,8 @@ public class CbPatientRegistrationPageController {
 	public void controller(@RequestParam(value = "personId", required = false) Patient patient,
 	        @RequestParam(value = "crossBorderId", required = false) String crossBorderId,
 	        @SpringBean CbPatientService cbPatientService, SessionContext sessionContext, PageModel model) {
-		
+
+		AppDescriptor currentApp = Context.getService(AppFrameworkService.class).getApp("crossborder2.cb");
 		if (patient == null) {
 			if (StringUtils.isNotBlank(crossBorderId)) {
 				List<Patient> patients = Context.getPatientService().getPatients(crossBorderId);
@@ -69,6 +72,7 @@ public class CbPatientRegistrationPageController {
 			}
 		}
 		model.addAttribute("person", patient);
+		model.addAttribute("currentApp", currentApp);
 		
 	}
 }
