@@ -44,7 +44,7 @@ public class CrossBorderScreeningListReportBuilder extends AbstractReportBuilder
 		dsd.setName("ScreeningList");
 		dsd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		dsd.addParameter(new Parameter("endDate", "End Date", Date.class));
-		dsd.setSqlQuery(CrossborderQueries.getCrossborderScreeningPatients());
+		dsd.setSqlQuery(CrossborderQueries.getCrossborderScreeningPatientList());
 		
 		return Collections.singletonList(ReportUtils.map((DataSetDefinition) dsd,
 		    "startDate=${startDate},endDate=${endDate}"));
