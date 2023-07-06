@@ -23,8 +23,28 @@ public class CrossBorderIndicators {
 		    map(crossBorderCohortDefinition.getReferralPatients(), "startDate=${startDate},endDate=${endDate}"));
 	}
 	
-	//	public CohortIndicator getCrossborderScreeningPatients() {
-	//		return cohortIndicator("screening",
-	//		    map(crossBorderCohortDefinition.getCrossborderScreeningPatients(), "startDate=${startDate},endDate=${endDate}"));
-	//	}
+	public CohortIndicator getCrossBorderPatients() {
+		return cohortIndicator("Cross Border Patients",
+		    map(crossBorderCohortDefinition.getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
+	}
+	
+	public CohortIndicator getOtherNationalitiesAccessingCbServices() {
+		return cohortIndicator(
+		    "Other Nationalities Accessing CB Services",
+		    map(crossBorderCohortDefinition.getOtherNationalitiesAccessingCbServices(),
+		        "startDate=${startDate},endDate=${endDate}"));
+	}
+	
+	public CohortIndicator getResidentsAccessingCbServices() {
+		return cohortIndicator("Residents Accessing CB Services",
+		    map(crossBorderCohortDefinition.getResidentsAccessingCbServices(), "startDate=${startDate},endDate=${endDate}"));
+	}
+	
+	public CohortIndicator getNumberOfPatientsTravelledToAnotherCountryWithinTheYear() {
+		return cohortIndicator(
+		    "Patients Travelled Outside The Country Within 1 year",
+		    map(crossBorderCohortDefinition.getNumberOfPatientsTravelledToAnotherCountryWithinTheYear(),
+		        "startDate=${startDate},endDate=${endDate}"));
+	}
+	
 }
