@@ -67,6 +67,48 @@ public class CrossBorderScreeningDataset {
 		    ReportUtils.map(crossBorderIndicators.getNumberOfPatientsTravelledToAnotherCountryWithinTheYear(), indParams),
 		    getGender(), Arrays.asList("01", "02", "03"));
 		
+		EmrReportingUtils.addRow(ind, "5", "TX-CURR: of adults and children currently receiving ART",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsCurrentlyInCareAndOnART(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		return ind;
+	}
+	
+	public DataSetDefinition getCbMoH731IndicatorDatasetDefinition() {
+		String indParams = "startDate=${startDate},endDate=${endDate}";
+		CohortIndicatorDataSetDefinition ind = new CohortIndicatorDataSetDefinition();
+		ind.setName("Cross Border MOH 731 Report");
+		ind.addParameter(new Parameter("startDate", "Start Date", Date.class));
+		ind.addParameter(new Parameter("endDate", "End Date", Date.class));
+		ind.addDimension("gender", ReportUtils.map(commonDimensions.getGender(), ""));
+		
+		EmrReportingUtils.addRow(ind, "1", "HIV Tested total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientTestedForHIV(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "2", "Delivery from HIV+ Mothers",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersWhoDelivered(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "3", "Mothers Positive Total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersTotal(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "4", "Maternal HAART Total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderMaternalHaarTTotal(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "5", "Total ARV Prophylaxis Total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsOnProphylaxis(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "5", "Total Enrollment in Care",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsCurrentlyInCare(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "5", "Start ART Total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsStartedART(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
 		return ind;
 	}
 	
