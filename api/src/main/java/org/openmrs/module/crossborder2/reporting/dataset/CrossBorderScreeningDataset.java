@@ -86,29 +86,50 @@ public class CrossBorderScreeningDataset {
 		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientTestedForHIV(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
-		EmrReportingUtils.addRow(ind, "2", "Delivery from HIV+ Mothers",
-		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersWhoDelivered(), indParams), getGender(),
+		EmrReportingUtils.addRow(ind, "2", "HIV Positive total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientTestedForHIV(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
-		EmrReportingUtils.addRow(ind, "3", "Mothers Positive Total",
-		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersTotal(), indParams), getGender(),
+		EmrReportingUtils.addRow(ind, "3", "Total HIV Positive 3 month ago Linked to Care",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientTestedForHIV(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
-		EmrReportingUtils.addRow(ind, "4", "Maternal HAART Total",
-		    ReportUtils.map(crossBorderIndicators.getCrossBorderMaternalHaarTTotal(), indParams), getGender(),
-		    Arrays.asList("01", "02", "03"));
+		EmrReportingUtils.addRow(ind, "4", "Delivery from HIV+ Mothers",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersWhoDelivered(), indParams),
+		    getFemalesOnly(), Arrays.asList("01"));
 		
-		EmrReportingUtils.addRow(ind, "5", "Total ARV Prophylaxis Total",
+		EmrReportingUtils.addRow(ind, "5", "Maternal HIV Testing (Known HIV Status Total)",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersWhoDelivered(), indParams),
+		    getFemalesOnly(), Arrays.asList("01"));
+		
+		EmrReportingUtils.addRow(ind, "6", "Mothers Positive Total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersWhoDelivered(), indParams),
+		    getFemalesOnly(), Arrays.asList("01"));
+		
+		EmrReportingUtils.addRow(ind, "7", "Maternal HAART Total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersWhoDelivered(), indParams),
+		    getFemalesOnly(), Arrays.asList("01"));
+		
+		EmrReportingUtils.addRow(ind, "8", "Total ARV Prophylaxis Total",
 		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsOnProphylaxis(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
-		EmrReportingUtils.addRow(ind, "5", "Total Enrollment in Care",
+		EmrReportingUtils.addRow(ind, "9", "Total Enrollment in Care",
 		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsCurrentlyInCare(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
-		EmrReportingUtils.addRow(ind, "5", "Start ART Total",
+		EmrReportingUtils.addRow(ind, "10", "Start ART Total",
 		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsStartedART(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "11", "TB_TOTAL HIV Positive (HV077+080)",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsStartedART(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "12", "Post-Exposure Prophylaxis",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsStartedART(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
 		return ind;
 	}
 	
@@ -117,5 +138,10 @@ public class CrossBorderScreeningDataset {
 		ColumnParameters cpFemale = new ColumnParameters("Female", "Female", "gender=F");
 		ColumnParameters cpTotal = new ColumnParameters("Total", "Total", "");
 		return Arrays.asList(cpMale, cpFemale, cpTotal);
+	}
+	
+	private List<ColumnParameters> getFemalesOnly() {
+		ColumnParameters cpFemale = new ColumnParameters("Female", "Female", "gender=F");
+		return Arrays.asList(cpFemale);
 	}
 }

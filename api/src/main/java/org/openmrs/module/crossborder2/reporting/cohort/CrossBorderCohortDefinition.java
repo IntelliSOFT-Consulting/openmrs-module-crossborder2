@@ -76,90 +76,107 @@ public class CrossBorderCohortDefinition {
 	
 	//Review this class
 	public CohortDefinition getCrossBorderPatientsCurrentlyInCareAndOnART() {
+		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
-		cd.addSearch("currentlyInCareAndOnART", ReportUtils.map(
-		    org.openmrs.module.kenyaemr.reporting.library.ETLReports.MOH731Greencard.currentlyOnArt(),
-		    "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("crossBorderPatient",
+		    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("currentlyInCareAndOnART",
+		    ReportUtils.map(etlMoh731GreenCardCohortLibrary.currentlyOnArt(), "startDate=${startDate},endDate=${endDate}"));
 		cd.setCompositionString("currentlyInCareAndOnART");
 		return cd;
 	}
 	
 	public CohortDefinition getCrossBorderPatientTestedForHIV() {
+		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
-		cd.addSearch("htsAllNumberTested", ReportUtils.map(
-		    org.openmrs.module.kenyaemr.reporting.library.ETLReports.MOH731Greencard.htsAllNumberTested(),
+		cd.addSearch("crossBorderPatient",
+		    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("htsAllNumberTested", ReportUtils.map(etlMoh731GreenCardCohortLibrary.htsAllNumberTested(),
 		    "startDate=${startDate},endDate=${endDate}"));
 		cd.setCompositionString("htsAllNumberTested");
 		return cd;
 	}
 	
 	public CohortDefinition getCrossBorderHiVPositiveMothersWhoDelivered() {
+		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
+		cd.addSearch("crossBorderPatient",
+		    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
 		cd.addSearch("deliveryFromHIVPositiveMothers", ReportUtils.map(
-		    org.openmrs.module.kenyaemr.reporting.library.ETLReports.MOH731Greencard.deliveryFromHIVPositiveMothers(),
-		    "startDate=${startDate},endDate=${endDate}"));
+		    etlMoh731GreenCardCohortLibrary.deliveryFromHIVPositiveMothers(), "startDate=${startDate},endDate=${endDate}"));
 		cd.setCompositionString("deliveryFromHIVPositiveMothers");
 		return cd;
 	}
 	
 	public CohortDefinition getCrossBorderHiVPositiveMothersTotal() {
+		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
 		cd.addSearch("mothersPositiveTotal", ReportUtils.map(
-		    org.openmrs.module.kenyaemr.reporting.library.ETLReports.MOH731Greencard.totalHivPositiveMothersInMchms(),
-		    "startDate=${startDate},endDate=${endDate}"));
+		    etlMoh731GreenCardCohortLibrary.totalHivPositiveMothersInMchms(), "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("crossBorderPatient",
+		    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
 		cd.setCompositionString("mothersPositiveTotal");
 		return cd;
 	}
 	
 	public CohortDefinition getCrossBorderMaternalHaarTTotal() {
+		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
-		cd.addSearch("totalMaternalHAART", ReportUtils.map(
-		    org.openmrs.module.kenyaemr.reporting.library.ETLReports.MOH731Greencard.totalMaternalHAART(),
+		cd.addSearch("totalMaternalHAART", ReportUtils.map(etlMoh731GreenCardCohortLibrary.totalMaternalHAART(),
 		    "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("crossBorderPatient",
+		    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
 		cd.setCompositionString("totalMaternalHAART");
 		return cd;
 	}
 	
 	public CohortDefinition getCrossBorderPatientsOnProphylaxis() {
+		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
 		cd.addSearch("inHivProgramAndOnCtxProphylaxis", ReportUtils.map(
-		    org.openmrs.module.kenyaemr.reporting.library.ETLReports.MOH731Greencard.inHivProgramAndOnCtxProphylaxis(),
-		    "startDate=${startDate},endDate=${endDate}"));
+		    etlMoh731GreenCardCohortLibrary.inHivProgramAndOnCtxProphylaxis(), "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("crossBorderPatient",
+		    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
 		cd.setCompositionString("inHivProgramAndOnCtxProphylaxis");
 		return cd;
 	}
 	
 	public CohortDefinition getCrossBorderPatientsCurrentlyInCare() {
+		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
-		cd.addSearch("currentlyInCare", ReportUtils.map(
-		    org.openmrs.module.kenyaemr.reporting.library.ETLReports.MOH731Greencard.currentlyInCare(),
-		    "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("currentlyInCare",
+		    ReportUtils.map(etlMoh731GreenCardCohortLibrary.currentlyInCare(), "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("crossBorderPatient",
+		    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
 		cd.setCompositionString("currentlyInCare");
 		return cd;
 	}
 	
 	public CohortDefinition getCrossBorderPatientsStartedART() {
+		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
-		cd.addSearch("startedOnART", ReportUtils.map(
-		    org.openmrs.module.kenyaemr.reporting.library.ETLReports.MOH731Greencard.startedOnART(),
-		    "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("startedOnART",
+		    ReportUtils.map(etlMoh731GreenCardCohortLibrary.startedOnART(), "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("crossBorderPatient",
+		    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
 		cd.setCompositionString("startedOnART");
 		return cd;
 	}
+	
 }
