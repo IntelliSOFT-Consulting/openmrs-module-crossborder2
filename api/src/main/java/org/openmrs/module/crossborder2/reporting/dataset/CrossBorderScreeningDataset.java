@@ -46,7 +46,7 @@ public class CrossBorderScreeningDataset {
 	public DataSetDefinition getCbReportIndicatorDatasetDefinition() {
 		String indParams = "startDate=${startDate},endDate=${endDate}";
 		CohortIndicatorDataSetDefinition ind = new CohortIndicatorDataSetDefinition();
-		ind.setName("Cross Border Indicator Report");
+		ind.setName("Cross-border Indicator Report");
 		ind.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		ind.addParameter(new Parameter("endDate", "End Date", Date.class));
 		ind.addDimension("gender", ReportUtils.map(commonDimensions.getGender(), ""));
@@ -77,7 +77,7 @@ public class CrossBorderScreeningDataset {
 	public DataSetDefinition getCbMoH731IndicatorDatasetDefinition() {
 		String indParams = "startDate=${startDate},endDate=${endDate}";
 		CohortIndicatorDataSetDefinition ind = new CohortIndicatorDataSetDefinition();
-		ind.setName("Cross Border MOH 731 Report");
+		ind.setName("Cross-border patient Summary");
 		ind.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		ind.addParameter(new Parameter("endDate", "End Date", Date.class));
 		ind.addDimension("gender", ReportUtils.map(commonDimensions.getGender(), ""));
@@ -87,12 +87,12 @@ public class CrossBorderScreeningDataset {
 		    Arrays.asList("01", "02", "03"));
 		
 		EmrReportingUtils.addRow(ind, "2", "HIV Positive total",
-		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientTestedForHIV(), indParams), getGender(),
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientTestedHIVPositive(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
 		EmrReportingUtils.addRow(ind, "3", "Total HIV Positive 3 month ago Linked to Care",
-		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientTestedForHIV(), indParams), getGender(),
-		    Arrays.asList("01", "02", "03"));
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientEnrolledInCareThreeMonthsAgo(), indParams),
+		    getGender(), Arrays.asList("01", "02", "03"));
 		
 		EmrReportingUtils.addRow(ind, "4", "Delivery from HIV+ Mothers",
 		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersWhoDelivered(), indParams),
@@ -103,19 +103,15 @@ public class CrossBorderScreeningDataset {
 		    getFemalesOnly(), Arrays.asList("01"));
 		
 		EmrReportingUtils.addRow(ind, "6", "Mothers Positive Total",
-		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersWhoDelivered(), indParams),
-		    getFemalesOnly(), Arrays.asList("01"));
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersTotal(), indParams), getFemalesOnly(),
+		    Arrays.asList("01"));
 		
 		EmrReportingUtils.addRow(ind, "7", "Maternal HAART Total",
-		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersWhoDelivered(), indParams),
-		    getFemalesOnly(), Arrays.asList("01"));
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderMaternalHaarTTotal(), indParams), getFemalesOnly(),
+		    Arrays.asList("01"));
 		
 		EmrReportingUtils.addRow(ind, "8", "Total ARV Prophylaxis Total",
 		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsOnProphylaxis(), indParams), getGender(),
-		    Arrays.asList("01", "02", "03"));
-		
-		EmrReportingUtils.addRow(ind, "9", "Total Enrollment in Care",
-		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsCurrentlyInCare(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
 		EmrReportingUtils.addRow(ind, "10", "Start ART Total",
@@ -123,11 +119,11 @@ public class CrossBorderScreeningDataset {
 		    Arrays.asList("01", "02", "03"));
 		
 		EmrReportingUtils.addRow(ind, "11", "TB_TOTAL HIV Positive (HV077+080)",
-		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsStartedART(), indParams), getGender(),
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderTBTOTALHIVPositive(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
 		EmrReportingUtils.addRow(ind, "12", "Post-Exposure Prophylaxis",
-		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsStartedART(), indParams), getGender(),
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsOnProphylaxis(), indParams), getGender(),
 		    Arrays.asList("01", "02", "03"));
 		
 		return ind;
