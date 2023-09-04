@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-@Builds({ "cross-border-indicator-report" })
+@Builds({ "cross.border.patient.summary" })
 public class CrossBorderIndicatorReportBuilder extends AbstractReportBuilder {
 	
 	private final CrossBorderScreeningDataset crossBorderScreeningDataset;

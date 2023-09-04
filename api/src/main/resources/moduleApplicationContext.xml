@@ -122,8 +122,8 @@
                 <ref bean="cross.border.referral" />
                 <ref bean="cross.border.screening" />
                 <ref bean="cross.border.indicator.screening" />
-                <ref bean="cross-border-patient-summary" />
-                <ref bean="cross-border-indicator-report" />
+                <ref bean="cross.border.patient.indicator" />
+                <ref bean="cross.border.patient.summary" />
             </set>
         </property>
     </bean>
@@ -162,10 +162,10 @@
         <property name="template" value="crossborder2:cbs.xls" />
         <property name="repeatingSection" value="sheet:1,row:4,dataset:ScreeningList" />
     </bean>
-    <bean id="cross-border-patient-summary" class="org.openmrs.module.kenyacore.report.IndicatorReportDescriptor">
+    <bean id="cross.border.patient.indicator" class="org.openmrs.module.kenyacore.report.IndicatorReportDescriptor">
         <property name="targetUuid" value="c87d34f5-7b7b-43a1-90b2-dca06f681893" />
-        <property name="name" value=" Cross-border patient summary" />
-        <property name="description" value="Cross-border patient summary" />
+        <property name="name" value="Cross Border Indicator report" />
+        <property name="description" value="Cross Border Indicator report" />
         <property name="apps">
             <set>
                 <ref bean="kenyaemr.app.reports" />
@@ -173,10 +173,10 @@
         </property>
         <property name="template" value="crossborder2:cbr.xls" />
     </bean>
-    <bean id="cross-border-indicator-report" class="org.openmrs.module.kenyacore.report.IndicatorReportDescriptor">
+    <bean id="cross.border.patient.summary" class="org.openmrs.module.kenyacore.report.IndicatorReportDescriptor">
         <property name="targetUuid" value="7010c245-61bb-4d71-88df-934703cf3f27" />
-        <property name="name" value="Cross-border Indicator report" />
-        <property name="description" value="Cross-border Indicator report" />
+        <property name="name" value="Cross Border Patient Summary" />
+        <property name="description" value="Cross Border Patient Summary" />
         <property name="apps">
             <set>
                 <ref bean="kenyaemr.app.reports" />

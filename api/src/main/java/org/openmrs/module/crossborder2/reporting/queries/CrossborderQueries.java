@@ -110,4 +110,18 @@ public class CrossborderQueries {
 		        + "visit_date between :startDate and :endDate";
 	}
 	
+	public static String crossBorderTransferIns() {
+		return "select patient_id\n"
+		        + "from kenyaemr_etl.etl_hiv_enrollment\n"
+		        + "where patient_type=160563\n"
+		        + "      and (date(transfer_in_date) between date(:startDate) and date(:endDate) or date(visit_date) between date(:startDate) and date(:endDate));\n";
+	}
+	
+	public static String crossBorderTransferOuts() {
+		return "select patient_id\n"
+		        + "from kenyaemr_etl.etl_patient_program_discontinuation\n"
+		        + "where program_name='HIV' and discontinuation_reason = 159492\n"
+		        + "and (date(transfer_date) between date(:startDate) and date(:endDate) or date(visit_date) between date(:startDate) and date(:endDate));";
+	}
+	
 }

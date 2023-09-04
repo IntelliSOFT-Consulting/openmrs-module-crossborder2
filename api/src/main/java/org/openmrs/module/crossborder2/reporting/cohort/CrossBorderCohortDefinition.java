@@ -6,6 +6,7 @@ import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.GenderCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.SqlCohortDefinition;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.openmrs.module.reporting.evaluation.parameter.Parameter;
 import org.openmrs.module.kenyaemr.reporting.library.ETLReports.MOH731Greencard.*;
@@ -14,6 +15,9 @@ import java.util.Date;
 
 @Component
 public class CrossBorderCohortDefinition {
+	
+	@Autowired
+	private ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary;
 	
 	public CohortDefinition getReferralPatients() {
 		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
@@ -80,7 +84,6 @@ public class CrossBorderCohortDefinition {
 	 * @return
 	 */
 	public CohortDefinition getCrossBorderPatientsCurrentlyInCareAndOnART() {
-		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
@@ -98,7 +101,6 @@ public class CrossBorderCohortDefinition {
 	 * @return
 	 */
 	public CohortDefinition getCrossBorderPatientTestedForHIV() {
-		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
@@ -116,14 +118,13 @@ public class CrossBorderCohortDefinition {
 	 * @return
 	 */
 	public CohortDefinition getCrossBorderPatientTestedHIVPositive() {
-		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohort = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
 		cd.addSearch("crossBorderPatient",
 		    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
-		cd.addSearch("everTestedPositiveForHIV",
-		    ReportUtils.map(etlMoh731GreenCardCohort.everTestedHIVPositive(), "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("everTestedPositiveForHIV", ReportUtils.map(etlMoh731GreenCardCohortLibrary.everTestedHIVPositive(),
+		    "startDate=${startDate},endDate=${endDate}"));
 		cd.setCompositionString("everTestedPositiveForHIV AND crossBorderPatient");
 		return cd;
 	}
@@ -134,7 +135,6 @@ public class CrossBorderCohortDefinition {
 	 * @return
 	 */
 	public CohortDefinition getCrossBorderHiVPositiveMothersWhoDelivered() {
-		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
@@ -151,18 +151,18 @@ public class CrossBorderCohortDefinition {
 	 * 
 	 * @return
 	 */
-	//		public CohortDefinition getCrossBorderPatientsEnrolledInCareThreeMonthsAgo() {
-	//			ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
-	//			CompositionCohortDefinition cd = new CompositionCohortDefinition();
-	//			cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
-	//			cd.addParameter(new Parameter("endDate", "End Date", Date.class));
-	//			cd.addSearch("crossBorderPatient",
-	//			    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
-	//			cd.addSearch("enrolledInCareThreeMonthsAgo", ReportUtils.map(
-	//			    etlMoh731GreenCardCohortLibrary.htsNumberTestedPositiveAndLinked(), "startDate=${startDate},endDate=${endDate}"));
-	//			cd.setCompositionString("enrolledInCareThreeMonthsAgo AND crossBorderPatient");
-	//			return cd;
-	//		}
+	public CohortDefinition getCrossBorderPatientsEnrolledInCareThreeMonthsAgo() {
+		CompositionCohortDefinition cd = new CompositionCohortDefinition();
+		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
+		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
+		cd.addSearch("crossBorderPatient",
+		    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
+		cd.addSearch("enrolledInCareThreeMonthsAgo", ReportUtils.map(
+		    etlMoh731GreenCardCohortLibrary.referredAndLinkedSinceThreeMonthsAgo(),
+		    "startDate=${startDate},endDate=${endDate}"));
+		cd.setCompositionString("enrolledInCareThreeMonthsAgo AND crossBorderPatient");
+		return cd;
+	}
 	
 	/**
 	 * Crossborder HIV Positive Mothers
@@ -170,7 +170,6 @@ public class CrossBorderCohortDefinition {
 	 * @return
 	 */
 	public CohortDefinition getCrossBorderHiVPositiveMothersTotal() {
-		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
@@ -183,7 +182,6 @@ public class CrossBorderCohortDefinition {
 	}
 	
 	public CohortDefinition getCrossBorderMaternalHaarTTotal() {
-		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
@@ -196,7 +194,6 @@ public class CrossBorderCohortDefinition {
 	}
 	
 	public CohortDefinition getCrossBorderPatientsOnProphylaxis() {
-		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
@@ -209,7 +206,6 @@ public class CrossBorderCohortDefinition {
 	}
 	
 	public CohortDefinition getCrossBorderPatientsCurrentlyNewEnrollementInCare() {
-		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
@@ -222,7 +218,6 @@ public class CrossBorderCohortDefinition {
 	}
 	
 	public CohortDefinition getCrossBorderPatientsStartedART() {
-		ETLMoh731GreenCardCohortLibrary etlMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
@@ -240,18 +235,35 @@ public class CrossBorderCohortDefinition {
 	 * @return
 	 */
 	public CohortDefinition getCrossBorderTBToTalHIVPositive() {
-		ETLMoh731GreenCardCohortLibrary eTLMoh731GreenCardCohortLibrary = new ETLMoh731GreenCardCohortLibrary();
 		CompositionCohortDefinition cd = new CompositionCohortDefinition();
 		cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
 		cd.addParameter(new Parameter("endDate", "End Date", Date.class));
 		cd.addSearch("crossBorderPatient",
 		    ReportUtils.map(getCrossBorderPatients(), "startDate=${startDate},endDate=${endDate}"));
-		cd.addSearch("tbNewKnownPositive", ReportUtils.map(eTLMoh731GreenCardCohortLibrary.tbNewKnownPositive(),
+		cd.addSearch("tbNewKnownPositive", ReportUtils.map(etlMoh731GreenCardCohortLibrary.tbNewKnownPositive(),
 		    "startDate=${startDate},endDate=${endDate}"));
-		cd.addSearch("tbNewKnownPositive", ReportUtils.map(eTLMoh731GreenCardCohortLibrary.tbNewTestedHIVPositive(),
+		cd.addSearch("tbNewTestedHIVPositive", ReportUtils.map(etlMoh731GreenCardCohortLibrary.tbNewTestedHIVPositive(),
 		    "startDate=${startDate},endDate=${endDate}"));
-		cd.setCompositionString("crossBorderPatient AND tbNewKnownPositive");
+		cd.setCompositionString("crossBorderPatient AND tbNewKnownPositive AND tbNewTestedHIVPositive");
 		return cd;
+	}
+	
+	public CohortDefinition getCrossBorderTransferOutPatients() {
+		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
+		sqlCohortDefinition.setName("CB Patients Transferred Out");
+		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
+		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
+		sqlCohortDefinition.setQuery(CrossborderQueries.crossBorderTransferOuts());
+		return sqlCohortDefinition;
+	}
+	
+	public CohortDefinition getCrossBorderTransferInsPatients() {
+		SqlCohortDefinition sqlCohortDefinition = new SqlCohortDefinition();
+		sqlCohortDefinition.setName("CB Patients Transferred Ins");
+		sqlCohortDefinition.addParameter(new Parameter("startDate", "Start Date", Date.class));
+		sqlCohortDefinition.addParameter(new Parameter("endDate", "End  Date", Date.class));
+		sqlCohortDefinition.setQuery(CrossborderQueries.crossBorderTransferIns());
+		return sqlCohortDefinition;
 	}
 	
 }

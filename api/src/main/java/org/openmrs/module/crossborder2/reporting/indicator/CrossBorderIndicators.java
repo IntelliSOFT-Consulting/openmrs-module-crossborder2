@@ -60,6 +60,20 @@ public class CrossBorderIndicators {
 		    map(crossBorderCohortDefinition.getCrossBorderPatientTestedForHIV(), "startDate=${startDate},endDate=${endDate}"));
 	}
 	
+	public CohortIndicator getCrossBorderPatientTestedHIVPositive() {
+		return cohortIndicator(
+		    "HIV Positive total",
+		    map(crossBorderCohortDefinition.getCrossBorderPatientTestedHIVPositive(),
+		        "startDate=${startDate},endDate=${endDate}"));
+	}
+	
+	public CohortIndicator getCrossBorderPatientEnrolledInCareThreeMonthsAgo() {
+		return cohortIndicator(
+		    "Total HIV Positive 3 month ago Linked to Care",
+		    map(crossBorderCohortDefinition.getCrossBorderPatientsEnrolledInCareThreeMonthsAgo(),
+		        "startDate=${startDate},endDate=${endDate}"));
+	}
+	
 	public CohortIndicator getCrossBorderHiVPositiveMothersWhoDelivered() {
 		return cohortIndicator(
 		    "Delivery from HIV+ Mothers",
@@ -86,16 +100,33 @@ public class CrossBorderIndicators {
 		        "startDate=${startDate},endDate=${endDate}"));
 	}
 	
-	public CohortIndicator getCrossBorderPatientsCurrentlyInCare() {
-		return cohortIndicator(
-		    "Total Enrollment in Care",
-		    map(crossBorderCohortDefinition.getCrossBorderPatientsCurrentlyInCare(),
-		        "startDate=${startDate},endDate=${endDate}"));
-	}
+	//	public CohortIndicator getCrossBorderPatientsCurrentlyInCare() {
+	//		return cohortIndicator(
+	//		    "Total Enrollment in Care",
+	//		    map(crossBorderCohortDefinition.getCrossBorderPatientsCurrentlyInCare(),
+	//		        "startDate=${startDate},endDate=${endDate}"));
+	//	}
 	
 	public CohortIndicator getCrossBorderPatientsStartedART() {
 		return cohortIndicator("Start ART Total",
 		    map(crossBorderCohortDefinition.getCrossBorderPatientsStartedART(), "startDate=${startDate},endDate=${endDate}"));
+	}
+	
+	public CohortIndicator crossBorderTBToTalHIVPositive() {
+		return cohortIndicator("Start ART Total",
+		    map(crossBorderCohortDefinition.getCrossBorderTBToTalHIVPositive(), "startDate=${startDate},endDate=${endDate}"));
+	}
+	
+	public CohortIndicator getcrossBorderTransferIns() {
+		return cohortIndicator(
+		    "Start ART Total",
+		    map(crossBorderCohortDefinition.getCrossBorderTransferInsPatients(), "startDate=${startDate},endDate=${endDate}"));
+	}
+	
+	public CohortIndicator getcrossBorderTransferOuts() {
+		return cohortIndicator(
+		    "Start ART Total",
+		    map(crossBorderCohortDefinition.getCrossBorderTransferOutPatients(), "startDate=${startDate},endDate=${endDate}"));
 	}
 	
 }
