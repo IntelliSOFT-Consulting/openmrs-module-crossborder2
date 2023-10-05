@@ -1,1 +1,3 @@
-# openmrs-module-crossborder2
+# openmrs-module-crossborder
+
+KenyaEMR module for Cross Border workflows. 
