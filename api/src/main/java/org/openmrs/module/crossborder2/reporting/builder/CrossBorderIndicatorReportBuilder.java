@@ -18,14 +18,14 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-@Builds({ "cross.border.txCurr.screening" })
+@Builds({ "cross.border.patient.summary" })
 public class CrossBorderIndicatorReportBuilder extends AbstractReportBuilder {
 	
-	private final CrossBorderScreeningDataset crossBorderIndicatorDataset;
+	private final CrossBorderScreeningDataset crossBorderScreeningDataset;
 	
 	@Autowired
 	public CrossBorderIndicatorReportBuilder(CrossBorderScreeningDataset crossBorderScreeningDataset) {
-		this.crossBorderIndicatorDataset = crossBorderScreeningDataset;
+		this.crossBorderScreeningDataset = crossBorderScreeningDataset;
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class CrossBorderIndicatorReportBuilder extends AbstractReportBuilder {
 	        ReportDefinition reportDefinition) {
 		
 		return Collections
-		        .singletonList(ReportUtils.map(crossBorderIndicatorDataset.getCbReportIndicatorDatasetDefinition(),
+		        .singletonList(ReportUtils.map(crossBorderScreeningDataset.getCbMoH731IndicatorDatasetDefinition(),
 		            "startDate=${startDate},endDate=${endDate}"));
 	}
 }

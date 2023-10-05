@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@Builds({ "cross.border.indicator.screening" })
+@Builds({ "cross.border.patient.indicator" })
 public class CrossBorderScreeningIndicatorReportBuilder extends AbstractReportBuilder {
 	
 	private final CrossBorderScreeningDataset crossBorderScreeningDataset;
@@ -38,7 +38,8 @@ public class CrossBorderScreeningIndicatorReportBuilder extends AbstractReportBu
 	protected List<Mapped<DataSetDefinition>> buildDataSets(ReportDescriptor reportDescriptor,
 	        ReportDefinition reportDefinition) {
 		
-		return Collections.singletonList(ReportUtils.map(crossBorderScreeningDataset.getCrossBorderScreeningDataset(),
-		    "startDate=${startDate},endDate=${endDate}"));
+		return Collections
+		        .singletonList(ReportUtils.map(crossBorderScreeningDataset.getCbReportIndicatorDatasetDefinition(),
+		            "startDate=${startDate},endDate=${endDate}"));
 	}
 }

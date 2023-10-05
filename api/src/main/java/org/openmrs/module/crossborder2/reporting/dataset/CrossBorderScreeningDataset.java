@@ -67,6 +67,71 @@ public class CrossBorderScreeningDataset {
 		    ReportUtils.map(crossBorderIndicators.getNumberOfPatientsTravelledToAnotherCountryWithinTheYear(), indParams),
 		    getGender(), Arrays.asList("01", "02", "03"));
 		
+		EmrReportingUtils.addRow(ind, "5", "TX-CURR: of adults and children currently receiving ART",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsCurrentlyInCareAndOnART(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		return ind;
+	}
+	
+	public DataSetDefinition getCbMoH731IndicatorDatasetDefinition() {
+		String indParams = "startDate=${startDate},endDate=${endDate}";
+		CohortIndicatorDataSetDefinition ind = new CohortIndicatorDataSetDefinition();
+		ind.setName("Cross Border Patient Summary");
+		ind.addParameter(new Parameter("startDate", "Start Date", Date.class));
+		ind.addParameter(new Parameter("endDate", "End Date", Date.class));
+		ind.addDimension("gender", ReportUtils.map(commonDimensions.getGender(), ""));
+		
+		EmrReportingUtils.addRow(ind, "1", "HIV Tested total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientTestedForHIV(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "2", "HIV Positive total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientTestedHIVPositive(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "3", "Total HIV Positive 3 month ago Linked to Care",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientEnrolledInCareThreeMonthsAgo(), indParams),
+		    getGender(), Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "4", "Delivery from HIV+ Mothers",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersWhoDelivered(), indParams),
+		    getFemalesOnly(), Arrays.asList("01"));
+		
+		EmrReportingUtils.addRow(ind, "5", "Maternal HIV Testing (Known HIV Status Total)",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersWhoDelivered(), indParams),
+		    getFemalesOnly(), Arrays.asList("01"));
+		
+		EmrReportingUtils.addRow(ind, "6", "Mothers Positive Total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderHiVPositiveMothersTotal(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		//		EmrReportingUtils.addRow(ind, "7", "Maternal HAART Total",
+		//		    ReportUtils.map(crossBorderIndicators.getCrossBorderMaternalHaarTTotal(), indParams), getGender(),
+		//		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "8", "Total ARV Prophylaxis Total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsOnProphylaxis(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "10", "Start ART Total",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsStartedART(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "11", "TB_TOTAL HIV Positive (HV077+080)",
+		    ReportUtils.map(crossBorderIndicators.crossBorderTBToTalHIVPositive(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
+		EmrReportingUtils.addRow(ind, "12", "Post-Exposure Prophylaxis",
+		    ReportUtils.map(crossBorderIndicators.getCrossBorderPatientsOnProphylaxis(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		EmrReportingUtils.addRow(ind, "13", "Transfer Ins",
+		    ReportUtils.map(crossBorderIndicators.getcrossBorderTransferIns(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		EmrReportingUtils.addRow(ind, "14", "Transfer Outs",
+		    ReportUtils.map(crossBorderIndicators.getcrossBorderTransferOuts(), indParams), getGender(),
+		    Arrays.asList("01", "02", "03"));
+		
 		return ind;
 	}
 	
@@ -75,5 +140,10 @@ public class CrossBorderScreeningDataset {
 		ColumnParameters cpFemale = new ColumnParameters("Female", "Female", "gender=F");
 		ColumnParameters cpTotal = new ColumnParameters("Total", "Total", "");
 		return Arrays.asList(cpMale, cpFemale, cpTotal);
+	}
+	
+	private List<ColumnParameters> getFemalesOnly() {
+		ColumnParameters cpFemale = new ColumnParameters("Female", "Female", "gender=F");
+		return Arrays.asList(cpFemale);
 	}
 }

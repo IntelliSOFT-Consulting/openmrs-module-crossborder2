@@ -13,5 +13,6 @@ public class CbPatientRegistrationSearchPageController {
 		AppDescriptor currentApp = Context.getService(AppFrameworkService.class).getApp("crossborder2.cb");
 		model.addAttribute("message", "This is the CB Home Page");
 		model.addAttribute("currentApp", currentApp);
+		
 	}
 }
