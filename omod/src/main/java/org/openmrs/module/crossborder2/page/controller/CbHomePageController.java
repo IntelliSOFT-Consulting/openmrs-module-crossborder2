@@ -88,7 +88,7 @@ public class CbHomePageController {
 		Location location = locationService.getLocation(1);
 		encounter.setLocation(location);
 		Obs obs = new Obs();
-		obs.setConcept(Context.getConceptService().getConcept(165657));
+		obs.setConcept(Context.getConceptService().getConcept(165915));
 		obs.setValueNumeric(42.0);
 		encounter.addObs(obs);
 		return encounter;
