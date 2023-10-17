@@ -84,21 +84,21 @@ public class CrossborderQueries {
 	//List crossborder patients
 	public static String getCrossBorderPatients() {
 		return "select patient_id from kenyaemr_etl.etl_crossborder_screening where\n"
-		        + "((place_of_residence_country = 162883 and nationality in (5000025,5000026,5000027,5000028,5000029)) \n"
-		        + "or place_of_residence_country = 162884 and nationality in (5000024,5000026,5000027,5000028,5000029))\n"
+		        + "((place_of_residence_country = 162883 and nationality in (162884,165752,165639,165744,165765)) \n"
+		        + "or place_of_residence_country = 162884 and nationality in (162883,165752,165639,165744,165765))\n"
 		        + "and visit_date between  :startDate and :endDate";
 	}
 	
 	//Number crossborder nationalities accessing services
 	public static String getOtherNationalitiesAccessingCbServices() {
 		return "select patient_id \n" + "FROM kenyaemr_etl.etl_crossborder_screening where \n"
-		        + "nationality not in (5000024) and\n" + "visit_date between :startDate and :endDate";
+		        + "nationality not in (162883) and\n" + "visit_date between :startDate and :endDate";
 	}
 	
 	//Number of residents accessing CB services
 	public static String getResidentsAccessingCbServices() {
 		return "select patient_id \n" + "FROM kenyaemr_etl.etl_crossborder_screening where \n"
-		        + "(place_of_residence_country = 162883) and nationality in (5000024)  and\n"
+		        + "(place_of_residence_country = 162883) and nationality in (162883)  and\n"
 		        + "visit_date between :startDate and :endDate";
 	}
 	
