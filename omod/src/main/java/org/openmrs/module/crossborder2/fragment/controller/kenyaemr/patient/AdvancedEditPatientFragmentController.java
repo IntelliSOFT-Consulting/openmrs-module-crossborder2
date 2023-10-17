@@ -148,7 +148,7 @@ public class AdvancedEditPatientFragmentController {
 		
 		//create list of countries
 		List<Concept> countryList = new ArrayList<Concept>();
-		for (Concept countryConcept : conceptService.getConcept(165657).getSetMembers()) {
+		for (Concept countryConcept : conceptService.getConcept(165915).getSetMembers()) {
 			countryList.add(countryConcept);
 		}
 		
