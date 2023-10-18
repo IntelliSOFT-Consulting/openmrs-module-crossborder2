@@ -32,8 +32,8 @@ select
     e.creator,
     e.date_created,
     if(max(o.date_created) > min(e.date_created),max(o.date_created),NULL) as date_last_modified,
-    max(if(o.concept_id=165915,o.value_coded,null)) as place_of_residence_country,
-    max(if(o.concept_id=165915,o.value_coded,null)) as nationality,
+    max(if(o.concept_id=168129,o.value_coded,null)) as place_of_residence_country,
+    max(if(o.concept_id=168129,o.value_coded,null)) as nationality,
     max(if(o.concept_id=166433,o.value_coded,null)) as target_population,
     max(if(o.concept_id=162619,o.value_coded,null)) as traveled_last_3_months,
     max(if(o.concept_id=165656,o.value_coded,null)) as traveled_last_6_months,
@@ -48,7 +48,7 @@ from encounter e
      ) et on et.encounter_type_id=e.encounter_type
          inner join person p on p.person_id=e.patient_id and p.voided=0
          left outer join obs o on o.encounter_id=e.encounter_id and o.voided=0
-    and o.concept_id in (165915,165915,166433,162619,165656,162619,162603,1732,168146)
+    and o.concept_id in (168129,168129,166433,162619,165656,162619,162603,1732,168146)
 where e.voided=0 and e.date_created >= last_update_time
    or e.date_changed >=  last_update_time
    or e.date_voided >=  last_update_time
@@ -112,7 +112,7 @@ select
     e.visit_id,
     e.location_id,
     e.encounter_datetime as visit_date,
-    max(if(o.concept_id=165915,o.value_coded,null)) as nationality,
+    max(if(o.concept_id=168129,o.value_coded,null)) as nationality,
     max(if(o.concept_id=161550,o.value_text,null)) as referring_facility_name,
     max(if(o.concept_id=162724,o.value_text,null)) as referred_facility_name,
     max(if(o.concept_id=168146,o.value_coded,null)) as type_of_care,
@@ -136,7 +136,7 @@ from encounter e
      ) et on et.encounter_type_id=e.encounter_type
          inner join person p on p.person_id=e.patient_id and p.voided=0
          left outer join obs o on o.encounter_id=e.encounter_id and o.voided=0
-    and o.concept_id in (161550,162724,168146,163181,1887,161011,160632,161103,168130,163152,163556,165915,166433)
+    and o.concept_id in (161550,162724,168146,163181,1887,161011,160632,161103,168130,163152,163556,168129,166433)
 where e.voided=0 and e.date_created >= last_update_time
    or e.date_changed >=  last_update_time
    or e.date_voided >=  last_update_time
