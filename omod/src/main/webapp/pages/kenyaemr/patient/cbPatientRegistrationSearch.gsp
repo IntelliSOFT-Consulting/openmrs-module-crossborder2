@@ -3,7 +3,7 @@
 
     def menuItems = [
             [ label: "Create new patient", extra: "Patient can't be found", iconProvider: "kenyaui", icon: "buttons/patient_add.png", href: ui.pageLink("crossborder2", "kenyaemr/patient/cbPatientRegistration") ],
-            [ label: "Back to home", iconProvider: "kenyaui", icon: "buttons/back.png", label: "Back to home", href: ui.pageLink("kenyaemr", "registration/cbPatientRegistration") ]
+            [ label: "Back to home", iconProvider: "kenyaui", icon: "buttons/back.png", label: "Back to home", href: ui.pageLink("kenyaemr", "userHome") ]
     ]
 %>
 
