@@ -146,7 +146,7 @@
                 <ref bean="kenyaemr.app.reports" />
             </set>
         </property>
-        <property name="template" value="crossborder2:cbs.xls" />
+        <property name="template" value="crossborder2:cbscreening.xls" />
         <property name="repeatingSection" value="sheet:1,row:4,dataset:ScreeningList" />
     </bean>
     <bean id="cross.border.patient.indicator" class="org.openmrs.module.kenyacore.report.IndicatorReportDescriptor">
