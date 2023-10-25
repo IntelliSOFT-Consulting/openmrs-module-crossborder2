@@ -158,7 +158,7 @@
                 <ref bean="kenyaemr.app.reports" />
             </set>
         </property>
-        <property name="template" value="crossborder2:cbr.xls" />
+        <property name="template" value="crossborder2:cbreferral.xls" />
     </bean>
     <bean id="cross.border.patient.summary" class="org.openmrs.module.kenyacore.report.IndicatorReportDescriptor">
         <property name="targetUuid" value="7010c245-61bb-4d71-88df-934703cf3f27" />
@@ -169,6 +169,6 @@
                 <ref bean="kenyaemr.app.reports" />
             </set>
         </property>
-        <property name="template" value="crossborder2:cbr.xls" />
+        <property name="template" value="crossborder2:cbreferral.xls" />
     </bean>
 </beans>
