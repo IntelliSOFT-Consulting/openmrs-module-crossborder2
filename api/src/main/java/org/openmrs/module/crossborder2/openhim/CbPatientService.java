@@ -19,6 +19,8 @@ import ca.uhn.fhir.parser.IParser;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.crossborder2.api.exceptions.ResourceGenerationException;
 import org.openmrs.module.crossborder2.openhim.converter.CbPatientConverter;
 import org.openmrs.module.crossborder2.utils.FhirUtil;
@@ -123,6 +125,7 @@ public class CbPatientService {
 			for (Bundle.BundleEntryComponent entry : bundle.getEntry()) {
 				Resource resource = entry.getResource();
 				Patient p = cbPatientConverter.convertToOpenMrsPatient((org.hl7.fhir.r4.model.Patient) resource);
+				removeNullPersonAttributes(p);
 				patients.add(p);
 			}
 		}
@@ -131,6 +134,9 @@ public class CbPatientService {
 				org.hl7.fhir.r4.model.Patient patient = fhirContext.newJsonParser().parseResource(
 				    org.hl7.fhir.r4.model.Patient.class, jsonResponse);
 				Patient p = cbPatientConverter.convertToOpenMrsPatient(patient);
+				// Remove person attributes with no Person Attribute Type defined
+				removeNullPersonAttributes(p);
+				
 				patients.add(p);
 			}
 			catch (DataFormatException exception1) {
@@ -139,6 +145,15 @@ public class CbPatientService {
 		}
 		
 		return patients;
+	}
+	
+	private static void removeNullPersonAttributes(Patient p) {
+		// Remove person attributes with no Person Attribute Type defined
+		for (PersonAttribute attr : p.getAttributes()) {
+			if (attr.getAttributeType() == null) {
+				p.removeAttribute(attr);
+			}
+		}
 	}
 	
 	public Patient deserializePatient(String jsonResponse) {
