@@ -27,6 +27,7 @@ import org.openmrs.PatientIdentifierType;
 import org.openmrs.PatientProgram;
 import org.openmrs.Person;
 import org.openmrs.PersonAddress;
+import org.openmrs.PersonAttribute;
 import org.openmrs.PersonName;
 import org.openmrs.Program;
 import org.openmrs.Relationship;
@@ -449,6 +450,7 @@ public class AdvancedEditPatientFragmentController {
 		public EditPatientForm(Person person) {
 			this();
 			
+			removeNullPersonAttributes(person);
 			original = person;
 			
 			if (person.getPersonName() != null) {
@@ -477,6 +479,7 @@ public class AdvancedEditPatientFragmentController {
 		 */
 		public EditPatientForm(Patient patient) {
 			this((Person) patient);
+			removeNullPersonAttributes(patient.getPerson());
 			
 			CrossborderPatientWrapper wrapper = new CrossborderPatientWrapper(patient);
 			
@@ -539,6 +542,15 @@ public class AdvancedEditPatientFragmentController {
 				country = savedCountry.getValueCoded();
 			}
 			
+		}
+		
+		private void removeNullPersonAttributes(Person p) {
+			// Remove person attributes with no Person Attribute Type defined
+			for (PersonAttribute attr : p.getAttributes()) {
+				if (attr.getAttributeType() == null) {
+					p.removeAttribute(attr);
+				}
+			}
 		}
 		
 		private Obs getLatestObs(Patient patient, String conceptIdentifier) {
